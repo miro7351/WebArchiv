@@ -1,0 +1,168 @@
+03.04.2022
+
+========= Popis prikazu Scaffold-DbContext ===========
+https://docs.microsoft.com/en-us/ef/core/managing-schemas/scaffolding?tabs=vs
+
+https://www.entityframeworktutorial.net/efcore/create-model-for-existing-database-in-ef-core.aspx
+
+Projec Entities
+ Class library; .NET Core 6
+Nuget:
+ Nuget: Microsoft.EntityFrameworkCore      6.0.3
+ Microsoft.EntityFrameworkCore.Tools       6.0.3
+ Microsoft.EntityFrameworkCore.SqlServer   6.0.3
+ 
+
+Scaffold-DbContext -je to command pre prikazovy riadok pre vygenerovanie ORM modelu z Databazy.
+
+(Pre EF Core neexistuje vo Visual Studiu wizard ako pre .NET Framework EF 6.
+ Pre EF Core  vo Visual sa pouziva PMC prikaz Scaffold-DbContext aj to len pre databazu  Microsoft SQL Server.
+Existuju aj vizualne nastroje, napr. Entity Developer v trial verzii, alebo kupena stoji okolo 50 USD  da sa pouzit aj pre ORACLE a ine db, na GitHube je EFCorePowerTools ale to som neskusal...
+https://github.com/ErikEJ/EFCorePowerTools/
+)
+
+Spustat prikaz Scaffold-DbContext mozeme z Visual Studia z okna Package Manager Console (PMC), alebo z prikazoveho riadku .NET Command-line Interface (CLI).
+
+  PM> get-help scaffold-dbcontext –detailed    vypis vsetkych parametrov
+
+    To see the examples, type: "get-help Scaffold-DbContext -examples".
+    For more information, type: "get-help Scaffold-DbContext -detailed".
+    For technical information, type: "get-help Scaffold-DbContext -full".
+    For online help, type: "get-help Scaffold-DbContext -online"
+
+Ak Scaffold-DbContext generuje kod z databazy, potom vygeneruje nielen class ToyotaContext:DbContext, entity pre nas model, 
+ale generuje aj entity ktore pouziva Entity Framework Core, pozri class ToyotaContext:DbContext... void OnModelCreating(ModelBuilder modelBuilder).
+
+            modelBuilder.Entity<Dokument>(entity =>
+            {
+                entity.ToTable("Dokument");
+
+                entity.Property(e => e.DokumentId).HasColumnName("DokumentID");
+
+                entity.Property(e => e.DokumentPlatny)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+
+                entity.Property(e => e.NazovDokumentu).HasMaxLength(64);
+
+                entity.Property(e => e.NazovSuboru).HasMaxLength(64);
+
+                ...
+                }
+
+        pouzity parameter:        -DataAnnotations
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Dokument>(entity =>
+            {
+                entity.Property(e => e.DokumentPlatny).IsFixedLength();
+
+                entity.Property(e => e.Poznamka).HasDefaultValueSql("('')");
+
+                entity.Property(e => e.Skupina).HasDefaultValueSql("((-1))");
+
+                entity.Property(e => e.Vytvorene).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Vytvoril).HasDefaultValueSql("(user_name())");
+
+                entity.Property(e => e.ZakazkaTg).IsFixedLength();
+
+                entity.Property(e => e.Zmenil).HasDefaultValueSql("('')");
+
+                entity.HasOne(d => d.ZakazkaTgNavigation)
+                    .WithMany(p => p.Dokuments)
+                    .HasForeignKey(d => d.ZakazkaTg)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Dokument_Zakazka");
+            });
+
+=============================================================
+Prikaz Scaffolf -DbContext MUSI BYT V JENOM RIADKU, len pre lepsiu viditelnost je rozpisany pod seba;
+Ak je v Solution viac projektov, potom projekt kde chceme umiestnit nase ORM entity musi byt nastaveny ako "Start project"
+
+PM>  Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_DB2;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer 
+             -OutputDir Models
+             -Namespace PA.TOYOTA.DB 
+             -ContextNamespace PA.TOYOTA.DB 
+             -Context ToyotaContext 
+             -Force 
+           
+
+PM>  Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_DB2;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir ORM\ToyotaModel -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force -ContextDir ORM\ToyotaModel\Context
+
+
+-------------------------
+okno Package Manager Console
+Default projekt: Entities
+
+ PM> Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_DB2;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force 
+Build started...
+Build succeeded
+ --------------------------
+Ukazka vygenerovanych entit:
+Adresar:
+SqlFilestreamLib\ORM\ToyotaModel\Context
+
+namespace PA.TOYOTA.DB
+{
+    public partial class ToyotaContext : DbContext
+    {
+        public ToyotaContext()
+        {
+        }
+
+        public ToyotaContext(DbContextOptions<ToyotaContext> options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet<Dokument> Dokuments { get; set; } = null!;  //ZMENENE NA Dokumenty
+        public virtual DbSet<DokumentDetail> DokumentDetails { get; set; } = null!;   //ZMENENE NA DokumentDeatily
+        public virtual DbSet<Error> Errors { get; set; } = null!;
+        public virtual DbSet<Log> Logs { get; set; } = null!;
+        public virtual DbSet<Role> Roles { get; set; } = null!;
+        public virtual DbSet<Zakazka> Zakazkas { get; set; } = null!;   //ZMENENE NA Zakazky
+
+        ....
+}
+
+Adresar:
+SqlFilestreamLib\ORM\ToyotaModel\
+
+namespace PA.TOYOTA.DB
+{
+    public partial class DokumentDetail
+    {
+        public Guid DetailId { get; set; }
+        public int DokumentId { get; set; }
+        public string NazovDokumentu { get; set; } = null!;   //nvarchar(32), not null
+        public string Platny { get; set; } = null!;           //char(1), not null
+        public byte[] DocumentContent { get; set; } = null!;  //varbinary(max), not null
+        public string? Poznamka { get; set; }                 //nvarchar(128), null
+        public string? Vytvoril { get; set; }                 //nvarchar(32), null
+        public DateTime? Vytvorene { get; set; }              //datetime2(0), null
+        public string? Zmenil { get; set; }
+        public DateTime? Zmenene { get; set; }
+
+        public virtual Dokument Dokument { get; set; } = null!;
+    }
+}
+
+namespace PA.TOYOTA.DB
+{
+    public partial class Error
+    {
+        public int ErrorLogId { get; set; }
+        public DateTime ErrorDate { get; set; }
+        public string? ErrorMsg { get; set; }       // varchar(256), null
+        public int? ErrorNumber { get; set; }       // int, null
+        public string? ErrorProcedure { get; set; }
+        public int? ErrorLine { get; set; }
+        public string? User { get; set; }
+    }
+}
+
+
+========================================
+

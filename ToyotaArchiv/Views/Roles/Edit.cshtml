@@ -1,0 +1,64 @@
+﻿@model PA.TOYOTA.DB.Role
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Zmena záznamu</h1>
+
+<h4>Rola</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RoleId" />
+            <div class="form-group">
+                <label asp-for="RoleName" class="control-label"></label>
+                <input asp-for="RoleName" class="form-control" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Aktivny" class="control-label"></label>
+                <input asp-for="Aktivny" class="form-control" />
+                <span asp-validation-for="Aktivny" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vytvoril" class="control-label"></label>
+                <input asp-for="Vytvoril" class="form-control" />
+                <span asp-validation-for="Vytvoril" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vytvorene" class="control-label"></label>
+                <input asp-for="Vytvorene" class="form-control" />
+                <span asp-validation-for="Vytvorene" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Zmenil" class="control-label"></label>
+                <input asp-for="Zmenil" class="form-control" />
+                <span asp-validation-for="Zmenil" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Zmenene" class="control-label"></label>
+                <input asp-for="Zmenene" class="form-control" />
+                <span asp-validation-for="Zmenene" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Poznamka" class="control-label"></label>
+                <input asp-for="Poznamka" class="form-control" />
+                <span asp-validation-for="Poznamka" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Uložiť" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Návrat</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

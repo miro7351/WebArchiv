@@ -1,0 +1,101 @@
+﻿@model IEnumerable<PA.TOYOTA.DB.Zakazka>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ZakazkaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ZakazkaTb)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CisloProtokolu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cws)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Platna)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ukoncena)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vytvoril)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vytvorene)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zmenil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zmenene)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Poznamka)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZakazkaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZakazkaTb)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CisloProtokolu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cws)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Platna)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ukoncena)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vytvoril)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vytvorene)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zmenil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zmenene)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Poznamka)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ZakazkaTg">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ZakazkaTg">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ZakazkaTg">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
