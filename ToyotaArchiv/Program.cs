@@ -4,7 +4,7 @@
 /*
  * MH: 05.04.2022
 
- * aplikacia pouziva DB, TOYOTA_DB2  na MH: Dell
+ * aplikacia pouziva DB: TOYOTA_DB2  na MH: Dell
  * "DefaultConnection": "Server=HRABCAK;Database=TOYOTA_DB2;Trusted_Connection=True;MultipleActiveResultSets=true"
  * ----------------------------
  * 

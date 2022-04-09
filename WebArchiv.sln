@@ -3,18 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToyotaArchiv", "ToyotaArchiv\ToyotaArchiv.csproj", "{2D393648-AECF-4FE1-ADD6-196F052ACA8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToyotaArchiv", "ToyotaArchiv\ToyotaArchiv.csproj", "{2D393648-AECF-4FE1-ADD6-196F052ACA8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{4D3A8276-D6FE-4DFA-9D65-F0EA5A7B7355}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{4D3A8276-D6FE-4DFA-9D65-F0EA5A7B7355}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{4FD867ED-3FD6-40F8-848A-106098781D2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{4FD867ED-3FD6-40F8-848A-106098781D2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{550E259F-4F3D-482A-B474-E51BA93B318B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{550E259F-4F3D-482A-B474-E51BA93B318B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{C2EE33D0-4879-4BC2-B2BE-817D9E0EEF28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{C2EE33D0-4879-4BC2-B2BE-817D9E0EEF28}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{94FE5029-7C22-44E8-98C7-9EA52F5E5347}"
 	ProjectSection(SolutionItems) = preProject
+		Doc\ASP-input-poz01.txt = Doc\ASP-input-poz01.txt
 		Doc\DBContext-poznamky01t.txt = Doc\DBContext-poznamky01t.txt
 	EndProjectSection
 EndProject

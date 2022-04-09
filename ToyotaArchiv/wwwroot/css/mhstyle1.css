@@ -1,0 +1,14 @@
+﻿/*
+    MH: 09.04.2022
+    testovacie styly
+    POUZITIE:
+    _Layout.cshtml
+     <link rel="stylesheet" href="~/css/mhstyle1.css" asp-append-version="true" />
+*/
+
+/* element s touto class bude neviditelny a nebude zaberat miesto na formulari*/
+.mhinvisible
+{
+    visibility:hidden;
+    height:0px;
+}

@@ -1,0 +1,37 @@
+MH: 08.04.2022
+
+=============  Ako sa pouziva  input typu DropDownBox v ASP.NET ==================
+
+Roles: Edit.cshtml
+
+1, zmiesany HTML styl a Microsoft ASP.NET Tag helper @Html.DropDownListFor
+@*Aktivny*@
+
+            <div class="form-group">
+                <label asp-for="Aktivny" class="control-label"></label>
+                @Html.DropDownListFor(m => m.Aktivny, 
+                    new List<SelectListItem>
+                        { new SelectListItem{Text="Áno", Value="A"},
+                          new SelectListItem{Text="Nie", Value="N"}}, "Vyberte možnosť")
+                <span asp-validation-for="Aktivny" class="text-danger"></span>
+            </div>
+
+Tato moznost je lepsia lebo tu uzivatel vidi vyber z moznosti Áno, alebo Nie. 
+Na formulari je zobrazeny DropDown control.
+--------------------------------------------------------------------------------------------------------------------------
+
+2,  len  cisty HTML styl
+@*Aktivny*@
+            <div class="form-group">
+                <label asp-for="Aktivny" class="control-label"></label>
+                <select asp-for="Aktivny" class="form-control">
+                    <option>A</option>
+                    <option>N</option>
+                  </select>          
+                <span asp-validation-for="Aktivny" class="text-danger"></span>
+            </div>
+
+Nie je to az take dokonale, lebo uzivatel vidi vyber z moznosti A alebo N.
+Na formulari nie je zobrazeny DropDown control. Az po kliku na kontrol sa otvori select kontrol.
+
+-----------------------------------------------------------------------------------------------------------------------------------------

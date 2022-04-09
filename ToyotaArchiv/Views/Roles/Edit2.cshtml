@@ -1,17 +1,19 @@
 ﻿@model PA.TOYOTA.DB.Role
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit2";
 }
+@* Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                   { new SelectListItem{Text="Male", Value="M"},
+                     new SelectListItem{Text="Female", Value="F"}}, "Please select")*@
 
-<h1>Zmena záznamu</h1>
+<h1>Edit2</h1>
 
-<h4>Rola</h4>
+<h4>Role</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
-
            @* RoleId*@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="RoleId" />
@@ -30,10 +32,6 @@
                     new List<SelectListItem>
                         { new SelectListItem{Text="Áno", Value="A"},
                           new SelectListItem{Text="Nie", Value="N"}}, "Vyberte možnosť")
-                @*<select asp-for="Aktivny" class="form-control">
-                    <option>A</option>
-                    <option>N</option>
-                  </select>  *@        
                 <span asp-validation-for="Aktivny" class="text-danger"></span>
             </div>
 
