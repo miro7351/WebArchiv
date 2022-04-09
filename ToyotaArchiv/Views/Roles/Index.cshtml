@@ -49,14 +49,18 @@
                 @Html.DisplayFor(modelItem => item.Vytvoril)
             </td>
             <td>
+                @*Formatuje sa pomocou attributu, Pozri Role.cs!!!!*@
                 @Html.DisplayFor(modelItem => item.Vytvorene)
+              @*  @if (item.Vytvorene.HasValue) @item.Vytvorene.Value.ToString("dd.MM.yyyy HH:mm")*@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Zmenil)
             </td>
             <td>
+                 @*Formatuje sa pomocou attributu !!!!*@
                 @Html.DisplayFor(modelItem => item.Zmenene)
-            </td>
+                 @*   @if (item.Zmenene.HasValue) item.Zmenene.Value.ToString("dd.MM.yyyy HH:mm");*@
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Poznamka)
             </td>

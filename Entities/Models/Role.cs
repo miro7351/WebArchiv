@@ -5,6 +5,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PA.TOYOTA.DB
 {
+    /*
+     Pre rolu da moze menit len property Aktivny. Moze to menit Admin, Veduci;
+     Pri editacii je viditelne len RoleName, Aktivny, Poznamka;
+    Ostatne polozky su neviditelne.
+    Pri zmene Aktivny sa zapisuje message do tab. Logs;
+    V DB tab. Roles sa nedaju mazat zaznamy.
+
+     */
     public partial class Role
     {
         
@@ -20,13 +28,16 @@ namespace PA.TOYOTA.DB
         [Display(Name = "Vytvoril")]
         public string? Vytvoril { get; set; }
 
-
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
         [Display(Name = "Vytvorené")]
         public DateTime? Vytvorene { get; set; }
 
        [Display(Name = "Zmenil")]
         public string? Zmenil { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
         [Display(Name = "Zmenené")]
         public DateTime? Zmenene { get; set; }
 

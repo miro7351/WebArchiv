@@ -16,7 +16,7 @@ Roles: Edit.cshtml
                 <span asp-validation-for="Aktivny" class="text-danger"></span>
             </div>
 
-Tato moznost je lepsia lebo tu uzivatel vidi vyber z moznosti Áno, alebo Nie. 
+TATO MOZNOST JE LEPSIA lebo tu uzivatel vidi vyber z moznosti Áno, alebo Nie. 
 Na formulari je zobrazeny DropDown control.
 --------------------------------------------------------------------------------------------------------------------------
 
@@ -31,7 +31,57 @@ Na formulari je zobrazeny DropDown control.
                 <span asp-validation-for="Aktivny" class="text-danger"></span>
             </div>
 
-Nie je to az take dokonale, lebo uzivatel vidi vyber z moznosti A alebo N.
-Na formulari nie je zobrazeny DropDown control. Az po kliku na kontrol sa otvori select kontrol.
+Nie je to az take dokonale, az po kliku na textbox,  uzivatelovi sa roztvori select a vidi vyber z moznosti A alebo N.
+Na formulari nie je zobrazeny select control so sipkou. Az po kliku na kontrol sa otvori select kontrol.
 
 -----------------------------------------------------------------------------------------------------------------------------------------
+       === ZOBRAZENIE A EDITOVANIE Date typu a DateTime typu ===
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
+        [Display(Name = "Vytvorené")]
+        public DateTime? Vytvorene { get; set; }
+ 
+        PRI EDITOVANI HODNOTY NA WEB STRANKE SA ZOBRAZI KALENDAR TYPU MESIAC A DEN!!!!
+
+        --------------------
+
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
+        [Display(Name = "Vytvorené")]
+        public DateTime? Vytvorene { get; set; }
+
+        PRI EDITOVANI HODNOTY NA WEB STRANKE SA ZOBRAZI KALENDAR TYPU MESIAC, DEN, HODINY, MINUTY a SEKUNDY!!!!
+
+        NA WEB STRANKE UZ NEMUSIME NIC ROBIT!!!!!
+         <label asp-for="Vytvorene" class="control-label"></label>
+         <input asp-for="Vytvorene" class="form-control"/>
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+ 
+ 
+ 
+ Roles: Index.cshtml
+
+ Vypis formatovaneho datumu a casu.
+ Pri vypise DateTime? typu je dobre otestovat ci polozka je zadana a az potom ju vypisat:
+ 
+ @if (item.Vytvorene.HasValue) @item.Vytvorene.Value.ToString("dd.MM.yyyy HH:mm:ss")
+ Pozn: tento kod skompiluje IIS server do bytoveho kodu pre WebAssembly a na stranke to uz spracuje WebAssembly;
+
+
+<td>
+                @Html.DisplayFor(modelItem => item.Vytvoril)
+            </td>
+            <td>
+               @* @Html.DisplayFor(modelItem => item.Vytvorene).Value.ToString("dd.MM.yyyy HH:mm:ss")*@
+                @if (item.Vytvorene.HasValue) @item.Vytvorene.Value.ToString("dd.MM.yyyy HH:mm")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zmenil)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Zmenene)*@
+                    @if (item.Zmenene.HasValue) item.Zmenene.Value.ToString("dd.MM.yyyy HH:mm");
+                </td>
+            <td>

@@ -1,0 +1,96 @@
+MH: 09.04.2022
+
+Udaj mozeme vypisat takto pomocou  tag helpera: Html.DisplayFor
+@Html.DisplayFor(model => model.Title)
+
+alebo aj takto
+@Model.Title
+
+---------------------------
+
+pozri : https://code-examples.net/en/q/6121c1
+
+DisplayFor is also useful for templating. You could write a template for your Model, and do something like this:
+@Html.DisplayFor(m => m)
+
+Similar to @Html.EditorFor(m => m). It's useful for the DRY principal so that you don't have to write the same display logic over and over for the same Model.
+
+Pouzitie formatovacieho attributu
+ [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
+ [Display(Name = "Zmenené")]
+public DateTime? Zmenene { get; set; }
+
+
+@Html.DisplayFor(modelItem => item.Zmenene)  nerobi problem ak Zmenene je null;
+
+Pri priamom vypise a formatovani musime osetrit null hodnotu!!!!
+  @*   @if (item.Zmenene.HasValue) item.Zmenene.Value.ToString("dd.MM.yyyy HH:mm");*@
+
+----------------------------------
+
+It's also useful if your Model has a Data annotation. 
+For instance, if the property on the model is decorated with the  [DataType(DataType.EmailAddress )] DisplayFor will render it as a mailto: link.
+
+
+
+      [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
+        [Display(Name = "Zmenené")]
+        public DateTime? Zmenene { get; set; }
+PRI EDDITOVANI NA WEB STRANKE SA ZOBRAZI KALENDAR a s moznostou nastavenia hodin, minut a sekund.
+
+     [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
+        [Display(Name = "Zmenené")]
+        public DateTime? Zmenene { get; set; }
+
+PRI EDDITOVANI NA WEB STRANKE SA ZOBRAZI KALENDAR len pre rok, mesiac a den !!!!
+
+-------------------
+Html.DisplayFor() will render the DisplayTemplate that matches the property's type.
+
+If it can't find any, I suppose it invokes .ToString().
+
+Take a look at this blog on MVC2 templates. It's still very applicable to MVC3:
+
+http://www.dalsoft.co.uk/blog/index.php/2010/04/26/mvc-2-templates/
+
+
+If you create a view named String.cshtml inside the DisplayTemplates folder of your views folder (e.g Home, or Shared) with the following code:
+
+String.cshtml
+@model string
+
+@if (string.IsNullOrEmpty(Model)) {
+   <strong>Null string</strong>
+}
+else {
+   @Model
+}
+
+Then @Html.DisplayFor(model => model.Title) (assuming that Title is a string) will use the template and display <strong>Null string</strong> 
+if the string is null, or empty.
+
+
+---------
+
+I think the main benefit would be when you define your own Display Templates, or use Data annotations.
+
+So for example if your title was a date, you could define
+
+[DisplayFormat(DataFormatString = "{0:d}")]
+
+-----------
+
+
+
+
+
+
+
+
+
+
+
+
+

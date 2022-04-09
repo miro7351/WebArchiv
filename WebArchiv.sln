@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{94FE5029-7C2
 	ProjectSection(SolutionItems) = preProject
 		Doc\ASP-input-poz01.txt = Doc\ASP-input-poz01.txt
 		Doc\DBContext-poznamky01t.txt = Doc\DBContext-poznamky01t.txt
+		Doc\MS-formatovacie tagy.txt = Doc\MS-formatovacie tagy.txt
 	EndProjectSection
 EndProject
 Global

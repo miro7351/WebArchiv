@@ -44,9 +44,10 @@
                 <span asp-validation-for="Vytvoril" class="text-danger"></span>
             </div>
             @*Vytvorene*@
-            <div class="form-group" style="visibility:hidden;height:0px;">
+            <div class="form-group" >
                 <label asp-for="Vytvorene" class="control-label"></label>
-                <input asp-for="Vytvorene" class="form-control" readonly />
+                @*<input asp-for="Vytvorene" class="form-control" readonly />*@
+                <input asp-for="Vytvorene" class="form-control"/>
                 <span asp-validation-for="Vytvorene" class="text-danger"></span>
             </div>
             @*Zmenil*@
@@ -56,9 +57,10 @@
                 <span asp-validation-for="Zmenil" class="text-danger"></span>
             </div>
             @*Zmenene*@
-            <div class="form-group mhinvisible" >
+            <div class="form-group" >
                 <label asp-for="Zmenene" class="control-label"></label>
-                <input asp-for="Zmenene" class="form-control"  readonly/>
+              @*  <input asp-for="Zmenene" class="form-control"  readonly/>*@
+              <input asp-for="Zmenene" class="form-control"/>
                 <span asp-validation-for="Zmenene" class="text-danger"></span>
             </div>
             <div class="form-group">
