@@ -6,9 +6,9 @@
 
 <h1>Zoznam rolí v aplikácii</h1>
 
-@*<p>
-    <a asp-action="Create">Create New</a>
-</p>*@
+<p>
+    <a asp-action="Create">Nová rola</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -57,7 +57,7 @@
                 @Html.DisplayFor(modelItem => item.Zmenil)
             </td>
             <td>
-                 @*Formatuje sa pomocou attributu !!!!*@
+                 @*Formatuje sa pomocou attributu v type Role !!!!*@
                 @Html.DisplayFor(modelItem => item.Zmenene)
                  @*   @if (item.Zmenene.HasValue) item.Zmenene.Value.ToString("dd.MM.yyyy HH:mm");*@
                 </td>

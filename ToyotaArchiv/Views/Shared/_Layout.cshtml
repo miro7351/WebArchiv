@@ -24,14 +24,21 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Zakazkas" asp-action="Index">Zakazky</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Zakazkas" asp-action="Index">Zákazky</a>
+                           @* <a class="nav-link text-dark" asp-area="" asp-controller="ZakazkyMH" asp-action="Index">Zakazky</a>*@
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roly</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Logs" asp-action="Index">Logy</a>
-                        </li>
+                        @if (true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roly</a>
+                            </li>
+                        }
+                        @if (false)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Logs" asp-action="Index">Logy</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

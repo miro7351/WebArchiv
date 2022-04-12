@@ -1,7 +1,5 @@
-﻿@model  List<PA.TOYOTA.DB.Zakazka>
-
-@*ZakazkyViewModel *@
-
+﻿@model  IEnumerable<PA.TOYOTA.DB.Zakazka>
+@*povodna Index...*@
 @{
     ViewData["Title"] = "Index";
 }
@@ -11,50 +9,44 @@
 <p>
     <a asp-action="Create">Nová zákazka</a>
 </p>
-
-
 <table class="table">
-    @*nazvy stlpcov*@
     <thead>
         <tr>
-           @* <th>
-                @Html.DisplayNameFor(model => model.Zakazky[0].ZakazkaId)
-            </th>*@
-             <th>
-                @Html.DisplayNameFor(model => model[0].ZakazkaTg)
+            <th>
+                @Html.DisplayNameFor(model => model.ZakazkaId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].ZakazkaTb)
+                @Html.DisplayNameFor(model => model.ZakazkaTb)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].CisloProtokolu)
+                @Html.DisplayNameFor(model => model.CisloProtokolu)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Cws)
+                @Html.DisplayNameFor(model => model.Cws)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Vin)
+                @Html.DisplayNameFor(model => model.Vin)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Platna)
+                @Html.DisplayNameFor(model => model.Platna)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Ukoncena)
+                @Html.DisplayNameFor(model => model.Ukoncena)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Vytvoril)
+                @Html.DisplayNameFor(model => model.Vytvoril)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Vytvorene)
+                @Html.DisplayNameFor(model => model.Vytvorene)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Zmenil)
+                @Html.DisplayNameFor(model => model.Zmenil)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Zmenene)
+                @Html.DisplayNameFor(model => model.Zmenene)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Poznamka)
+                @Html.DisplayNameFor(model => model.Poznamka)
             </th>
             <th></th>
         </tr>
@@ -62,11 +54,8 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.ZakazkaId)
-            </td>*@
             <td>
-                @Html.DisplayFor(modelItem => item.ZakazkaTg)
+                @Html.DisplayFor(modelItem => item.ZakazkaId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ZakazkaTb)
@@ -96,20 +85,18 @@
                 @Html.DisplayFor(modelItem => item.Zmenil)
             </td>
             <td>
-                   @if (item?.Zmenene.Value.Year > 2020)
-                        {
-                            @Html.DisplayFor(modelItem => item.Zmenene)
-                        }
+                @Html.DisplayFor(modelItem => item.Zmenene)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Poznamka)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ZakazkaTg">Upraviť</a> |
-                <a asp-action="Details" asp-route-id="@item.ZakazkaTg">Detaily</a> |
-                <a asp-action="Delete" asp-route-id="@item.ZakazkaTg">Vymazať</a>
+                <a asp-action="Edit" asp-route-id="@item.ZakazkaTg">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ZakazkaTg">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ZakazkaTg">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+

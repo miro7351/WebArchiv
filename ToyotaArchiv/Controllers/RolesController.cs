@@ -33,23 +33,23 @@ namespace ToyotaArchiv.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.RoleId == id);
+            var role = await _context.Roles.FirstOrDefaultAsync(m => m.RoleId == id);
+               
             if (role == null)
             {
                 return NotFound();
             }
 
-            return View(role);
+            return View(role);//vrati Details.cshtml
         }
 
-        // GET: Roles/Create
+        // GET: Roles/Create;    Index.cshtml... <a asp-action="Create">Nová rola</a>
         public IActionResult Create()
         {
-            return View();
+            return View();//vrati Create.cshtml
         }
 
-        // POST: Roles/Create
+        // POST: Roles/Create;  Create.cshtml  ... <form asp-action="Create">
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -82,6 +82,7 @@ namespace ToyotaArchiv.Controllers
         }
 
         // POST: Roles/Edit/5
+        //  <form asp-action="Edit">...
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]

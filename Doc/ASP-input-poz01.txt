@@ -33,6 +33,24 @@ Na formulari je zobrazeny DropDown control.
 
 Nie je to az take dokonale, az po kliku na textbox,  uzivatelovi sa roztvori select a vidi vyber z moznosti A alebo N.
 Na formulari nie je zobrazeny select control so sipkou. Az po kliku na kontrol sa otvori select kontrol.
+-------------------------------------------------------------------------------------------------------------------------
+3, 
+
+public IActionResult Create()
+{
+    var vm = new MyViewModel();
+    vm.EmployeesList = new List<Employee>
+    {
+        new Employee { Id = 1, FullName = "Shyju" },
+        new Employee { Id = 2, FullName = "Bryan" }
+    };
+    return View(vm);
+}
+
+<select asp-for="EmployeeId" 
+        asp-items="@(new SelectList(Model.EmployeesList, nameof(Employee.Id), nameof(Employee.FullName)))">
+        <option>Please select one</option>
+    </select>
 
 -----------------------------------------------------------------------------------------------------------------------------------------
        === ZOBRAZENIE A EDITOVANIE Date typu a DateTime typu ===
@@ -53,17 +71,26 @@ Na formulari nie je zobrazeny select control so sipkou. Az po kliku na kontrol s
 
         PRI EDITOVANI HODNOTY NA WEB STRANKE SA ZOBRAZI KALENDAR TYPU MESIAC, DEN, HODINY, MINUTY a SEKUNDY!!!!
 
-        NA WEB STRANKE UZ NEMUSIME NIC ROBIT!!!!!
+        NA WEB STRANKE UZ NEMUSIME NIC ROBIT!!!!!  LEN TO NEVIEM FORMATOVAT!!!
          <label asp-for="Vytvorene" class="control-label"></label>
          <input asp-for="Vytvorene" class="form-control"/>
 -----------------------------------------------------------------------------------------------------------------------------------------
 
  
  
+ ZakazkyMH  Index.cshtml
  
- Roles: Index.cshtml
 
  Vypis formatovaneho datumu a casu.
+ @Html.DisplayFor(modelItem => item.Zmenene)   Neda sa editovat, ale pouzije formatovaci retazec z attributu.
+
+ <td><label asp-for="DatumOd" class="control-label"></label></td>
+
+ <td><input asp-for="DatumOd" class="form-control"/> poskytne kalendar, ale NEVIEM TO FORMATOVAT!!!
+
+
+Roles: Index.cshtml
+
  Pri vypise DateTime? typu je dobre otestovat ci polozka je zadana a az potom ju vypisat:
  
  @if (item.Vytvorene.HasValue) @item.Vytvorene.Value.ToString("dd.MM.yyyy HH:mm:ss")

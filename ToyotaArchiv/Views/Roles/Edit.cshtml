@@ -4,7 +4,24 @@
     ViewData["Title"] = "Edit";
 }
 
+@*ukazka ako sa daju pouzit java script funkcie v *.cshtml*@
+<script>
+
+    $(function () {
+        $("#birthday").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+    });
+
+</script>
+
+
 <h1>Zmena záznamu</h1>
+
+ @* OK: @Html.DropDownListFor(m => m.Aktivny, 
+                    new List<SelectListItem>
+                        { new SelectListItem{Text="Áno", Value="A"},
+                          new SelectListItem{Text="Nie", Value="N"}}, "Vyberte možnosť")*@
 
 <h4>Rola</h4>
 <hr />
@@ -26,14 +43,12 @@
             @*Aktivny*@
             <div class="form-group">
                 <label asp-for="Aktivny" class="control-label"></label>
-                @Html.DropDownListFor(m => m.Aktivny, 
-                    new List<SelectListItem>
-                        { new SelectListItem{Text="Áno", Value="A"},
-                          new SelectListItem{Text="Nie", Value="N"}}, "Vyberte možnosť")
-                @*<select asp-for="Aktivny" class="form-control">
+              
+                <select asp-for="Aktivny" class="form-control">
                     <option>A</option>
                     <option>N</option>
-                  </select>  *@        
+                    <option>Vyberte možnosť</option>
+                  </select>          
                 <span asp-validation-for="Aktivny" class="text-danger"></span>
             </div>
 

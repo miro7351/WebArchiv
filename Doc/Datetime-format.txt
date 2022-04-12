@@ -1,0 +1,3 @@
+MH: 12.04.2022
+
+https://learningprogramming.net/net/asp-net-core-mvc-5/custom-datetime-format-in-asp-net-core-mvc-5/

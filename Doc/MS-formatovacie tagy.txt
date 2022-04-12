@@ -1,5 +1,105 @@
 MH: 09.04.2022
 
+
+=========  DataAnnotations ===============
+System.ComponentModel.DataAnnotations Namespace
+Provides attribute classes that are used to define metadata for ASP.NET MVC and ASP.NET data controls.
+https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-6.0
+
+
+https://asp.mvc-tutorial.com/models/data-annotations/
+
+Mozeme pridat metadata ku property. Ak sa pouziju DataAnnotations a model sa potom pouzije mimo MVC projektu, nic sa nepokazi; DataAnnotations mozeme nechat v kode;
+
+Datove nonnullable typy su vzdy pozadovane a netreba pridavat [Required]
+
+[Required(AllowEmptyStrings = true)]   For strings you should have in mind that an empty value will be treated like a NULL value and therefore result in a validation error. 
+
+[StringLength(50, MinimumLength = 3)]  Maximum 50, minimum 3 znaky;
+
+
+
+[Range(1, 100)] pre numericke hodnoty; minimum=1, maximum=100
+
+
+[Compare]
+The [Compare] attribute allows you to set up a comparison between the property in question and another property, requiring them to match. 
+A common use case for this could be to ensure that the user enters the same values in both the "Email" and the "EmailRepeated" fields:
+
+[Compare("MailAddressRepeated")]
+public string MailAddress { get; set; }
+
+public string MailAddressRepeated { get; set; }
+
+
+
+[CreditCard]: Validates that the property has a credit card format.
+[EmailAddress]: Validates that the property has an e-mail format.
+[Phone]: Validates that the property has a telephone number format.
+[Url]: Validates that the property has a URL format.
+
+
+[RegularExpression("[a-z]{2}-[0-9]{4}-[0-9]{4}")]  //napr. zx-1234-5678. je platny udaj
+public string MemberId { get; set; }
+---
+
+PRIKLAD
+public class WebUser  
+{  
+//attributy poskytuju frameworku uzitocne informacie pre validaciu udajov
+
+    [Required]  uzivatel musi zadat udaj
+    [StringLength(25)]  maximalny pocet znakov
+    public string FirstName { get; set; }
+
+    [Required]
+    [StringLength(50, MinimumLength = 3)]
+    public string LastName { get; set; }
+
+    [Required]
+    [EmailAddress]  zadany udaj musi mat format emailovej adresy
+    public string MailAddress { get; set; } 
+}
+
+
+public class WebUser  
+{  
+//zobrazenie chybovych hlaseni pri nesravnom zadani udajov
+    [Required(ErrorMessage = "You must enter a value for the First Name field!")]  
+    [StringLength(25, ErrorMessage = "The First Name must be no longer than 25 characters!")]  
+    public string FirstName { get; set; }  
+
+    [Required(ErrorMessage = "You must enter a value for the Last Name field!")]  
+    [StringLength(50, MinimumLength = 3, ErrorMessage = "The Last Name must be between 3 and 50 characters long!")]  
+    public string LastName { get; set; }  
+
+    [Required(ErrorMessage = "You must enter a value for the Mail Address field!")]  
+    [EmailAddress(ErrorMessage = "Please enter a valid e-mail address!")]  
+    public string MailAddress { get; set; }  
+}
+
+@using(var form = Html.BeginForm())
+{
+    <div>
+    @Html.LabelFor(m => m.FirstName)
+    @Html.TextBoxFor(m => m.FirstName)
+    @Html.ValidationMessageFor(m => m.FirstName)   chybova hlaska sa objavi po kliku na button Submit vpravo od textboxu
+    </div>
+    ...
+}
+
+
+@using(var form = Html.BeginForm())
+{
+    @Html.ValidationSummary()   chybova hlaska sa objavi po kliku na button Submit nad oblastou kde sa edituju udaje
+    
+    <div>
+    @Html.LabelFor(m => m.FirstName)
+    @Html.TextBoxFor(m => m.FirstName)        
+    </div>
+    ...
+}
+============================================================
 Udaj mozeme vypisat takto pomocou  tag helpera: Html.DisplayFor
 @Html.DisplayFor(model => model.Title)
 
@@ -7,7 +107,7 @@ alebo aj takto
 @Model.Title
 
 ---------------------------
-
+VELMI UZITOCENE VECI
 pozri : https://code-examples.net/en/q/6121c1
 
 DisplayFor is also useful for templating. You could write a template for your Model, and do something like this:

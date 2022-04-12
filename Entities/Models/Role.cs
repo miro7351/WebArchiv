@@ -28,8 +28,9 @@ namespace PA.TOYOTA.DB
         [Display(Name = "Vytvoril")]
         public string? Vytvoril { get; set; }
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
+       
+        [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
         [Display(Name = "Vytvorené")]
         public DateTime? Vytvorene { get; set; }
 

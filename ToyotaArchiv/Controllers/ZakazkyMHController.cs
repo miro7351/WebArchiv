@@ -1,4 +1,4 @@
-﻿#nullable disable
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PA.TOYOTA.DB;
@@ -6,27 +6,51 @@ using ToyotaArchiv.Models;
 
 namespace ToyotaArchiv.Controllers
 {
-    public class ZakazkasController : Controller
+    public class ZakazkyMHController : Controller
     {
+
         private readonly ToyotaContext _context;
 
-        public User CurrentUser { get; set; }
+       
+        public ZakazkyViewModel ZakazkyViewModel { get; set; }
 
-        public ZakazkasController(ToyotaContext context)
+        public ZakazkyMHController(ToyotaContext context)
         {
             _context = context;
-            //zo Session nacitat parametre prihlaseneho uzivatela
-            CurrentUser = new User() { Login = "mh", UserRole = Infrastructure.USER_ROLE.ADMIN };
+            //po prihlaseni uzivatela do Session ulozit jeho parametre;
+            //zo Session nacitat parametre prihlaseneho uzivatela, tu len simulujem udaje pre CurrentUser
+
+            ZakazkyViewModel = new ZakazkyViewModel();
+            ZakazkyViewModel.StringList.Add("test1");
+            ZakazkyViewModel.StringList.Add("test2");
+            ZakazkyViewModel.CurrentUser = new User() { Login = "mh", UserRole = Infrastructure.USER_ROLE.ADMIN };
+            ZakazkyViewModel.DatumDo = DateTime.Now;
+            ZakazkyViewModel.DatumOd = ZakazkyViewModel.DatumDo.Value.AddDays(-30);
         }
 
-        // GET: Zakazkas
-        public async Task<IActionResult> Index()
+        //Po kliku na button 'Nacitat'
+        public IActionResult ReadData(ZakazkyViewModel viewModel)//tu nam pride viewModel zo stranky, ale je prazdny obsahuje len DatumOd, DatumDo!!!!!!
         {
-            return View(await _context.Zakazkas.ToListAsync());
+            //if (ModelState.IsValid)
+            //{
+                var dtOd = viewModel.DatumOd;
+                var dtDo = viewModel.DatumDo;
+                var currentUser = viewModel.CurrentUser;
+
+                return RedirectToAction("Index");
+            //}
+            //return RedirectToAction("Index");
         }
 
-        // GET: Zakazkas/Details/5
-        public async Task<IActionResult> Details(string id)
+        // GET: ZakazkyMHController
+        public async Task<ActionResult> Index()
+        {
+            ZakazkyViewModel.Zakazky = await _context.Zakazkas.ToListAsync();
+            return View(ZakazkyViewModel);
+        }
+
+        // GET: ZakazkyMHController/Details/5
+        public async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -43,15 +67,13 @@ namespace ToyotaArchiv.Controllers
             return View(zakazka);
         }
 
-        // GET: Zakazkas/Create
-        public IActionResult Create()
+        // GET: ZakazkyMHController/Create
+        public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Zakazkas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: ZakazkyMHController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ZakazkaId,ZakazkaTg,ZakazkaTb,CisloProtokolu,Cws,Vin,Platna,Ukoncena,Vytvoril,Vytvorene,Zmenil,Zmenene,Poznamka")] Zakazka zakazka)
@@ -65,7 +87,9 @@ namespace ToyotaArchiv.Controllers
             return View(zakazka);
         }
 
-        // GET: Zakazkas/Edit/5
+
+
+        // GET: ZakazkyMHController/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -81,9 +105,8 @@ namespace ToyotaArchiv.Controllers
             return View(zakazka);
         }
 
-        // POST: Zakazkas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // POST: ZakazkyMHController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("ZakazkaId,ZakazkaTg,ZakazkaTb,CisloProtokolu,Cws,Vin,Platna,Ukoncena,Vytvoril,Vytvorene,Zmenil,Zmenene,Poznamka")] Zakazka zakazka)
@@ -116,22 +139,25 @@ namespace ToyotaArchiv.Controllers
             return View(zakazka);
         }
 
-        // GET: Zakazkas/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        // GET: ZakazkyMHController/Delete/5
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return View();
+        }
 
-            var zakazka = await _context.Zakazkas
-                .FirstOrDefaultAsync(m => m.ZakazkaTg == id);
-            if (zakazka == null)
+        // POST: ZakazkyMHController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
-
-            return View(zakazka);
+            catch
+            {
+                return View();
+            }
         }
 
         // POST: Zakazkas/Delete/5
@@ -140,8 +166,12 @@ namespace ToyotaArchiv.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var zakazka = await _context.Zakazkas.FindAsync(id);
-            _context.Zakazkas.Remove(zakazka);
-            await _context.SaveChangesAsync();
+            if( zakazka is not null)
+            {
+                _context.Zakazkas.Remove(zakazka);
+                await _context.SaveChangesAsync();
+            }
+           
             return RedirectToAction(nameof(Index));
         }
 

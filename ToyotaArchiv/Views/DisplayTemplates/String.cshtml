@@ -1,0 +1,16 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+    zdroj: https://code-examples.net/en/q/6121c1
+    Assuming that Title is a string
+    Then @Html.DisplayFor(model => model.Title)  will use the template and display <strong>Null string</strong> if the string is null, or empty.
+*@
+@model string
+
+@if( string.IsNullOrEmpty(Model))
+{
+    <strong>Null string</strong>
+}
+else
+{
+    @Model
+}

@@ -1,0 +1,169 @@
+﻿@model  ZakazkyViewModel 
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Nová zákazka</a>
+</p>
+@*
+<p>@Html.DisplayNameFor(model => model.CurrentUser.Login) @Html.DisplayFor(model => model.CurrentUser.Login)</p>
+<p>@Html.DisplayNameFor(model => model.CurrentUser.UserRole) @Html.DisplayFor(model => model.CurrentUser.UserRole)</p>
+
+<p>@Html.DisplayNameFor(model => model.DatumOd)<input asp-for="DatumOd" class="form-control"/></p>
+<p>@Html.DisplayNameFor(model => model.DatumDo)<input asp-for="DatumDo" class="form-control"/></p>
+
+    @Html.TextBoxFor(model => model.DatumOd)  len TextBox, bez kalendara
+    <input asp-for="DatumOd" class="form-control"/>
+    <input asp-for="DatumOd" class="form-control"/>
+    @Html.TextBoxFor(model => model.DatumOd).ToString("dd.MM.yyy HH:mm") ) nejde
+
+     @Html.DisplayFor(model => model.DatumOd)  len udaj bez moznosti editacie
+      @Html.DisplayTextFor(model => model.DatumOd.Value.ToString("dd.MM.yyyy HH:mm"))  nefunguje
+
+    @if(@Model.DatumOd.HasValue)
+    {
+         @Html.TextBoxFor(model => model.DatumOd) 3/13/2022 8:49:49 AM, len udaj bez moznosti editacie
+
+         @Html.TextBoxFor(model => model.DatumOd, "{0:dd/MM/yyyy}", new { @class = "form-control" })
+    }
+     <input asp-for="DatumOd" asp-format="{0:dd.MM.yyyy HH:mm}" class="form-control"/>  NEJDE
+      @Html.TextBoxFor(model => model.DatumOd, "{0:dd.MM.yyyy}", new { @class = "form-control" }) NEZOBRAZI NIC
+    
+*@
+ <table class="table table-striped table-bordered table-hover" style="max-width: 400px;">
+    <tr>
+        <td>@Html.DisplayNameFor(model => model.CurrentUser.Login)</td>
+        <td>@Html.DisplayFor(model => model.CurrentUser.Login)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+     @using (var form = Html.BeginForm("ReadData", "ZakazkyMH", FormMethod.Get))
+     {
+    <tr>
+        
+        <td><label asp-for="DatumOd" class="control-label"></label></td>
+        <td>
+             <td><input asp-for="DatumOd" class="form-control"/>
+         <span asp-validation-for="DatumOd" class="text-danger"></span></td>
+        <td><label asp-for="DatumDo" class="control-label"></label></td>
+        <td><input asp-for="DatumDo" class="form-control"/>
+         <span asp-validation-for="DatumDo" class="text-danger"></span>    
+        </td>
+        <td> <input type="submit" value="Načítať" class="btn btn-primary" /></td>
+    </tr>
+    <tr>
+        <td colspan="5" >@Html.ValidationSummary()</td>
+    </tr>
+    }
+   
+</table>
+
+<table class="table">
+    @*nazvy stlpcov*@
+    <thead>
+        <tr>
+           @* <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].ZakazkaId)
+            </th>*@
+             <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].ZakazkaTg)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].ZakazkaTb)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].CisloProtokolu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].Cws)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].Vin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].Platna)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].Ukoncena)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].Vytvoril)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].Vytvorene)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].Zmenil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].Zmenene)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zakazky[0].Poznamka)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@if(Model?.Zakazky is not null)
+{
+            foreach (var item in Model.Zakazky)
+            {
+                <tr>
+               @*     <td>
+                @Html.DisplayFor(modelItem => item.ZakazkaId)
+            </td>*@
+             <td>
+                @Html.DisplayFor(modelItem => item.ZakazkaTg)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZakazkaTb)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CisloProtokolu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cws)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Platna)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ukoncena)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vytvoril)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vytvorene)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zmenil)
+            </td>
+            <td>
+                        @if (item?.Zmenene.Value.Year > 2020)
+                        {
+                            @Html.DisplayFor(modelItem => item.Zmenene)
+                        }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Poznamka)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ZakazkaTg">Upraviť</a> |
+                <a asp-action="Details" asp-route-id="@item.ZakazkaTg">Detaily</a> |
+                <a asp-action="Delete" asp-route-id="@item.ZakazkaTg">Vymazať</a>
+            </td>
+        </tr>
+  }
+}
+    </tbody>
+</table>
