@@ -1,0 +1,41 @@
+﻿@model  ZakazkaZOViewModel 
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Udaje o zakazke</a>
+</p>
+ <table class="table table-striped table-bordered table-hover" style="max-width: 400px;">
+    <tr>
+        <td>@Html.DisplayNameFor(model => model.CurrentUser.Login)</td>
+        <td>@Html.DisplayFor(model => model.CurrentUser.Login)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
+<table>
+     <tr>
+            <td>
+                @Html.DisplayFor(model => model.MyZakazkaZO.ZakazkaTg)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.MyZakazkaZO.ZakazkaTg)
+            </td>
+     </tr>
+     <tr>
+            <td>
+                @Html.DisplayFor(model => model.MyZakazkaZO.Vin)
+            </td>
+            <td>
+                @Html.DisplayFor(model =>model.MyZakazkaZO.Vin)
+            </td>
+    </tr>
+           
+
+</table>

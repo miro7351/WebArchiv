@@ -9,6 +9,7 @@ namespace ToyotaArchiv.Models
     {
         public ZakazkyViewModel()
         {
+            //TODO: nacitat zo session
             CurrentUser = new User() { UserRole = Infrastructure.USER_ROLE.None };
             StringList= new List<string>();
         }
@@ -27,7 +28,7 @@ namespace ToyotaArchiv.Models
 
 
         public User CurrentUser { get; set; }
-        //public IEnumerable<Zakazka> Zakazky { get; set; }  toto je zle
+        
         public IList<Zakazka> Zakazky { get; set; }
         public IList<string> StringList { get; set; }
     }

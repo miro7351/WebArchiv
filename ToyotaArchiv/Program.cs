@@ -17,6 +17,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using PA.TOYOTA.DB;
+using ToyotaArchiv.Interfaces;
+using ToyotaArchiv.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 //WebApplication.CreateBuilder initializes a new instance of the WebApplicationBuilder class with preconfigured defaults. 
@@ -34,6 +36,9 @@ var conString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ToyotaContext>(options => options.UseSqlServer(conString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddSingleton<IZakazkaTransformService, ZakazkaTransformService>();
+
 //The AddDatabaseDeveloperPageExceptionFilter provides helpful error information in the development environment.
 /*z NUgetu: Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
  * ASP.NET Core middleware for Entity Framework Core error pages. 

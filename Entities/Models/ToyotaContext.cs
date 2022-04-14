@@ -28,8 +28,8 @@ namespace PA.TOYOTA.DB
             if (!optionsBuilder.IsConfigured)
             {
 
-                //optionsBuilder.UseSqlServer("Server=HRABCAK;Database=TOYOTA_DB2;Trusted_Connection=True;");
-                optionsBuilder.UseSqlServer(@"Data Source=INTRA-MSSQL;Initial Catalog=toyota_db; persist security info=False; User ID=toyota_user;Password=toyota");
+                optionsBuilder.UseSqlServer("Server=HRABCAK;Database=TOYOTA_DB2;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer(@"Data Source=INTRA-MSSQL;Initial Catalog=toyota_db; persist security info=False; User ID=toyota_user;Password=toyota");
             }
         }
 
