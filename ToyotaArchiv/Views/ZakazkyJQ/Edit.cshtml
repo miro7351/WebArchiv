@@ -1,0 +1,109 @@
+﻿@model PA.TOYOTA.DB.Zakazka
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@*
+ @Html.DropDownListFor(m => m.Ukoncena, 
+                    new List<SelectListItem>
+                        { new SelectListItem{Text="Áno", Value="A"},
+                          new SelectListItem{Text="Nie", Value="N"}}, "Vyberte možnosť")
+
+*@
+
+<h4>Zmena údajov pre garančnú opravu</h4>
+<p>ZakazkyJQ: Edit;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+             
+            <input type="hidden" asp-for="ZakazkaId" />
+            
+            @* <div class="form-group">
+                <label asp-for="ZakazkaTg" class="control-label"></label>
+                <input asp-for="ZakazkaTg" class="form-control" readonly />
+                <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
+            </div>*@
+
+             <div class="form-group">
+                <label asp-for="ZakazkaTg" class="control-label"></label>
+                <input asp-for="ZakazkaTg" class="form-control" readonly />
+            </div>
+
+             <div class="form-group">
+                @Html.LabelFor( model=>model.ZakazkaTb, "ZakazkaTB", new { @class="control-label"})
+                @Html.TextBoxFor( model=>model.ZakazkaTb, new { @class="form-control" })
+                <span asp-validation-for="ZakazkaTb" class="text-danger"></span>
+            </div>
+           
+           
+            <div class="form-group">
+                <label asp-for="CisloProtokolu" class="control-label"></label>
+                <input asp-for="CisloProtokolu" class="form-control" />
+                <span asp-validation-for="CisloProtokolu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cws" class="control-label"></label>
+                <input asp-for="Cws" class="form-control" />
+                <span asp-validation-for="Cws" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vin" class="control-label"></label>
+                <input asp-for="Vin" class="form-control" />
+                <span asp-validation-for="Vin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Platna" class="control-label"></label>
+                <input asp-for="Platna" class="form-control" />
+                <span asp-validation-for="Platna" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ukoncena" class="control-label"></label>
+                 <select asp-for="Ukoncena" class="form-control">
+                    <option>A</option>
+                    <option>N</option>
+                    <option>Vyberte možnosť</option>
+                  </select> 
+                <span asp-validation-for="Ukoncena" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Vytvoril" class="control-label"></label>
+                <input asp-for="Vytvoril" class="form-control"  />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Vytvorene" class="control-label"></label>
+                <input asp-for="Vytvorene" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Zmenil" class="control-label"></label>
+                <input asp-for="Zmenil" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Zmenene" class="control-label"></label>
+                <input asp-for="Zmenene" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Poznamka" class="control-label"></label>
+                <input asp-for="Poznamka" class="form-control" />
+                <span asp-validation-for="Poznamka" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Uložiť" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Návrat</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

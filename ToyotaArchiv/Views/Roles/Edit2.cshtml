@@ -7,7 +7,7 @@
                    { new SelectListItem{Text="Male", Value="M"},
                      new SelectListItem{Text="Female", Value="F"}}, "Please select")*@
 
-<h1>Edit2</h1>
+<h1>Zmena záznamu</h1>
 
 <h4>Role</h4>
 <hr />
@@ -36,25 +36,25 @@
             </div>
 
             @*Vytvoril*@
-            <div class="form-group mhinvisible" >
+            <div class="form-group mhInvisible" >
                 <label asp-for="Vytvoril" class="control-label"></label>
                 <input asp-for="Vytvoril" class="form-control" readonly />
                 <span asp-validation-for="Vytvoril" class="text-danger"></span>
             </div>
             @*Vytvorene*@
-            <div class="form-group" style="visibility:hidden;height:0px;">
+            <div class="form-group mhInvisible" >
                 <label asp-for="Vytvorene" class="control-label"></label>
                 <input asp-for="Vytvorene" class="form-control" readonly />
                 <span asp-validation-for="Vytvorene" class="text-danger"></span>
             </div>
             @*Zmenil*@
-            <div class="form-group mhinvisible">
+            <div class="form-group mhInvisible">
                 <label asp-for="Zmenil" class="control-label"></label>
                 <input asp-for="Zmenil" class="form-control" readonly />
                 <span asp-validation-for="Zmenil" class="text-danger"></span>
             </div>
             @*Zmenene*@
-            <div class="form-group mhinvisible" >
+            <div class="form-group mhInvisible" >
                 <label asp-for="Zmenene" class="control-label"></label>
                 <input asp-for="Zmenene" class="form-control"  readonly/>
                 <span asp-validation-for="Zmenene" class="text-danger"></span>

@@ -5,8 +5,8 @@
     {
         None,
         ADMIN,
+        VEDUCI,
         USER1,
-        USER2,
         READONLY
     }
 }

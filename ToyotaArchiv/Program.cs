@@ -33,11 +33,21 @@ builder.Services.AddControllersWithViews();
 //For local development, the ASP.NET Core configuration system reads the connection string from the appsettings.json file.
 var conString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(8);
+    options.Cookie.HttpOnly = true; //???
+    options.Cookie.IsEssential = true;//???
+});
+
 builder.Services.AddDbContext<ToyotaContext>(options => options.UseSqlServer(conString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+//registracia IZakazkaTransformService
 builder.Services.AddSingleton<IZakazkaTransformService, ZakazkaTransformService>();
+
+
 
 //The AddDatabaseDeveloperPageExceptionFilter provides helpful error information in the development environment.
 /*z NUgetu: Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
@@ -63,10 +73,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseHttpsRedirection(); //forces HTTP calls to automatically redirect to equivalent HTTPS addresses.
+app.UseStaticFiles();      //pre pouzitie static files, napr. HTML, JavaScript, CSS, graficke subory
 
 app.UseRouting();
+
+//--MH pridane:
+app.UseSession();
+// HttpContext.Session is available after session state is configured.
+//Call UseSession after UseRouting and before UseEndpoints.
+//---
 
 app.UseAuthorization();
 

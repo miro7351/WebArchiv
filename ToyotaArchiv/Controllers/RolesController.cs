@@ -81,13 +81,24 @@ namespace ToyotaArchiv.Controllers
             return View(role);
         }
 
+
+        //https://localhost:7036/Roles/Edit/40
+
         // POST: Roles/Edit/5
         //  <form asp-action="Edit">...
+        //
+        //   <input type="submit" value="Uložiť" class="btn btn-primary" />
+        //</form>     
+
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, [Bind("RoleId,RoleName,Aktivny,Vytvoril,Vytvorene,Zmenil,Zmenene,Poznamka")] Role role)
+        //OK toto vygenerovalo VS
+        //public async Task<IActionResult> Edit(short id, [Bind("RoleId,RoleName,Aktivny,Vytvoril,Vytvorene,Zmenil,Zmenene,Poznamka")] Role role)
+        //OK PORADIE PARAMETROV NEMUSI BYT AKO JE PORADIE NA STRANKE!!!!!
+        //public async Task<IActionResult> Edit(short id, [Bind("Poznamka,RoleId,RoleName,Aktivny,Vytvoril,Vytvorene,Zmenil,Zmenene")] Role role)
+        public async Task<IActionResult> Edit(short id, [Bind("Poznamka,RoleName,Aktivny,Vytvoril,Vytvorene,Zmenil,Zmenene,RoleId")] Role role)
         {
             if (id != role.RoleId)
             {

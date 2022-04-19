@@ -1,0 +1,92 @@
+﻿@model  ZakazkaZOViewModel 
+
+@*ZakazkaMH2.Details*@
+@{
+    ViewData["Title"] = "Index";
+    string userRole = ViewBag.Role.ToString();
+}
+
+<h1>Údaje o garančnej oprave</h1>
+@*Vola sa zo Zakazkas.Index   Detaily
+
+ <a asp-action="Details" asp-controller="ZakazkaMH2"  asp-route-zakazkaTG="@item.ZakazkaTg">Detaily</a>*@
+<p>SessionLogin:@ViewBag.Login; SessionRole:@ViewBag.Role.ToString()</p>
+
+ <table class="table table-striped table-bordered table-hover" style="max-width: 600px;">
+    <tr>
+        <td>@Html.DisplayNameFor(model => model.CurrentUser.Login)</td>
+        <td>@Html.DisplayFor(model => model.CurrentUser.Login)</td>
+        <td>SessionLogin:</td>
+        <td>@ViewBag.Login</td>
+        <td>SessionRole:</td>
+        <td>@userRole</td>
+        <td>@Model.CurrentUser.UserRole.ToString()</td>
+    </tr>
+</table>
+
+<table class="table table-striped table-bordered table-hover" style="max-width: 400px;">
+     <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.MyZakazkaZO.ZakazkaTg)
+            </td>
+            <td>
+               @* @Html.DisplayFor(model => model.MyZakazkaZO.ZakazkaTg)*@
+                @Html.TextBoxFor(model => model.MyZakazkaZO.ZakazkaTg, new { @class = "form-control" })  
+            </td>
+            <td></td>
+            <td></td>
+    </tr>
+    <tr>
+            <td>
+                @Html.Label("Počet dokumentov:")
+            </td>
+            <td>
+                @Html.DisplayFor(model=> model.MyZakazkaZO.PovinneDokumenty.Count)
+            </td>
+
+            <td>
+                @Html.Label("Počet príloh:")
+            </td>
+            <td>
+                @Html.DisplayFor(model=> model.MyZakazkaZO.Prilohy.Count)
+            </td>
+     </tr>
+     <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.MyZakazkaZO.Vin)
+                  
+            </td>
+            <td>
+               @* @Html.DisplayFor(model =>model.MyZakazkaZO.Vin)*@
+                @Html.TextBoxFor(model => model.MyZakazkaZO.Vin, new { @class = "form-control" })
+            </td>
+            <td></td>
+            <td></td>
+    </tr>
+    <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.MyZakazkaZO.Cws)
+            </td>
+            <td>
+               @* @Html.DisplayFor(model =>model.MyZakazkaZO.Cws)*@
+                 @Html.TextBoxFor(model => model.MyZakazkaZO.Cws, new { @class = "form-control" })
+            </td>
+            <td></td>
+            <td></td>
+    </tr>
+
+    <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.MyZakazkaZO.Poznamka)
+            </td>
+            <td>
+                @Html.DisplayFor(model =>model.MyZakazkaZO.Poznamka)
+            </td>
+            <td></td>
+            <td></td>
+    </tr>
+           
+
+</table>
+ @*<a asp-action="Index" asp-controller="Zakazkas">Návrat</a>*@
+ @Html.ActionLink("Návrat", "Index", "Zakazkas")

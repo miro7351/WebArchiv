@@ -7,8 +7,19 @@
 */
 
 /* element s touto class bude neviditelny a nebude zaberat miesto na formulari*/
-.mhinvisible
+.mhInvisible
 {
     visibility:hidden;
     height:0px;
+}
+
+/*farba hlavicky pre table*/
+.tableHeaderColor {
+  
+    background-color:#39C0ED;
+}
+
+
+#datatableZakazky {
+    caption-side: top;
 }

@@ -1,0 +1,9 @@
+﻿#tableCustomer {
+    caption-side: top;
+}
+
+.mhInvisible
+{
+    visibility:hidden;
+    height:0px;
+}

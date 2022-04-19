@@ -1,0 +1,143 @@
+MH: 17.04.2022
+
+
+zdroj: https://codewithmukesh.com/blog/jquery-datatable-in-aspnet-core/
+
+
+velmi uzitocna linka: https://datatables.net/examples/advanced_init/column_render.html
+
+====== Pridanie kniznice a pouzivanie jQuery Datatable ========
+
+Treba trosku vediet javascript a jQuery
+
+Do projektu pridat z nugetu System.Linq.Dynamic.Core
+
+
+
+POSTUP
+
+A,
+wwwroot\lib add  vybrat Client-Side library
+
+Provider:cdnjs
+Library: datatables@1.10.21
+
+zachecknut: Include all library files
+
+Targel Location: wwwroot/lib/datatables
+
+Install
+
+----------------
+B,
+pridat napr. do xxxxController Index.cshtml a spustit stranku, mala by sa zobrazit hlavicka tabulky
+
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<div class="container">
+    <br />
+    <div style="width:90%; margin:0 auto;">
+        <table id="customerDatatable" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Date Of Birth</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+Toto tu musi byt, pouzije sa v _Layout.cshtml
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+}
+--------------
+C,
+
+pridat subor napr. customerDatatable.js do wwwroot\js\datatableCustomer.js
+
+datatableCustomer.js
+
+$(document).ready(function () {
+    $('#customerDatatable').dataTable({
+    });
+});
+
+Po spusteni a otvoreni stranky by sa mal zobrazit Datatable control:
+
+Obsahuje pole na nastavenie poctu zaznamov.
+Search input
+Samotna Datatable
+Ukazovatko aktualnej polohy v ramci vsetkych udajov: Zaznamy 1 az 10 z celkom 1000
+Navigacny kontrol po strankach
+
+-----------------
+
+D,
+
+upravit datatableCustomer.js
+
+$(document).ready(function () {
+    $("#customerDatatable").DataTable({
+        "processing": true,
+        "serverSide": true,
+        "filter": true,
+        "ajax": {
+            "url": "/api/customer",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columnDefs": [{
+            "targets": [0],
+            "visible": false,
+            "searchable": false
+        }],
+        "columns": [
+            { "data": "id", "name": "Id", "autoWidth": true },
+            { "data": "firstName", "name": "First Name", "autoWidth": true },
+            { "data": "lastName", "name": "Last Name", "autoWidth": true },
+            { "data": "contact", "name": "Country", "autoWidth": true },
+            { "data": "email", "name": "Email", "autoWidth": true },
+            { "data": "dateOfBirth", "name": "Date Of Birth", "autoWidth": true },
+            {
+                "render": function (data,row) { return "<a href='#' class='btn btn-danger' onclick=DeleteCustomer('" + row.id+ "'); >Delete</a>";   }
+            },
+        ]
+    });
+});  
+
+MH: poznamky  sekcia "columnDefs" urcuje ako sa budu zobrazovat stlpce v datatable
+  "columnDefs": [{
+            "targets": [0],
+            "visible": false,
+            "searchable": false
+        }],
+
+Stlpec  tabulke s indexom 0 nebude zobrazeny
+
+-------------
+E,
+pridat Controller napr. ZakazkyJQController
+
+
+
+
+
+
+
+
+
+
+
+

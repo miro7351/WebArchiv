@@ -1,0 +1,78 @@
+﻿@model PA.TOYOTA.DB.Dokument
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Dokument</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NazovDokumentu)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NazovDokumentu)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NazovSuboru)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NazovSuboru)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DokumentPlatny)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DokumentPlatny)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Skupina)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Skupina)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vytvoril)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vytvoril)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vytvorene)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vytvorene)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Zmenil)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Zmenil)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Zmenene)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Zmenene)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Poznamka)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Poznamka)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ZakazkaTgNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ZakazkaTgNavigation.ZakazkaTg)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.DokumentId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

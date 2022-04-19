@@ -1,0 +1,83 @@
+﻿@model IEnumerable<PA.TOYOTA.DB.Zakazka>
+@using ToyotaArchiv.Infrastructure;
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>ZakazkyJQ: Index;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>
+
+<p>
+    <a asp-action="Create">Nová garančná oprava</a>
+</p>
+
+@*Here we are importing the stylesheet of Datatable (Bootstrap4) that we had installed earlier.*@
+<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+@*
+<th>Platna</th> 
+Visibility  <th>ZakazkaId</th>  je nastavena v scripte
+*@
+
+<h3>Zoznam garančných opráv</h3>
+<hr/>
+<div >  
+    <br />  
+    <div style="width:90%; margin:0 auto;">  
+        <table id="datatableZakazky" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">  
+            <thead class="tableHeaderColor">  
+                <tr>  
+                    <th>ZakazkaId</th>  
+                    <th>ZakazkaTg</th>  
+                    <th>ZakazkaTb</th>
+                    <th>Vin</th> 
+                    <th>Cws</th>
+                    <th>CisloProtokolu</th> 
+                    <th>Ukoncena</th> 
+                    <th>Poznamka</th>
+                   
+                     @if( ViewBag.Role==USER_ROLE.ADMIN)
+                     {
+                         <th>Vytvoril</th> 
+                         <th>Vytvorene</th>  
+                         <th>Zmenil</th>  
+                         <th>Zmenene</th>
+                     }
+                     @if( ViewBag.Role!=USER_ROLE.USER1)@*Stlpec pre link Delete*@
+                     {
+                         <th></th>
+                    }
+                </tr>  
+            </thead>  
+        </table>  
+    </div>  
+</div>
+
+
+@*
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/datetime-moment.js"></script>
+
+*@
+
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
+
+   
+   
+    @if(ViewBag.Role==USER_ROLE.ADMIN) @*ma link Vymazat*@
+    {
+       <script src="~/js/datatableZakazkyAdmin.js"></script>
+    }
+    else if(ViewBag.Role==USER_ROLE.VEDUCI ) @*ma link Vymazat*@
+    {
+        <script src="~/js/datatableZakazkyVeduci.js"></script>
+    }
+    else @*nema link Vymazat*@
+    {
+         <script src="~/js/datatableZakazkyReadOnly.js"></script>
+    }
+}

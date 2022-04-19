@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PA.TOYOTA.DB;
+using ToyotaArchiv.Infrastructure;
 using ToyotaArchiv.Models;
 
 namespace ToyotaArchiv.Controllers
@@ -22,7 +23,13 @@ namespace ToyotaArchiv.Controllers
         // GET: Zakazkas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Zakazkas.ToListAsync());
+            ViewBag.Login = MHsessionService.ReadLoginFromSession(HttpContext.Session);
+            ViewBag.Role = MHsessionService.ReadRoleFromSession(HttpContext.Session);
+
+            int rolaInt = (int)ViewBag.Role;
+
+            return View(await _context.Zakazkas.OrderByDescending(z=>z.Vytvorene).ToListAsync() );
+            //return View(await _context.Zakazkas.ToListAsync());
         }
 
         // GET: Zakazkas/Details/5
@@ -73,7 +80,7 @@ namespace ToyotaArchiv.Controllers
                 return NotFound();
             }
 
-            var zakazka = await _context.Zakazkas.FindAsync(id);
+            var zakazka = await _context.Zakazkas.FindAsync(id.Trim());
             if (zakazka == null)
             {
                 return NotFound();

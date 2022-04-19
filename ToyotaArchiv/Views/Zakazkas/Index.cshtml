@@ -1,30 +1,73 @@
 ﻿@model  List<PA.TOYOTA.DB.Zakazka>
+@using ToyotaArchiv.Infrastructure;
 
-@*ZakazkyViewModel *@
+
+@*Zakazkas.Index vsetly udaje z tab. Zakazka, view vygenerovane VS*@
 
 @{
     ViewData["Title"] = "Index";
+
+
+    string userLogin = ViewBag.Login;
+    USER_ROLE ur = ViewBag.Role;
+    string userRole  = ViewBag.Role.ToString();
 }
 
-<h1>Index</h1>
+@*zmena farby riadku 
+    <script src="~/Scripts/jquery-1.7.1.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#content tbody tr").each(function (i, row) {
+            var $actualRow = $(row);
+            if ($actualRow.find('input[type=checkbox]').prop('checked') == true) {
+                $actualRow.css('background-color', '#EAF2D3');
+            }
+            else
+            {
+                $actualRow.css('background-color', '#FF9E9E');
+            }
+        });
+    });
+</script> *@
+
+<p class="h1-resposive strong">[Zakazkas.Index]:   Garančné opravy</p>
+
+<p>MOJE TESTY</p>
+<table class="table table-striped table-bordered table-hover" style="max-width: 400px;">
+    <tr>
+
+        <td>User login:</td>
+        <td>@userLogin</td>
+        <td>User role:</td>
+        <td>@userRole</td>
+       
+      @*<td>@Html.Display("User login:")</td>
+        <td>@Html.Display(userLogin)</td>
+        <td>@Html.Display("User role:")</td>
+        <td>@Html.Display(userRole)</td>
+        <td>@ur</td>*@
+    </tr>
+</table>
+
+<p>Počet záznamov: @Model.Count()</p>
 
 <p>
     <a asp-action="Create">Nová zákazka</a>
 </p>
 
 
-<table class="table">
+<table class="table table-striped table-bordered table-hover" style="width:100%;">
     @*nazvy stlpcov*@
-    <thead>
+    <thead class="tableHeaderColor">
         <tr>
            @* <th>
                 @Html.DisplayNameFor(model => model.Zakazky[0].ZakazkaId)
             </th>*@
              <th>
-                @Html.DisplayNameFor(model => model[0].ZakazkaTg)
+                <span class="h3-resposive strong">@Html.DisplayNameFor(model => model[0].ZakazkaTg)</span>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].ZakazkaTb)
+                 <span class="h3-responsive">@Html.DisplayNameFor(model => model[0].ZakazkaTb)</span>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model[0].CisloProtokolu)
@@ -53,20 +96,31 @@
             <th>
                 @Html.DisplayNameFor(model => model[0].Zmenene)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model[0].Poznamka)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+@foreach (var item in Model) 
+{
+    <tr>
+            @*@if(item.Ukoncena=="N")
+            {
+                 <tr style="background-color:yellow">
+            }
+            else
+            {
+                <tr>
+            }*@
+          
             @*<td>
                 @Html.DisplayFor(modelItem => item.ZakazkaId)
             </td>*@
             <td>
-                @Html.DisplayFor(modelItem => item.ZakazkaTg)
+                @*@Html.DisplayFor(modelItem => item.ZakazkaTg)*@
+                @Html.ActionLink(item.ZakazkaTg, "Details", "ZakazkaMH2", new { zakazkaTg=item.ZakazkaTg})
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ZakazkaTb)
@@ -97,17 +151,33 @@
             </td>
             <td>
                    @if (item?.Zmenene.Value.Year > 2020)
-                        {
-                            @Html.DisplayFor(modelItem => item.Zmenene)
-                        }
+                   {
+                       @Html.DisplayFor(modelItem => item.Zmenene)
+                   }
             </td>
-            <td>
+                @* <td>
                 @Html.DisplayFor(modelItem => item.Poznamka)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ZakazkaTg">Upraviť</a> |
-                <a asp-action="Details" asp-route-id="@item.ZakazkaTg">Detaily</a> |
-                <a asp-action="Delete" asp-route-id="@item.ZakazkaTg">Vymazať</a>
+            </td>*@
+            <td >
+                    @if (userRole == "ADMIN")
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.ZakazkaTg">Upraviť</a>
+                    }
+                   @* <a asp-action="Details" asp-route-id="@item.ZakazkaTg">Detaily</a> 
+                     <a href="/ZakazkaMH2/Details/@item.ZakazkaTg">Detaily</a> ||
+
+                   
+                  <a asp-action="Details" asp-controller="ZakazkaMH2"  asp-route-zakazkaTG="@item.ZakazkaTg"> | Detaily</a> 
+                 
+
+                  @Html.ActionLink(" Detail ", "Details", "ZakazkaMH2", item.ZakazkaTg) *@ 
+
+                   @Html.ActionLink(" Detail2 ", "Details2", "ZakazkaMH2", new { zakazkaTg=item.ZakazkaTg, zakazkaTb=item.ZakazkaTb})
+                  
+                  @if (userRole == "ADMIN")
+                    {
+                         <a asp-action="Delete" asp-route-id="@item.ZakazkaTg">| Vymazať</a>
+                    }
             </td>
         </tr>
 }

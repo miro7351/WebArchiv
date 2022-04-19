@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PA.TOYOTA.DB.Dokument>
+@using ToyotaArchiv.Infrastructure;
+@{
+    ViewData["Title"] = "Index";
+}
+<p>Dokuments: Index;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>
+
+@*Dokuments.Index vsetly udaje z tab. Dokument, view pouziva jQuery datatable*@
+
+
+<h3>Zoznam dokumentov</h3>
+<hr/>
+<div class="container" >  
+    <br />  
+    <div style="width:90%; margin:0 auto;">  
+        <table id="datatableDocuments" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">  
+            <thead class="tableHeaderColor">  
+                <tr>  
+                    <th>DokumentId</th>  
+                    <th>ZakazkaTg</th>  
+                    <th>NazovDokumentu</th>
+                    <th>NazovSuboru</th> 
+                    <th>DokumentPlatny</th>
+                    <th>Skupina</th> 
+                  
+                    <th>Poznamka</th>
+                    <th>Vytvoril</th> 
+                    <th>Vytvorene</th>  
+                    <th>Zmenil</th>  
+                    <th>Zmenene</th>
+                </tr>  
+            </thead>  
+        </table>  
+    </div>  
+</div>
+
+
+
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
+    <script src="~/js/datatableDokumenty.js"></script>
+}
+

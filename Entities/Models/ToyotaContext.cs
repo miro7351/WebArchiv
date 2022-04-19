@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PA.TOYOTA.DB
 {
+    //MH: april 2022
     public partial class ToyotaContext : DbContext
     {
+        public string?  ConnectionString {get;set;}
         public ToyotaContext()
         {
         }
@@ -14,6 +13,7 @@ namespace PA.TOYOTA.DB
         public ToyotaContext(DbContextOptions<ToyotaContext> options)
             : base(options)
         {
+                ConnectionString = Database.GetConnectionString();
         }
 
         public virtual DbSet<Dokument> Dokuments { get; set; } = null!;

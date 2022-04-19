@@ -4,6 +4,8 @@ using ToyotaArchiv.Interfaces;
 
 namespace ToyotaArchiv.Services
 {
+    //MH: april
+    //
     public class ZakazkaTransformService : IZakazkaTransformService
     { 
         public ZakazkaTransformService()
@@ -35,41 +37,41 @@ namespace ToyotaArchiv.Services
         public ZakazkaZO ConvertZakazka_To_ZakazkaZO(Zakazka zakazka)
         {
             ZakazkaZO zakazkaZO = new ZakazkaZO();
-            zakazkaZO.ZakazkaTb = zakazka.ZakazkaTb;
-            zakazkaZO.ZakazkaTg = zakazka.ZakazkaTg;
+            zakazkaZO.ZakazkaTb = zakazka.ZakazkaTb.Trim();
+            zakazkaZO.ZakazkaTg = zakazka.ZakazkaTg.Trim();
             zakazkaZO.Platna = zakazka.Platna;
-            zakazkaZO.Poznamka = zakazka.Poznamka;
+            zakazkaZO.Poznamka = zakazka.Poznamka.Trim();
             zakazkaZO.Ukoncena = zakazka.Ukoncena;
-            zakazkaZO.Vin = zakazka.Vin;
-            zakazkaZO.Cws = zakazka.Cws;
-            zakazkaZO.CisloProtokolu = zakazka.CisloProtokolu;
+            zakazkaZO.Vin = zakazka.Vin.Trim();
+            zakazkaZO.Cws = zakazka.Cws.Trim();
+            zakazkaZO.CisloProtokolu = zakazka.CisloProtokolu.Trim();
 
             if (zakazka.Dokuments.Any(d => !string.IsNullOrEmpty(d.NazovDokumentu))) //existuju zaznamy pre dokumety
             {
                 if (zakazka.Dokuments.Any(d => d.Skupina == 1))//zakazkaZO.ZakazkaTGdokument
                 {
                     Dokument dok = zakazka.Dokuments.FirstOrDefault(d => d.Skupina == 1);
-                    zakazkaZO.ZakazkaTGdokument.NazovDokumentu = dok.NazovDokumentu;
-                    zakazkaZO.ZakazkaTGdokument.NazovSuboru = dok.NazovSuboru;
+                    zakazkaZO.ZakazkaTGdokument.NazovDokumentu = dok.NazovDokumentu.Trim();
+                    zakazkaZO.ZakazkaTGdokument.NazovSuboru = dok.NazovSuboru.Trim();
                     zakazkaZO.ZakazkaTGdokument.DokumentPlatny = dok.DokumentPlatny;
                     zakazkaZO.ZakazkaTGdokument.Skupina = dok.Skupina;
-                    zakazkaZO.ZakazkaTGdokument.Poznamka = dok.Poznamka;
-                    zakazkaZO.ZakazkaTGdokument.Vytvoril = dok.Vytvoril;
+                    zakazkaZO.ZakazkaTGdokument.Poznamka = dok.Poznamka.Trim();
+                    zakazkaZO.ZakazkaTGdokument.Vytvoril = dok.Vytvoril.Trim();
                     zakazkaZO.ZakazkaTGdokument.Vytvorene = dok.Vytvorene;
-                    zakazkaZO.ZakazkaTGdokument.Zmenil = dok.Zmenil;
+                    zakazkaZO.ZakazkaTGdokument.Zmenil = dok.Zmenil.Trim();
                     zakazkaZO.ZakazkaTGdokument.Zmenene = dok.Zmenene;
                 }
                 if (zakazka.Dokuments.Any(d => d.Skupina == 2))//zakazkaZO.ZakazkaTBdokument
                 {
                     Dokument dok = zakazka.Dokuments.FirstOrDefault(d => d.Skupina == 2);
-                    zakazkaZO.ZakazkaTBdokument.NazovDokumentu = dok.NazovDokumentu;
-                    zakazkaZO.ZakazkaTBdokument.NazovSuboru = dok.NazovSuboru;
+                    zakazkaZO.ZakazkaTBdokument.NazovDokumentu = dok.NazovDokumentu.Trim();
+                    zakazkaZO.ZakazkaTBdokument.NazovSuboru = dok.NazovSuboru.Trim();
                     zakazkaZO.ZakazkaTBdokument.DokumentPlatny = dok.DokumentPlatny;
                     zakazkaZO.ZakazkaTBdokument.Skupina = dok.Skupina;
-                    zakazkaZO.ZakazkaTBdokument.Poznamka = dok.Poznamka;
-                    zakazkaZO.ZakazkaTBdokument.Vytvoril = dok.Vytvoril;
+                    zakazkaZO.ZakazkaTBdokument.Poznamka = dok.Poznamka.Trim();
+                    zakazkaZO.ZakazkaTBdokument.Vytvoril = dok.Vytvoril.Trim();
                     zakazkaZO.ZakazkaTBdokument.Vytvorene = dok.Vytvorene;
-                    zakazkaZO.ZakazkaTBdokument.Zmenil = dok.Zmenil;
+                    zakazkaZO.ZakazkaTBdokument.Zmenil = dok.Zmenil.Trim();
                     zakazkaZO.ZakazkaTBdokument.Zmenene = dok.Zmenene;
                 }
 
@@ -85,13 +87,13 @@ namespace ToyotaArchiv.Services
                         if (dok != null) //existuje zaznam kde Skupina= (SkupinaPrvehoPovinnehoDokumentu+i)
                         {
                             bi.Skupina = dok.Skupina;
-                            bi.NazovDokumentu = dok.NazovDokumentu;  //
+                            bi.NazovDokumentu = dok.NazovDokumentu.Trim();  //
                             bi.DokumentPlatny = dok.DokumentPlatny;
-                            bi.Poznamka = dok.Poznamka;
-                            bi.NazovSuboru = dok.NazovSuboru;
-                            bi.Vytvoril = dok.Vytvoril;
+                            bi.Poznamka = dok.Poznamka.Trim();
+                            bi.NazovSuboru = dok.NazovSuboru.Trim();
+                            bi.Vytvoril = dok.Vytvoril.Trim();
                             bi.Vytvorene = dok.Vytvorene;
-                            bi.Zmenil = dok.Zmenil;
+                            bi.Zmenil = dok.Zmenil.Trim();
                             bi.Zmenene = dok.Zmenene;
                         }
                         else //neexistuje zaznam, nastavim  len jeho property NazovDokumentu a Skupina
@@ -126,13 +128,13 @@ namespace ToyotaArchiv.Services
                         {
                             BaseItem bi = new BaseItem();
                             bi.Skupina = dok1.Skupina;
-                            bi.NazovDokumentu = dok1.NazovDokumentu;  //
+                            bi.NazovDokumentu = dok1.NazovDokumentu.Trim();  //
                             bi.DokumentPlatny = dok1.DokumentPlatny;
-                            bi.Poznamka = dok1.Poznamka;
-                            bi.NazovSuboru = dok1.NazovSuboru;
-                            bi.Vytvoril = dok1.Vytvoril;
+                            bi.Poznamka = dok1.Poznamka.Trim();
+                            bi.NazovSuboru = dok1.NazovSuboru.Trim();
+                            bi.Vytvoril = dok1.Vytvoril.Trim();
                             bi.Vytvorene = dok1.Vytvorene;
-                            bi.Zmenil = dok1.Zmenil;
+                            bi.Zmenil = dok1.Zmenil.Trim();
                             bi.Zmenene = dok1.Zmenene;
                             zakazkaZO.Prilohy.Add(bi);
                         }//for

@@ -1,0 +1,95 @@
+﻿@model IEnumerable<PA.TOYOTA.DB.Dokument>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*Dokuments2.Index vsetly udaje z tab. Dokument, view vygenerovane VS*@
+
+<p>Documents2: Index;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>
+
+<p>Počet záznamov: @Model.Count()</p>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead class="tableHeaderColor">
+        <tr>
+             <th>
+                @Html.DisplayNameFor(model => model.ZakazkaTgNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NazovDokumentu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NazovSuboru)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DokumentPlatny)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Skupina)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vytvoril)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vytvorene)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zmenil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zmenene)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Poznamka)
+            </th>
+           
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+             <td>
+                @Html.DisplayFor(modelItem => item.ZakazkaTgNavigation.ZakazkaTg)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NazovDokumentu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NazovSuboru)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DokumentPlatny)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Skupina)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vytvoril)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vytvorene)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zmenil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zmenene)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Poznamka)
+            </td>
+           
+            @*<td>
+                <a asp-action="Edit" asp-route-id="@item.DokumentId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DokumentId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DokumentId">Delete</a>
+            </td>*@
+        </tr>
+}
+    </tbody>
+</table>

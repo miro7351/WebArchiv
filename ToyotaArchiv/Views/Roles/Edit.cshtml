@@ -16,7 +16,7 @@
 </script>
 
 
-<h1>Zmena záznamu</h1>
+<h2>Zmena záznamu</h2>
 
  @* OK: @Html.DropDownListFor(m => m.Aktivny, 
                     new List<SelectListItem>
@@ -53,31 +53,36 @@
             </div>
 
             @*Vytvoril*@
-            <div class="form-group mhinvisible" >
+            <div class="form-group mhInvisible" >
                 <label asp-for="Vytvoril" class="control-label"></label>
                 <input asp-for="Vytvoril" class="form-control" readonly />
                 <span asp-validation-for="Vytvoril" class="text-danger"></span>
             </div>
+
             @*Vytvorene*@
             <div class="form-group" >
                 <label asp-for="Vytvorene" class="control-label"></label>
-                @*<input asp-for="Vytvorene" class="form-control" readonly />*@
-                <input asp-for="Vytvorene" class="form-control"/>
+                <input asp-for="Vytvorene" class="form-control" readonly />
+                @*<input asp-for="Vytvorene" class="form-control"/>*@
                 <span asp-validation-for="Vytvorene" class="text-danger"></span>
             </div>
+
             @*Zmenil*@
-            <div class="form-group mhinvisible">
+            <div class="form-group mhInvisible">
                 <label asp-for="Zmenil" class="control-label"></label>
                 <input asp-for="Zmenil" class="form-control" readonly />
                 <span asp-validation-for="Zmenil" class="text-danger"></span>
             </div>
+
             @*Zmenene*@
             <div class="form-group" >
                 <label asp-for="Zmenene" class="control-label"></label>
-              @*  <input asp-for="Zmenene" class="form-control"  readonly/>*@
-              <input asp-for="Zmenene" class="form-control"/>
+                <input asp-for="Zmenene" class="form-control"  readonly/>
+             @* <input asp-for="Zmenene" class="form-control"/>*@
                 <span asp-validation-for="Zmenene" class="text-danger"></span>
             </div>
+           
+            @* Poznamka*@
             <div class="form-group">
                 <label asp-for="Poznamka" class="control-label"></label>
                 <input asp-for="Poznamka" class="form-control" />

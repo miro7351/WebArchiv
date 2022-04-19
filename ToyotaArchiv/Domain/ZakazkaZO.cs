@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.ObjectModel;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace ToyotaArchiv.Domain
 {
@@ -60,8 +60,8 @@ namespace ToyotaArchiv.Domain
             ZakazkaTGdokument = new BaseItem();//NazovDokumentu=ZakazkaTG, Skupina=1;
             ZakazkaTBdokument = new BaseItem();//NazovDokumentu=ZakazkaTB, Skupina=2;
 
-            PovinneDokumenty = new ObservableCollection<BaseItem>();
-            Prilohy = new ObservableCollection<BaseItem>();
+            PovinneDokumenty = new ObservableCollection<BaseItem>(); //Skupina: 20,21,22,...,99
+            Prilohy = new ObservableCollection<BaseItem>();          //Skupina: 100, 101,.....
         }
 
         #region ==Properties==
@@ -97,42 +97,51 @@ namespace ToyotaArchiv.Domain
             set;
         }
 
-      
-        /// <summary>
-        /// Vznika v momente prijmu vozidla do servisu kedy este nie je jasne ci ide o zarucnu opravu
-        /// Identifikator v ramci predajne pre garancnu opravu;
-        /// </summary>
-        public string ZakazkaTb
-        {
-            get;
-            set;
-        }
 
-      
         /// <summary>
         /// Zakazka Toyota Garancia;
         /// Identifikator v ramci predajne pre garancnu opravu;
         /// </summary>
+        [Display(Name = "ZákazkaTG")]
+        [StringLength(8, ErrorMessage = "Zadajte údaj na 8 znakov")]
         public string ZakazkaTg
         {
             get;
             set;
         }
 
-     
+        /// <summary>
+        /// Vznika v momente prijmu vozidla do servisu kedy este nie je jasne ci ide o zarucnu opravu
+        /// Identifikator v ramci predajne pre garancnu opravu; Nemusi za zadat pri vytvoreni zakazkyô
+        /// </summary>
+        [Display(Name = "ZákazkaTB")]
+        [StringLength(8, MinimumLength = 0, ErrorMessage = "Zadajte údaj na 8 znakov")]
+        public string ZakazkaTb
+        {
+            get;
+            set;
+        }
+
+
+      
+
+
         /// <summary>
         /// Kod opravy auta z europskej databazy
         /// </summary>
+        [StringLength(7, MinimumLength = 0, ErrorMessage = "Zadajte údaj na 7 znakov")]
         public string Cws
         {
             get;
             set;
         }
 
-       
+
         /// <summary>
         /// Udaj znamy po schvaleni garancnej opravy od importera;
         /// </summary>
+        [Display(Name = "Čís. prot.")]
+        [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max. 16 znakov")]
         public string CisloProtokolu
         {
             get;
@@ -140,22 +149,25 @@ namespace ToyotaArchiv.Domain
         }
 
 
-      
+
         /// <summary>
-        /// VIN kod z tech. preukazu automobilu
+        /// VIN kod z tech. preukazu automobilu, 17 znakov
         /// </summary>
+        [StringLength(17, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max. 17 znakov")]
         public string Vin
         {
             get;
             set;
         }
 
-       
+
         /// <summary>
         /// Stav zakazky;
         /// "A" - zakazka je ukoncena, "N" - zakazka este nie je ukoncena, neobsahuje este vsetky subory;
         /// Ak sa zada posledny povinny subor, automaticky sa nastavi Ukoncena="A";
         /// </summary>
+        [Display(Name = "Ukončená")]
+        [StringLength(1, ErrorMessage = "Zadajte údaj na A alebo N")]
         public string Ukoncena //Ukoncena A/N
         {
             get;
@@ -169,11 +181,13 @@ namespace ToyotaArchiv.Domain
 
 
         //string platna  A/N
-     
+
         /// <summary>
         /// Priznak ci je to platny zaznam;
         /// "A" -platny zaznam sa zobrazuje, "N" -neplatny nebude sa normalne zobrazovat, ale v tab. bude existovat;
         /// </summary>
+        [Display(Name = "Ukončená")]
+        [StringLength(1, ErrorMessage = "Zadajte údaj na A alebo N")]
         public string Platna    //Platna A/N
         {
             get;
@@ -181,19 +195,33 @@ namespace ToyotaArchiv.Domain
         }
 
 
-      
+
         /// <summary>
         /// Poznamka nvarchar(128), null
         /// </summary>
+        [Display(Name = "Poznámka")]
+        [StringLength(128, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.128 znakov")]
         public string Poznamka   
         {
             get;
             set;
         }
 
+        [Display(Name = "Vytvoril")]
         public string Vytvoril { get; set; }
+        
+        [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
+        [Display(Name = "Vytvorené")]
         public DateTime? Vytvorene { get; set; }
+
+        [StringLength(32, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.32 znakov")]
+        [Display(Name = "Zmenil")]
         public string Zmenil { get; set; }
+
+        [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
+        [Display(Name = "Zmenené")]
         public DateTime? Zmenene { get; set; }
 
         #endregion ==Properties==
