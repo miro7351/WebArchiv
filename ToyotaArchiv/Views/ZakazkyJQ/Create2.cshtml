@@ -1,23 +1,22 @@
 ﻿@model PA.TOYOTA.DB.Zakazka
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Edit</h1>
+<h1>Create</h1>
 
-<h4>Zakazka</h4>
+<h4>Nova garancna oprava</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ZakazkaId" class="control-label"></label>
-                <input asp-for="ZakazkaId" class="form-control" />
-                <span asp-validation-for="ZakazkaId" class="text-danger"></span>
+                <label asp-for="ZakazkaTg" class="control-label"></label>
+                <input asp-for="ZakazkaTg" class="form-control" />
+                <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="ZakazkaTg" />
             <div class="form-group">
                 <label asp-for="ZakazkaTb" class="control-label"></label>
                 <input asp-for="ZakazkaTb" class="form-control" />
@@ -38,50 +37,42 @@
                 <input asp-for="Vin" class="form-control" />
                 <span asp-validation-for="Vin" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            @* <div class="form-group">
                 <label asp-for="Platna" class="control-label"></label>
-                <input asp-for="Platna" class="form-control" />
+               <select asp-for="Platna" class="form-control">
+                    <option>A</option>
+                    <option>N</option>
+                    <option>Vyberte možnosť</option>
+                  </select> 
                 <span asp-validation-for="Platna" class="text-danger"></span>
-            </div>
+            </div>*@
+
             <div class="form-group">
                 <label asp-for="Ukoncena" class="control-label"></label>
-                <input asp-for="Ukoncena" class="form-control" />
+                 <select asp-for="Ukoncena" class="form-control">
+                    <option>A</option>
+                    <option>N</option>
+                    <option>Vyberte možnosť</option>
+                  </select> 
                 <span asp-validation-for="Ukoncena" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Vytvoril" class="control-label"></label>
-                <input asp-for="Vytvoril" class="form-control" />
-                <span asp-validation-for="Vytvoril" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vytvorene" class="control-label"></label>
-                <input asp-for="Vytvorene" class="form-control" />
-                <span asp-validation-for="Vytvorene" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Zmenil" class="control-label"></label>
-                <input asp-for="Zmenil" class="form-control" />
-                <span asp-validation-for="Zmenil" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Zmenene" class="control-label"></label>
-                <input asp-for="Zmenene" class="form-control" />
-                <span asp-validation-for="Zmenene" class="text-danger"></span>
-            </div>
+
+
             <div class="form-group">
                 <label asp-for="Poznamka" class="control-label"></label>
                 <input asp-for="Poznamka" class="form-control" />
                 <span asp-validation-for="Poznamka" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Uložiť" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Návrat</a>
 </div>
 
 @section Scripts {

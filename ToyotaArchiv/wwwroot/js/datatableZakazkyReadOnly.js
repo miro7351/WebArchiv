@@ -23,7 +23,7 @@ $('#datatableZakazky').dataTable({
         },
         {
             "render": function (data, type, row) {
-                return '<a  href="/ZakazkyJQ/Edit/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
+                return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
             },
             "targets": [1]
         },

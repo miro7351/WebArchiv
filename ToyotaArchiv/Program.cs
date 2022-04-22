@@ -17,7 +17,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using PA.TOYOTA.DB;
-using ToyotaArchiv.Interfaces;
+using ToyotaArchiv.Infrastructure;
 using ToyotaArchiv.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,7 +45,7 @@ builder.Services.AddDbContext<ToyotaContext>(options => options.UseSqlServer(con
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 //registracia IZakazkaTransformService
-builder.Services.AddSingleton<IZakazkaTransformService, ZakazkaTransformService>();
+builder.Services.AddSingleton<IZakazkaTransformService, ZakazkaServiceWeb>();
 
 
 

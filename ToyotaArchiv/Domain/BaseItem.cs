@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace ToyotaArchiv.Domain
 {
@@ -18,13 +18,11 @@ namespace ToyotaArchiv.Domain
         {
             //FileItem = new FileItem();
         }
-
-     
      
         /// <summary>
         /// Nazov polozky
         /// </summary>
-        public string NazovDokumentu   //Nazov: napr. Foto1, BlokMotora2, LaveDvere,... nazvy pre jednu zakazku musia byt rozne!!!
+        public string? NazovDokumentu   //Nazov: napr. Foto1, BlokMotora2, LaveDvere,... nazvy pre jednu zakazku musia byt rozne!!!
         {
             get;
             set;
@@ -34,7 +32,7 @@ namespace ToyotaArchiv.Domain
         /// <summary>
         /// Nazov polozky, ZAPISUJE SA DO DB
         /// </summary>
-        public string NazovSuboru   //Nazov: suboru napr. Foto1.jpg, PopisMotora.pdf; nazvy suborov pre jednu zakazku musia byt rozne!
+        public string? NazovSuboru   //Nazov: suboru napr. Foto1.jpg, PopisMotora.pdf; nazvy suborov pre jednu zakazku musia byt rozne!
         {
             get;
             set;
@@ -45,14 +43,14 @@ namespace ToyotaArchiv.Domain
         /// Nazov polozky, NEZAPISUJE SA DO DB;
         /// Polozka sa nastavuje pomocou Drop operacie, alebo pri vybere suboru, neda sa editovat rucne!!!
         /// </summary>
-        public string FilePath   //Cesta pre subor napr. C:\Zakazky\Opravy\Foto1.jpg, C:\Dokumenty\PopisMotora.pdf; nazvy suborov pre jednu zakazku musia byt rozne!
+        public string? FilePath   //Cesta pre subor napr. C:\Zakazky\Opravy\Foto1.jpg, C:\Dokumenty\PopisMotora.pdf; nazvy suborov pre jednu zakazku musia byt rozne!
         {
             get;
             set;
             
         }
 
-       
+       /*
         /// <summary>
         /// Udava platnost polozky
         /// </summary>
@@ -61,13 +59,13 @@ namespace ToyotaArchiv.Domain
             get;
             set;
         }
+        */
 
-
-        private string poznamka; //poznamka??
+       
         /// <summary>
         /// Poznamka pre polozku
         /// </summary>
-        public string Poznamka 
+        public string? Poznamka 
         {
             get;
             set;
@@ -90,7 +88,7 @@ namespace ToyotaArchiv.Domain
         /// <summary>
         /// Urcuje k akemu dokumentu patri polozka
         /// </summary>
-        public int Skupina
+        public short? Skupina
         {
             get;
             set;
@@ -119,10 +117,16 @@ namespace ToyotaArchiv.Domain
          * Subory do jednej zakazky moze pridavat viac uzivatelov, preto pre sledovanie historie zaznamu
          * je potrebne mat aj tieto properties
          */
-        public string Vytvoril { get; set; }
+        public string? Vytvoril { get; set; }
 
         public DateTime? Vytvorene { get; set; }
-        public string Zmenil { get; set; }
+        public string? Zmenil { get; set; }
         public DateTime? Zmenene { get; set; }
+
+        [MaxLength]
+        public byte[]? FileContent { get; set; }  //obsah suboru prijateho z klienta
+
+        [Display(Name = "Vyber subor")]
+        public IFormFile? MyIFormFile { get; set; } = null!;
     }
 }

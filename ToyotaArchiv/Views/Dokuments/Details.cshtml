@@ -22,12 +22,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.NazovSuboru)
         </dd>
-        <dt class = "col-sm-2">
+       @* <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DokumentPlatny)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DokumentPlatny)
-        </dd>
+        </dd>*@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Skupina)
         </dt>
@@ -74,5 +74,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.DokumentId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Návrat</a>
 </div>

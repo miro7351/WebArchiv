@@ -60,27 +60,30 @@ namespace ToyotaArchiv.Domain
             ZakazkaTGdokument = new BaseItem();//NazovDokumentu=ZakazkaTG, Skupina=1;
             ZakazkaTBdokument = new BaseItem();//NazovDokumentu=ZakazkaTB, Skupina=2;
 
-            PovinneDokumenty = new ObservableCollection<BaseItem>(); //Skupina: 20,21,22,...,99
-            Prilohy = new ObservableCollection<BaseItem>();          //Skupina: 100, 101,.....
+            //PovinneDokumenty = new ObservableCollection<BaseItem>(); //Skupina: 20,21,22,...,99
+            //Prilohy = new ObservableCollection<BaseItem>();          //Skupina: 100, 101,.....
+
+            PovinneDokumenty = new List<BaseItem>(5); //Skupina: 20,21,22,...,99
+            Prilohy = new List<BaseItem>(10);          //Skupina: 100, 101,.....
         }
 
         #region ==Properties==
 
 
         //zaznam z tab. Dokument, Skupina=1   NazovDokumentu=ZakazkaTG
-        public BaseItem ZakazkaTGdokument //polozka z kolekcie Dokumenty kde Skupina=1
+        public BaseItem? ZakazkaTGdokument //polozka z kolekcie Dokumenty kde Skupina=1
         {
             get;
             set;
         }
 
         //zaznam z tab. Dokument, Skupina=2   NazovDokumentu=ZakazkaTB
-        public BaseItem ZakazkaTBdokument //polozka z kolekcie Dokumenty kde Skupina=2
+        public BaseItem? ZakazkaTBdokument //polozka z kolekcie Dokumenty kde Skupina=2
         {
             get;
             set;
         }
-        public IList<BaseItem> PovinneDokumenty //Skupina=20,21,,..,99; nemoze obsahovat 2 polozky  s rovnakym Name, je to osetrene??
+        public IList<BaseItem>? PovinneDokumenty //Skupina=20,21,,..,99; nemoze obsahovat 2 polozky  s rovnakym Name, je to osetrene??
         {
             get;
             set;
@@ -91,7 +94,7 @@ namespace ToyotaArchiv.Domain
         /// Zoznam priloh k zarucnej oprave
         /// </summary>
 
-        public IList<BaseItem> Prilohy //Skupina=100,101,,..; nemoze obsahovat 2 polozky  s rovnakym Name, je to osetrene??
+        public IList<BaseItem>? Prilohy //Skupina=100,101,,..; nemoze obsahovat 2 polozky  s rovnakym Name, je to osetrene??
         {
             get;
             set;
@@ -116,21 +119,19 @@ namespace ToyotaArchiv.Domain
         /// </summary>
         [Display(Name = "ZákazkaTB")]
         [StringLength(8, MinimumLength = 0, ErrorMessage = "Zadajte údaj na 8 znakov")]
-        public string ZakazkaTb
+        public string? ZakazkaTb
         {
             get;
             set;
         }
 
 
-      
-
-
         /// <summary>
         /// Kod opravy auta z europskej databazy
         /// </summary>
         [StringLength(7, MinimumLength = 0, ErrorMessage = "Zadajte údaj na 7 znakov")]
-        public string Cws
+        [Display(Name = "CWS")]
+        public string? Cws
         {
             get;
             set;
@@ -140,9 +141,9 @@ namespace ToyotaArchiv.Domain
         /// <summary>
         /// Udaj znamy po schvaleni garancnej opravy od importera;
         /// </summary>
-        [Display(Name = "Čís. prot.")]
+        [Display(Name = "Číslo prot.")]
         [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max. 16 znakov")]
-        public string CisloProtokolu
+        public string? CisloProtokolu
         {
             get;
             set;
@@ -154,7 +155,8 @@ namespace ToyotaArchiv.Domain
         /// VIN kod z tech. preukazu automobilu, 17 znakov
         /// </summary>
         [StringLength(17, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max. 17 znakov")]
-        public string Vin
+        [Display(Name = "VIN")]
+        public string? Vin
         {
             get;
             set;
@@ -168,7 +170,7 @@ namespace ToyotaArchiv.Domain
         /// </summary>
         [Display(Name = "Ukončená")]
         [StringLength(1, ErrorMessage = "Zadajte údaj na A alebo N")]
-        public string Ukoncena //Ukoncena A/N
+        public string? Ukoncena //Ukoncena A/N
         {
             get;
             set;
@@ -178,51 +180,53 @@ namespace ToyotaArchiv.Domain
         /* TODO: ???? Nepouzit Temporal table pre MS SQL Server????
          * MH: Udaje z db tab. sa nebudu dat mazat, lebo je to archivny system, preto akoby pre vymazany zaznam nastavim flag PlatnyZaznam="N", taky zaznam sa len nebude zobrazovat;
          */
-
-
-        //string platna  A/N
-
-        /// <summary>
-        /// Priznak ci je to platny zaznam;
-        /// "A" -platny zaznam sa zobrazuje, "N" -neplatny nebude sa normalne zobrazovat, ale v tab. bude existovat;
-        /// </summary>
-        [Display(Name = "Ukončená")]
-        [StringLength(1, ErrorMessage = "Zadajte údaj na A alebo N")]
-        public string Platna    //Platna A/N
-        {
-            get;
-            set;
-        }
-
-
-
         /// <summary>
         /// Poznamka nvarchar(128), null
         /// </summary>
         [Display(Name = "Poznámka")]
         [StringLength(128, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.128 znakov")]
-        public string Poznamka   
+        public string? Poznamka   
         {
             get;
             set;
         }
 
         [Display(Name = "Vytvoril")]
-        public string Vytvoril { get; set; }
+        public string? Vytvoril { get; set; }
         
         [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
         [Display(Name = "Vytvorené")]
         public DateTime? Vytvorene { get; set; }
 
+
         [StringLength(32, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.32 znakov")]
         [Display(Name = "Zmenil")]
-        public string Zmenil { get; set; }
+        public string? Zmenil { get; set; }
 
         [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
         [Display(Name = "Zmenené")]
         public DateTime? Zmenene { get; set; }
+
+
+        [Display(Name = "Súbor TG")]
+        [MaxLength(64)]
+        public string? TgFileName { get; set; }
+
+        [Display(Name = "Súbor TB")]
+        [MaxLength(64)]
+        public string? TbFileName { get; set; }
+
+
+        //pre vyber suboru pre ZakazkaTGdokument na klientovi
+        [Display(Name = "Vyber subor")]
+        public IFormFile? TBFile { get; set; } = null!;
+
+
+        //pre vyber suboru pre ZakazkaTBdokument na klientovi
+        [Display(Name = "Vyber subor")]
+         public IFormFile? TGFile { get; set; } = null!;
 
         #endregion ==Properties==
 

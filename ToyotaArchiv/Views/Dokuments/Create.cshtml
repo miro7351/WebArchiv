@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h1>Create</h1>
+@*Dokuments:Create*@
+<h4>Nový</h4>
 
 <h4>Dokument</h4>
 <hr />
@@ -26,11 +26,11 @@
                 <input asp-for="NazovSuboru" class="form-control" />
                 <span asp-validation-for="NazovSuboru" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="DokumentPlatny" class="control-label"></label>
                 <input asp-for="DokumentPlatny" class="form-control" />
                 <span asp-validation-for="DokumentPlatny" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="Zmenene" class="control-label"></label>
                 <input asp-for="Zmenene" class="form-control" />
@@ -44,7 +44,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Návrat</a>
 </div>
 
 @section Scripts {

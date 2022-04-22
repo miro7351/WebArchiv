@@ -9,7 +9,8 @@ https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotation
 
 https://asp.mvc-tutorial.com/models/data-annotations/
 
-Mozeme pridat metadata ku property. Ak sa pouziju DataAnnotations a model sa potom pouzije mimo MVC projektu, nic sa nepokazi; DataAnnotations mozeme nechat v kode;
+Mozeme pridat metadata ku property. Ak sa pouziju DataAnnotations a model sa potom pouzije mimo MVC projektu, nic sa nepokazi; 
+DataAnnotations mozeme nechat v kode;
 
 Datove nonnullable typy su vzdy pozadovane a netreba pridavat [Required]
 
@@ -137,14 +138,14 @@ For instance, if the property on the model is decorated with the  [DataType(Data
         [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
         [Display(Name = "Zmenené")]
         public DateTime? Zmenene { get; set; }
-PRI EDDITOVANI NA WEB STRANKE SA ZOBRAZI KALENDAR a s moznostou nastavenia hodin, minut a sekund.
+PRI EDITOVANI NA WEB STRANKE SA ZOBRAZI KALENDAR a s moznostou nastavenia hodin, minut a sekund.
 
      [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
         [Display(Name = "Zmenené")]
         public DateTime? Zmenene { get; set; }
 
-PRI EDDITOVANI NA WEB STRANKE SA ZOBRAZI KALENDAR len pre rok, mesiac a den !!!!
+PRI EDITOVANI NA WEB STRANKE SA ZOBRAZI KALENDAR len pre rok, mesiac a den !!!!
 
 -------------------
 Html.DisplayFor() will render the DisplayTemplate that matches the property's type.

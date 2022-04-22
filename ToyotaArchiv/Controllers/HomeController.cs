@@ -12,6 +12,8 @@ namespace ToyotaArchiv.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ToyotaContext _context;
 
+       
+
         public HomeController(ILogger<HomeController> logger, ToyotaContext context)
         {
             _logger = logger;

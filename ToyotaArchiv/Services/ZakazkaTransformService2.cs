@@ -1,6 +1,6 @@
 ﻿using PA.TOYOTA.DB;
 using ToyotaArchiv.Domain;
-using ToyotaArchiv.Interfaces;
+using ToyotaArchiv.Infrastructure;
 
 namespace ToyotaArchiv.Services
 {
@@ -23,10 +23,10 @@ namespace ToyotaArchiv.Services
         */
 
          List<string> NazvyPovinnychDokumentov = new List<string>() { "Pred kalkulacia TG", "Rekapitulacia TG", "Garancna TG", "Registracia TG", "Suhrna faktura" };
-        int SkupinaPrvehoPovinnehoDokumentu => 20;
-        int SkupinaPrvejPrilohy => 100;
-        int PocetPovinnych => 5;
-        int PocetPriloh => 10;
+        short SkupinaPrvehoPovinnehoDokumentu => 20;
+        short SkupinaPrvejPrilohy => 100;
+        short PocetPovinnych => 5;
+        short PocetPriloh => 10;
 
         /// <summary>
         /// Typ instancie Zakazka (z databazy)skonveruje do instancie typu ZakazkaZO (pre zobrazenie pre uzivatela);
@@ -34,26 +34,27 @@ namespace ToyotaArchiv.Services
         /// </summary>
         /// <param name="zakazka">udaj nacitany z databazy</param>
         /// <returns>ZakazkaZO typ pre editaciu alebo zobrazenie</returns>
-        public ZakazkaZO ConvertZakazka_To_ZakazkaZO(Zakazka zakazka)
+        public ZakazkaZO ConvertZakazka_To_ZakazkaZO(ref Zakazka zakazka)
         {
             ZakazkaZO zakazkaZO = new ZakazkaZO();
-            zakazkaZO.ZakazkaTb = zakazka.ZakazkaTb.Trim();
-            zakazkaZO.ZakazkaTg = zakazka.ZakazkaTg.Trim();
-            zakazkaZO.Platna = zakazka.Platna;
-            zakazkaZO.Poznamka = zakazka.Poznamka.Trim();
+            zakazkaZO.ZakazkaTg = zakazka.ZakazkaTg?.Trim();
+            zakazkaZO.ZakazkaTb = zakazka.ZakazkaTb?.Trim();
+            
+            //zakazkaZO.Platna = zakazka.Platna;
+            zakazkaZO.Poznamka = zakazka.Poznamka?.Trim();
             zakazkaZO.Ukoncena = zakazka.Ukoncena;
-            zakazkaZO.Vin = zakazka.Vin.Trim();
-            zakazkaZO.Cws = zakazka.Cws.Trim();
-            zakazkaZO.CisloProtokolu = zakazka.CisloProtokolu.Trim();
+            zakazkaZO.Vin = zakazka.Vin?.Trim();
+            zakazkaZO.Cws = zakazka.Cws?.Trim();
+            zakazkaZO.CisloProtokolu = zakazka.CisloProtokolu?.Trim();
 
             if (zakazka.Dokuments.Any(d => !string.IsNullOrEmpty(d.NazovDokumentu))) //existuju zaznamy pre dokumety
             {
-                if (zakazka.Dokuments.Any(d => d.Skupina == 1))//zakazkaZO.ZakazkaTGdokument
+                if (zakazka.Dokuments.Any(d => d.Skupina == 1))//existuje zakazkaZO.ZakazkaTGdokument
                 {
                     Dokument dok = zakazka.Dokuments.FirstOrDefault(d => d.Skupina == 1);
                     zakazkaZO.ZakazkaTGdokument.NazovDokumentu = dok.NazovDokumentu.Trim();
                     zakazkaZO.ZakazkaTGdokument.NazovSuboru = dok.NazovSuboru.Trim();
-                    zakazkaZO.ZakazkaTGdokument.DokumentPlatny = dok.DokumentPlatny;
+                    //zakazkaZO.ZakazkaTGdokument.DokumentPlatny = dok.DokumentPlatny;
                     zakazkaZO.ZakazkaTGdokument.Skupina = dok.Skupina;
                     zakazkaZO.ZakazkaTGdokument.Poznamka = dok.Poznamka.Trim();
                     zakazkaZO.ZakazkaTGdokument.Vytvoril = dok.Vytvoril.Trim();
@@ -61,12 +62,12 @@ namespace ToyotaArchiv.Services
                     zakazkaZO.ZakazkaTGdokument.Zmenil = dok.Zmenil.Trim();
                     zakazkaZO.ZakazkaTGdokument.Zmenene = dok.Zmenene;
                 }
-                if (zakazka.Dokuments.Any(d => d.Skupina == 2))//zakazkaZO.ZakazkaTBdokument
+                if (zakazka.Dokuments.Any(d => d.Skupina == 2))//existuje zakazkaZO.ZakazkaTBdokument
                 {
                     Dokument dok = zakazka.Dokuments.FirstOrDefault(d => d.Skupina == 2);
                     zakazkaZO.ZakazkaTBdokument.NazovDokumentu = dok.NazovDokumentu.Trim();
                     zakazkaZO.ZakazkaTBdokument.NazovSuboru = dok.NazovSuboru.Trim();
-                    zakazkaZO.ZakazkaTBdokument.DokumentPlatny = dok.DokumentPlatny;
+                    //zakazkaZO.ZakazkaTBdokument.DokumentPlatny = dok.DokumentPlatny;
                     zakazkaZO.ZakazkaTBdokument.Skupina = dok.Skupina;
                     zakazkaZO.ZakazkaTBdokument.Poznamka = dok.Poznamka.Trim();
                     zakazkaZO.ZakazkaTBdokument.Vytvoril = dok.Vytvoril.Trim();
@@ -80,7 +81,7 @@ namespace ToyotaArchiv.Services
                     //pocet zaznamov pre povinne dokumety
                     int pz = zakazka.Dokuments.Count(d => d.Skupina >= SkupinaPrvehoPovinnehoDokumentu && d.Skupina < SkupinaPrvejPrilohy);
 
-                    for (int i = 0; i < PocetPovinnych; i++)
+                    for (short i = 0; i < PocetPovinnych; i++)
                     {
                         Dokument dok = zakazka.Dokuments.FirstOrDefault(d => d.Skupina == (SkupinaPrvehoPovinnehoDokumentu + i));
                         BaseItem bi = new BaseItem();
@@ -88,7 +89,7 @@ namespace ToyotaArchiv.Services
                         {
                             bi.Skupina = dok.Skupina;
                             bi.NazovDokumentu = dok.NazovDokumentu.Trim();  //
-                            bi.DokumentPlatny = dok.DokumentPlatny;
+                            //bi.DokumentPlatny = dok.DokumentPlatny;
                             bi.Poznamka = dok.Poznamka.Trim();
                             bi.NazovSuboru = dok.NazovSuboru.Trim();
                             bi.Vytvoril = dok.Vytvoril.Trim();
@@ -98,7 +99,7 @@ namespace ToyotaArchiv.Services
                         }
                         else //neexistuje zaznam, nastavim  len jeho property NazovDokumentu a Skupina
                         {
-                            bi.Skupina = SkupinaPrvehoPovinnehoDokumentu + i;
+                            bi.Skupina = (short)(SkupinaPrvehoPovinnehoDokumentu + i);
 
                             if (i < NazvyPovinnychDokumentov.Count)
                             {
@@ -109,7 +110,7 @@ namespace ToyotaArchiv.Services
                                 //vytvorim Nazov dokumentu
                                 bi.NazovDokumentu = $"Povinny dok{SkupinaPrvehoPovinnehoDokumentu + i}";
                                 //vytvorim jeho skupinu
-                                bi.Skupina = SkupinaPrvehoPovinnehoDokumentu + i;
+                                bi.Skupina = (short)(SkupinaPrvehoPovinnehoDokumentu + i);
                             }
                         }
                         zakazkaZO.PovinneDokumenty.Add(bi);
@@ -129,7 +130,7 @@ namespace ToyotaArchiv.Services
                             BaseItem bi = new BaseItem();
                             bi.Skupina = dok1.Skupina;
                             bi.NazovDokumentu = dok1.NazovDokumentu.Trim();  //
-                            bi.DokumentPlatny = dok1.DokumentPlatny;
+                            //bi.DokumentPlatny = dok1.DokumentPlatny;
                             bi.Poznamka = dok1.Poznamka.Trim();
                             bi.NazovSuboru = dok1.NazovSuboru.Trim();
                             bi.Vytvoril = dok1.Vytvoril.Trim();
@@ -142,10 +143,10 @@ namespace ToyotaArchiv.Services
                     //doplnenie do poctu 10 priloh, nastavim Skupinu a NazovDokumentu PrilohaXX
                     if (PocetPriloh > pz)
                     {
-                        for (int i = 0; i < PocetPriloh - pz; i++)
+                        for (short i = 0; i < PocetPriloh - pz; i++)
                         {
                             BaseItem bi = new BaseItem();
-                            bi.Skupina = SkupinaPrvejPrilohy + pz + i;
+                            bi.Skupina = (short)(SkupinaPrvejPrilohy + pz + i);
                             bi.NazovDokumentu = $"Priloha{(SkupinaPrvejPrilohy + pz + i) % SkupinaPrvejPrilohy:00}";
                             zakazkaZO.Prilohy.Add(bi);
                         }
@@ -162,13 +163,13 @@ namespace ToyotaArchiv.Services
         /// </summary>
         /// <param name="myZakZO">Udaj editovany uzivatelom</param>
         /// <returns>Udaj ktory sa ma zapisat do databazy</returns>
-        public Zakazka ConvertZakazkaZO_To_Zakazka(ZakazkaZO myZakZO)
+        public Zakazka ConvertZakazkaZO_To_Zakazka(ref ZakazkaZO myZakZO)
         {
             Zakazka newZakazka = new Zakazka();
 
             newZakazka.ZakazkaTb = myZakZO.ZakazkaTb;
             newZakazka.ZakazkaTg = myZakZO.ZakazkaTg;
-            newZakazka.Platna = myZakZO.Platna;
+            //newZakazka.Platna = myZakZO.Platna;
             newZakazka.Poznamka = myZakZO.Poznamka;
             newZakazka.Ukoncena = myZakZO.Ukoncena;
             newZakazka.Vin = myZakZO.Vin;
@@ -176,19 +177,19 @@ namespace ToyotaArchiv.Services
             newZakazka.CisloProtokolu = myZakZO.CisloProtokolu;
 
            
-            if (!string.IsNullOrEmpty(myZakZO.ZakazkaTGdokument.FilePath))//je zadany subor; vytvorit instanciu typu Dokument a instanciu typu Document_Detail;
+            if (!string.IsNullOrEmpty(myZakZO.ZakazkaTGdokument.NazovSuboru))//je zadany subor; vytvorit instanciu typu Dokument a instanciu typu Document_Detail;
             {
                 Dokument dokument1 = new Dokument();
                 dokument1.ZakazkaTg = newZakazka.ZakazkaTg;
                 dokument1.NazovDokumentu = myZakZO.ZakazkaTGdokument.NazovDokumentu;
                 dokument1.NazovSuboru = myZakZO.ZakazkaTGdokument.NazovSuboru;
                 dokument1.Skupina = (short)1;
-                dokument1.DokumentPlatny = myZakZO.ZakazkaTGdokument.DokumentPlatny;
+                //dokument1.DokumentPlatny = myZakZO.ZakazkaTGdokument.DokumentPlatny;
                 dokument1.Poznamka = "*";
 
                 DokumentDetail dokDetail1 = new DokumentDetail();
                 dokDetail1.NazovDokumentu = myZakZO.ZakazkaTGdokument.NazovDokumentu;
-                dokDetail1.Platny = myZakZO.ZakazkaTGdokument.DokumentPlatny;
+                //dokDetail1.Platny = myZakZO.ZakazkaTGdokument.DokumentPlatny;
                 dokDetail1.Poznamka = string.Empty;// myZakZO.ZakazkaTGdokument.Poznamka;
                 //TODO: ???
                 //dokDetail1.DocumentContent = System.IO.File.ReadAllBytes(myZakZO.ZakazkaTGdokument.FilePath);
@@ -197,21 +198,21 @@ namespace ToyotaArchiv.Services
                 newZakazka.Dokuments.Add(dokument1);
             }
 
-            if (!string.IsNullOrEmpty(myZakZO.ZakazkaTBdokument.FilePath))//je zadany subor; vytvorit instanciu typu Dokument a instanciu typu Document_Detail;
+            if (!string.IsNullOrEmpty(myZakZO.ZakazkaTBdokument.NazovSuboru))//je zadany subor; vytvorit instanciu typu Dokument a instanciu typu Document_Detail;
             {
                 Dokument dokument1 = new Dokument();
                 dokument1.ZakazkaTg = newZakazka.ZakazkaTg;
                 dokument1.NazovDokumentu = myZakZO.ZakazkaTBdokument.NazovDokumentu;
                 dokument1.NazovSuboru = myZakZO.ZakazkaTBdokument.NazovSuboru;
                 dokument1.Skupina = (short)2;
-                dokument1.DokumentPlatny = myZakZO.ZakazkaTBdokument.DokumentPlatny;
+                //dokument1.DokumentPlatny = myZakZO.ZakazkaTBdokument.DokumentPlatny;
                 dokument1.Poznamka = "*"; // string.Empty;
 
 
 
                 DokumentDetail dokDetail1 = new DokumentDetail();
                 dokDetail1.NazovDokumentu = myZakZO.ZakazkaTBdokument.NazovDokumentu;
-                dokDetail1.Platny = myZakZO.ZakazkaTBdokument.DokumentPlatny;
+                //dokDetail1.Platny = myZakZO.ZakazkaTBdokument.DokumentPlatny;
                 dokDetail1.Poznamka = string.Empty;
                 //TODO: ???
                 //dokDetail1.DocumentContent = System.IO.File.ReadAllBytes(myZakZO.ZakazkaTBdokument.FilePath);
@@ -220,10 +221,10 @@ namespace ToyotaArchiv.Services
                 newZakazka.Dokuments.Add(dokument1);
             }
 
-            var status = myZakZO.PovinneDokumenty.Any(p => !string.IsNullOrEmpty(p.FilePath));
+            var status = myZakZO.PovinneDokumenty.Any(p => !string.IsNullOrEmpty(p.NazovSuboru));
             if (status)//je zadany aspon jeden subor
             {
-                var povinneDokumenty = myZakZO.PovinneDokumenty.Where(p => !string.IsNullOrEmpty(p.FilePath)).ToList();
+                var povinneDokumenty = myZakZO.PovinneDokumenty.Where(p => !string.IsNullOrEmpty(p.NazovSuboru)).ToList();
                 foreach (var dokument in povinneDokumenty)
                 {
                     Dokument dokument1 = new Dokument();
@@ -231,12 +232,12 @@ namespace ToyotaArchiv.Services
                     dokument1.NazovDokumentu = dokument.NazovDokumentu;
                     dokument1.NazovSuboru = dokument.NazovSuboru;
                     dokument1.Skupina = (short)dokument.Skupina;
-                    dokument1.DokumentPlatny = dokument.DokumentPlatny ?? "A";
+                    //dokument1.DokumentPlatny = dokument.DokumentPlatny ?? "A";
                     dokument1.Poznamka = dokument.Poznamka ?? " ";
 
                     DokumentDetail dokDetail1 = new DokumentDetail();
                     dokDetail1.NazovDokumentu = dokument.NazovDokumentu;
-                    dokDetail1.Platny = dokument.DokumentPlatny ?? "A";
+                    //dokDetail1.Platny = dokument.DokumentPlatny ?? "A";
                     dokDetail1.Poznamka = string.Empty;
                     //TODO: ???
                     //dokDetail1.DocumentContent = System.IO.File.ReadAllBytes(myZakZO.ZakazkaTBdokument.FilePath);
@@ -246,10 +247,10 @@ namespace ToyotaArchiv.Services
                 }
             }
 
-            status = myZakZO.Prilohy.Any(p => !string.IsNullOrEmpty(p.FilePath));
+            status = myZakZO.Prilohy.Any(p => !string.IsNullOrEmpty(p.NazovSuboru));
             if (status)//je zadany aspon jeden subor
             {
-                var prilohy = myZakZO.Prilohy.Where(p => !string.IsNullOrEmpty(p.FilePath)).ToList();
+                var prilohy = myZakZO.Prilohy.Where(p => !string.IsNullOrEmpty(p.NazovSuboru)).ToList();
                 foreach (var dokument in prilohy)
                 {
                     Dokument dokument1 = new Dokument();
@@ -257,12 +258,12 @@ namespace ToyotaArchiv.Services
                     dokument1.NazovDokumentu = dokument.NazovDokumentu;
                     dokument1.NazovSuboru = dokument.NazovSuboru;
                     dokument1.Skupina = (short)dokument.Skupina;
-                    dokument1.DokumentPlatny = dokument.DokumentPlatny ?? "A";
+                    //dokument1.DokumentPlatny = dokument.DokumentPlatny ?? "A";
                     dokument1.Poznamka = dokument.Poznamka ?? " ";// string.Empty;
 
                     DokumentDetail dokDetail1 = new DokumentDetail();
                     dokDetail1.NazovDokumentu = dokument.NazovDokumentu;
-                    dokDetail1.Platny = dokument.DokumentPlatny ?? "A";
+                    //dokDetail1.Platny = dokument.DokumentPlatny ?? "A";
                     dokDetail1.Poznamka = string.Empty;
                     //TODO: ???
                     //dokDetail1.DocumentContent = System.IO.File.ReadAllBytes(myZakZO.ZakazkaTBdokument.FilePath);

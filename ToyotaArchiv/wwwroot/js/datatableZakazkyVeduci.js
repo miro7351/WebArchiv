@@ -30,7 +30,7 @@ $(document).ready(function () {
             {
                 "render": function (data, type, row) {
 
-                    return '<a  href="/ZakazkyJQ/Edit/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
+                    return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
                 },
                 "targets": [1]
             },
@@ -50,7 +50,7 @@ $(document).ready(function () {
             {
                 "render": function (data, type, row) {
 
-                    return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazat(' + row['zakazkaId'] + ') </a>'
+                    return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať(' + row['zakazkaId'] + ') </a>'
                 },
                 "targets": [8]
             }

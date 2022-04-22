@@ -1,80 +1,141 @@
-﻿@model PA.TOYOTA.DB.Zakazka
+﻿@model ToyotaArchiv.Domain.ZakazkaZO
+@attribute [RequestSizeLimitAttribute(15000000)]
+
+@*  stranka moze odoslat na server maximalne asi 14MB;  15000000
+    Az po kliku na submit sa zacnu prenasat subory na server!!
+
+*@
 
 @{
     ViewData["Title"] = "Create";
 }
+@*
+    display je rozdeleny na 12 virtualnych stlpcov
+    <div class="col-md-4">  sirka columnu pre  display md a vyssi bude 4 virtualne stlpce
+    <div class="col-md-8"> nie velmi dobre, dve polozky vedla seba
+    <div class="col-md-2">  vsetky polozky pod sebou
+*@
 
-<h1>Create</h1>
+@*ZakazkyJQ:CreateMH1*@
 
-<h4>Nova garancna oprava</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ZakazkaTg" class="control-label"></label>
-                <input asp-for="ZakazkaTg" class="form-control" />
-                <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ZakazkaTb" class="control-label"></label>
-                <input asp-for="ZakazkaTb" class="form-control" />
-                <span asp-validation-for="ZakazkaTb" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CisloProtokolu" class="control-label"></label>
-                <input asp-for="CisloProtokolu" class="form-control" />
-                <span asp-validation-for="CisloProtokolu" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cws" class="control-label"></label>
-                <input asp-for="Cws" class="form-control" />
-                <span asp-validation-for="Cws" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vin" class="control-label"></label>
-                <input asp-for="Vin" class="form-control" />
-                <span asp-validation-for="Vin" class="text-danger"></span>
-            </div>
+<div class="container">
 
-             <div class="form-group">
-                <label asp-for="Platna" class="control-label"></label>
-               <select asp-for="Platna" class="form-control">
-                    <option>A</option>
-                    <option>N</option>
-                    <option>Vyberte možnosť</option>
-                  </select> 
-                <span asp-validation-for="Platna" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Ukoncena" class="control-label"></label>
-                 <select asp-for="Ukoncena" class="form-control">
-                    <option>A</option>
-                    <option>N</option>
-                    <option>Vyberte možnosť</option>
-                  </select> 
-                <span asp-validation-for="Ukoncena" class="text-danger"></span>
-            </div>
+    <h4>Nová garančná oprava</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 
-            <div class="form-group">
-                <label asp-for="Poznamka" class="control-label"></label>
-                <input asp-for="Poznamka" class="form-control" />
-                <span asp-validation-for="Poznamka" class="text-danger"></span>
+                @* ZakazkaTG*@
+                <div class="form-group">
+                    <label asp-for="ZakazkaTg" class="control-label"></label>
+                    <input asp-for="ZakazkaTg" class="form-control" />
+                    <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
+                </div>
+                 @*Subor pre ZakazkaTG*@
+                <div class="form-group">
+                    <label asp-for="TGFile" class="control-label"></label>
+                    <input asp-for="TGFile" class="form-control" lang="sk" />
+                    <span asp-validation-for="TGFile" class="text-danger"></span>
+                </div>
+
+               @* <div class="form-group">
+                    <label asp-for="ZakazkaTGdokument.MyIFormFile" class="control-label"></label>
+                    <input asp-for="ZakazkaTGdokument.MyIFormFile" class="form-control" lang="sk" />
+                    <span asp-validation-for="ZakazkaTGdokument.MyIFormFile" class="text-danger"></span>
+                </div>*@
+
+                @* ZakazkaTB*@
+                <div class="form-group">
+                    <label asp-for="ZakazkaTb" class="control-label"></label>
+                    <input asp-for="ZakazkaTb" class="form-control" />
+                    <span asp-validation-for="ZakazkaTb" class="text-danger"></span>
+                </div>
+                @* Subor pre ZakazkaTB*@
+                <div class="form-group">
+                    <label asp-for="TBFile" class="control-label"></label>
+                    <input asp-for="TBFile" class="form-control" lang="sk" />
+                    <span asp-validation-for="TBFile" class="text-danger"></span>
+                </div>
+
+              @* <div class="form-group">
+                 <label asp-for="ZakazkaTBdokument.MyIFormFile" class="control-label"></label>
+                    <input asp-for="ZakazkaTBdokument.MyIFormFile" class="form-control" lang="sk" />
+                    <span asp-validation-for="ZakazkaTBdokument.MyIFormFile" class="text-danger"></span>
+                </div>*@
+                @* Vin*@
+                <div class="form-group">
+                    <label asp-for="Vin" class="control-label"></label>
+                    <input asp-for="Vin" class="form-control" />
+                    <span asp-validation-for="Vin" class="text-danger"></span>
+                </div>
+
+                @* CWS *@
+                <div class="form-group">
+                    <label asp-for="Cws" class="control-label"></label>
+                    <input asp-for="Cws" class="form-control" />
+                    <span asp-validation-for="Cws" class="text-danger"></span>
+                </div>
+
+
+                @* CisloProtokolu *@
+                <div class="form-group">
+                    <label asp-for="CisloProtokolu" class="control-label"></label>
+                    <input asp-for="CisloProtokolu" class="form-control" />
+                    <span asp-validation-for="CisloProtokolu" class="text-danger"></span>
+                </div>
+                @* Ukoncena sa nastavuje v kode *@
+                @*<div class="form-group">
+                    <label asp-for="Ukoncena" class="control-label"></label>
+                    <input asp-for="Ukoncena" class="form-control" />
+                    <span asp-validation-for="Ukoncena" class="text-danger"></span>
+                    </div>*@
+
+                @* Poznamka *@
+                <div class="form-group">
+                    <label asp-for="Poznamka" class="control-label"></label>
+                    <input asp-for="Poznamka" class="form-control" />
+                    <span asp-validation-for="Poznamka" class="text-danger"></span>
+                </div>
+                @*            <div class="form-group">
+                    <label asp-for="CreatedDate" class="control-label"></label>
+                    <input asp-for="CreatedDate" class="form-control" />
+                    <span asp-validation-for="Vytvoril" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                    <label asp-for="CreatedBy" class="control-label"></label>
+                    <input asp-for="CreatedBy" class="form-control" />
+                    <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                    <label asp-for="ModifiedDate" class="control-label"></label>
+                    <input asp-for="ModifiedDate" class="form-control" />
+                    <span asp-validation-for="ModifiedDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                    <label asp-for="ModifiedBy" class="control-label"></label>
+                    <input asp-for="ModifiedBy" class="form-control" />
+                    <span asp-validation-for="ModifiedBy" class="text-danger"></span>
+                    </div>*@
+                <div class="form-group">
+                    <input type="submit" value="Uložiť" class="btn btn-primary" />
+                </div>
+
+            </form>
+
+            <div>
+                <a asp-action="Index">Návrat</a>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Uložiť" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Návrat</a>
-</div>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
 }

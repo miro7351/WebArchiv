@@ -7,10 +7,8 @@ namespace PA.TOYOTA.DB
     {
         public Guid DetailId { get; set; }
         public int DokumentId { get; set; }
-        public string NazovDokumentu { get; set; } = null!;
-        public string Platny { get; set; } = null!;
-        public byte[] DocumentContent { get; set; } = null!;
-        public string? Poznamka { get; set; }
+        public short? Skupina { get; set; }
+        public byte[]? DokumentContent { get; set; }
         public string? Vytvoril { get; set; }
         public DateTime? Vytvorene { get; set; }
         public string? Zmenil { get; set; }

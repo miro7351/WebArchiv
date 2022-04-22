@@ -1,90 +1,200 @@
-﻿@model PA.TOYOTA.DB.Zakazka
-
+﻿@model ToyotaArchiv.Domain.ZakazkaZO
+@using ToyotaArchiv.Infrastructure
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Details</h1>
+@*
+    @Html.DropDownListFor(m => m.Ukoncena,
+    new List<SelectListItem>
+    { new SelectListItem{Text="Áno", Value="A"},
+    new SelectListItem{Text="Nie", Value="N"}}, "Vyberte možnosť")
 
-<div>
-    <h4>Zakazka</h4>
+    class="col-md-4"  margin down 4 em
+
+    ZakazkyJQ:Edit
+    Tu sa pride po kliku na link ZakazkaTG,  ak  rola prihlaseneho  nie je ADMIN alebo VEDUCI;
+
+    <td>@Html.DisplayFor(m => m.ZakazkaTGdokument.NazovSuboru)</td>
+*@
+
+<style>
+    table {
+        border: 1px solid black;
+    }
+
+        table.center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    th {
+        padding: 4px, 10px,4px,10px;
+    }
+   td {
+        padding: 4px, 10px,4px,10px;
+    }
+</style>
+
+<div class="container">
+    <h6>Prehľad údajov pre garančnú opravu: @Model.ZakazkaTg</h6>
+    <p>ZakazkyJQ: Edit;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ZakazkaId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ZakazkaId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ZakazkaTb)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ZakazkaTb)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CisloProtokolu)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CisloProtokolu)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cws)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cws)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vin)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vin)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Platna)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Platna)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ukoncena)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ukoncena)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vytvoril)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vytvoril)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vytvorene)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vytvorene)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Zmenil)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Zmenil)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Zmenene)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Zmenene)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Poznamka)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Poznamka)
-        </dd>
-    </dl>
+
+
+    <div style="width:90%; margin:0 auto;">
+        @* Udaje o zakazke*@
+        <table width="100%" cellspacing="0">
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.ZakazkaTg)</td>
+                <td>@Html.DisplayFor(m=>m.ZakazkaTg)</td>
+                @{
+                    if (@Model.ZakazkaTGdokument != null)
+                    {
+                        <td colspan="3">
+                            @Html.ActionLink(@Model.ZakazkaTGdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
+                    new{ zakazkaTG=@Model.ZakazkaTg.Trim(), subor=@Model.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model.ZakazkaTGdokument?.Skupina} )
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                }
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.ZakazkaTb)</td>
+                <td>@Html.DisplayFor(m=>m.ZakazkaTb)</td>
+                @if (@Model.ZakazkaTBdokument != null)
+                {
+                    <td colspan="3">
+                        @Html.ActionLink(@Model.ZakazkaTBdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
+                    new{ zakazkaTG=@Model.ZakazkaTg.Trim(), subor=@Model.ZakazkaTBdokument?.NazovSuboru?.Trim(), skupina=@Model.ZakazkaTBdokument?.Skupina} )
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.Ukoncena)</td>
+                <td>@Html.DisplayFor(m=>m.Ukoncena)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.Vin)</td>
+                <td>@Html.DisplayFor(m=>m.Vin)</td>
+                <td>@Html.DisplayNameFor(m=>m.Cws)</td>
+                <td>@Html.DisplayFor(m=>m.Cws)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
+                <td>@Html.DisplayFor(m=>m.CisloProtokolu)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.Poznamka)</td>
+                <td colspan="4">@Html.DisplayFor(m=>m.Poznamka)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+
+        <span>Povinné dokumenty</span>
+        @*class="table table-striped table-bordered dt-responsive nowrap"*@
+        @if (Model.PovinneDokumenty != null)
+        {
+            <table id="datatablePD" width="60%" cellspacing="0">
+                <thead class="tableHeaderColor">
+                    <tr>
+                        <th width="20%">Dokument</th>
+                        <th width="40%">Súbor</th>
+                        <th>Poznámka</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.PovinneDokumenty)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NazovDokumentu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NazovSuboru)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Poznamka)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+        <span>Prílohy</span>
+        @*table-bordered  rows maju border, table-striped susedne riadky maju roznu farbu, biela-siva  *@
+        @if (Model.Prilohy != null)
+        {
+            <table id="datatablePrilohy" class="table table-bordered nowrap" width="50%" cellspacing="0">
+                <thead class="tableHeaderColor">
+                    <tr>
+                        <th width="15%">Dokument</th>
+                        <th width="40%">Súbor</th>
+                        <th>Poznámka</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.Prilohy)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NazovDokumentu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NazovSuboru)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Poznamka)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+
+    @*</form>
+        </div>
+        </div>*@
+
+    <div>
+        <a asp-action="Index">Návrat</a>
+        @if ((ViewBag.Role == USER_ROLE.ADMIN) || (ViewBag.Role == USER_ROLE.VEDUCI))
+        {
+            @*<a asp-action="Edit" asp-route-id="@item.RoleId">Detaily</a>*@
+            @Html.ActionLink(" | Upraviť", "Edit", new {zakazkaTg=@Model.ZakazkaTg})
+        }
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ZakazkaTg">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

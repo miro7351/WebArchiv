@@ -1,109 +1,194 @@
-﻿@model PA.TOYOTA.DB.Zakazka
-
+﻿@model ToyotaArchiv.Domain.ZakazkaZO
 @{
     ViewData["Title"] = "Edit";
 }
 
 @*
- @Html.DropDownListFor(m => m.Ukoncena, 
-                    new List<SelectListItem>
-                        { new SelectListItem{Text="Áno", Value="A"},
-                          new SelectListItem{Text="Nie", Value="N"}}, "Vyberte možnosť")
+    @Html.DropDownListFor(m => m.Ukoncena,
+    new List<SelectListItem>
+    { new SelectListItem{Text="Áno", Value="A"},
+    new SelectListItem{Text="Nie", Value="N"}}, "Vyberte možnosť")
 
+    class="col-md-4"  margin down 4 em
+
+    ZakazkyJQ:Edit
+    Tu sa pride po kliku na link ZakazkaTG,  ak  rola prihlaseneho  nie je ADMIN alebo VEDUCI;
+
+    <td>@Html.DisplayFor(m => m.ZakazkaTGdokument.NazovSuboru)</td>
 *@
 
-<h4>Zmena údajov pre garančnú opravu</h4>
-<p>ZakazkyJQ: Edit;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>
+<style>
+    table {
+        border: 1px solid black;
+    }
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-             
-            <input type="hidden" asp-for="ZakazkaId" />
-            
-            @* <div class="form-group">
-                <label asp-for="ZakazkaTg" class="control-label"></label>
-                <input asp-for="ZakazkaTg" class="form-control" readonly />
-                <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
-            </div>*@
+        table.center {
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-             <div class="form-group">
-                <label asp-for="ZakazkaTg" class="control-label"></label>
-                <input asp-for="ZakazkaTg" class="form-control" readonly />
-            </div>
+    th, td {
+        padding: 10px;
+    }
+</style>
 
-             <div class="form-group">
-                @Html.LabelFor( model=>model.ZakazkaTb, "ZakazkaTB", new { @class="control-label"})
-                @Html.TextBoxFor( model=>model.ZakazkaTb, new { @class="form-control" })
-                <span asp-validation-for="ZakazkaTb" class="text-danger"></span>
-            </div>
-           
-           
-            <div class="form-group">
-                <label asp-for="CisloProtokolu" class="control-label"></label>
-                <input asp-for="CisloProtokolu" class="form-control" />
-                <span asp-validation-for="CisloProtokolu" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cws" class="control-label"></label>
-                <input asp-for="Cws" class="form-control" />
-                <span asp-validation-for="Cws" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vin" class="control-label"></label>
-                <input asp-for="Vin" class="form-control" />
-                <span asp-validation-for="Vin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Platna" class="control-label"></label>
-                <input asp-for="Platna" class="form-control" />
-                <span asp-validation-for="Platna" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ukoncena" class="control-label"></label>
-                 <select asp-for="Ukoncena" class="form-control">
-                    <option>A</option>
-                    <option>N</option>
-                    <option>Vyberte možnosť</option>
-                  </select> 
-                <span asp-validation-for="Ukoncena" class="text-danger"></span>
-            </div>
+<div class="container">
+    <h6>Prehľad údajov pre garančnú opravu: @Model.ZakazkaTg</h6>
+    @* <p>ZakazkyJQ: Edit;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>*@
+    <hr />
 
-            <div class="form-group">
-                <label asp-for="Vytvoril" class="control-label"></label>
-                <input asp-for="Vytvoril" class="form-control"  />
-            </div>
+    @*<div class="row">
+        <div class="col-md-4">
+        <form asp-action="Edit" method="post" >
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Vytvorene" class="control-label"></label>
-                <input asp-for="Vytvorene" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Zmenil" class="control-label"></label>
-                <input asp-for="Zmenil" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Zmenene" class="control-label"></label>
-                <input asp-for="Zmenene" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Poznamka" class="control-label"></label>
-                <input asp-for="Poznamka" class="form-control" />
-                <span asp-validation-for="Poznamka" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Uložiť" class="btn btn-primary" />
-            </div>
-        </form>
+        <input type="hidden" asp-for="ZakazkaId" />*@
+    <div style="width:90%; margin:0 auto;">
+        @* Udaje o zakazke*@
+        <table width="100%" cellspacing="0">
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.ZakazkaTg)</td>
+                <td>@Html.DisplayFor(m=>m.ZakazkaTg)</td>
+                @{
+                    if (@Model.ZakazkaTGdokument != null)
+                    {
+                        <td colspan="3">
+                            @Html.ActionLink(@Model.ZakazkaTGdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
+                    new{ zakazkaTG=@Model.ZakazkaTg.Trim(), subor=@Model.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model.ZakazkaTGdokument?.Skupina} )
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                }
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.ZakazkaTb)</td>
+                <td>@Html.DisplayFor(m=>m.ZakazkaTb)</td>
+                @if (@Model.ZakazkaTBdokument != null)
+                {
+                    <td colspan="3">
+                        @Html.ActionLink(@Model.ZakazkaTBdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
+                    new{ zakazkaTG=@Model.ZakazkaTg.Trim(), subor=@Model.ZakazkaTBdokument?.NazovSuboru?.Trim(), skupina=@Model.ZakazkaTBdokument?.Skupina} )
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.Ukoncena)</td>
+                <td>@Html.DisplayFor(m=>m.Ukoncena)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.Vin)</td>
+                <td>@Html.DisplayFor(m=>m.Vin)</td>
+                <td>@Html.DisplayNameFor(m=>m.Cws)</td>
+                <td>@Html.DisplayFor(m=>m.Cws)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
+                <td>@Html.DisplayFor(m=>m.CisloProtokolu)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(m=>m.Poznamka)</td>
+                <td colspan="4">@Html.DisplayFor(m=>m.Poznamka)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+        @*table-striped   susedne riadky maju roznu farbu *@
+
+        <span>Povinné dokumenty</span>
+        @if (Model.PovinneDokumenty != null)
+        {
+            <table id="datatableRoly" class="table  table-bordered dt-responsive nowrap" width="50%" cellspacing="0">
+                <thead class="tableHeaderColor">
+                    <tr>
+                        <th width="15%">Dokument</th>
+                        <th width="40%">Súbor</th>
+                        <th>Poznámka</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.PovinneDokumenty)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NazovDokumentu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NazovSuboru)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Poznamka)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+         <span>Prílohy</span>
+
+        @if (Model.Prilohy != null)
+        {
+            <table id="datatableRoly" class="table table-bordered dt-responsive nowrap" width="50%" cellspacing="0">
+                <thead class="tableHeaderColor">
+                    <tr>
+                        <th width="15%">Dokument</th>
+                        <th width="40%">Súbor</th>
+                        <th>Poznámka</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.Prilohy)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NazovDokumentu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NazovSuboru)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Poznamka)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+
+    @*</form>
+        </div>
+        </div>*@
+
+    <div>
+        <a asp-action="Index">Návrat</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Návrat</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

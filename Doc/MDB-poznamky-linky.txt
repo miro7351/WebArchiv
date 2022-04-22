@@ -1,0 +1,9 @@
+MH: 20.04.2022
+
+vsetko o farbach
+https://mdbootstrap.com/docs/standard/content-styles/colors/
+
+ <table id="datatableZakazky" class="table table-hover  ...> 
+ table-hover , riadok kde je kurzor sa zvyrazni
+ table-striped  
+https://mdbootstrap.com/docs/standard/data/tables/
