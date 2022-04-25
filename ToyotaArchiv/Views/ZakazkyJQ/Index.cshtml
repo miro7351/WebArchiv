@@ -7,7 +7,11 @@
 <p>ZakazkyJQ: Index;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>
 
 <p>
-    <a asp-action="Create">Nová garančná oprava</a>
+  @if(ViewBag.Role !=USER_ROLE.READONLY)
+  {
+     <a asp-action="NovaZakazka">Nová garančná oprava</a>
+  }
+     
 </p>
 
 @*Here we are importing the stylesheet of Datatable (Bootstrap4) that we had installed earlier.*@
@@ -16,6 +20,8 @@
 @*
 <th>Platna</th> 
 Visibility  <th>ZakazkaId</th>  je nastavena v scripte
+
+
 _Layout.cshtml
 <div class="container">
         <main role="main" class="pb-3">
@@ -41,7 +47,7 @@ _Layout.cshtml
                     <th>Cws</th>
                     <th>CisloProtokolu</th> 
                     <th>Ukoncena</th> 
-                    <th>Poznamka</th>
+                    <th width="150px">Poznamka</th>
                    
                      @if( ViewBag.Role==USER_ROLE.ADMIN)
                      {
@@ -50,7 +56,7 @@ _Layout.cshtml
                          <th>Zmenil</th>  
                          <th>Zmenene</th>
                      }
-                     @if( ViewBag.Role!=USER_ROLE.USER1)@*Stlpec pre link Delete*@
+                     @if( ViewBag.Role==USER_ROLE.ADMIN  || ViewBag.Role==USER_ROLE.VEDUCI)  @*Stlpec pre link Delete*@
                      {
                          <th></th>
                     }

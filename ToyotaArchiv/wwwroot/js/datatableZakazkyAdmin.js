@@ -64,7 +64,7 @@ $(document).ready(function () {
             { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
 
             { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
-            { "data": "poznamka", "name": "Poznamka", "autoWidth": true },
+            { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
 
             { "data": "vytvoril", "name": "Vytvoril", "autoWidth": true },
             { "data": "vytvorene", "name": "Vytvorene", "autoWidth": true },

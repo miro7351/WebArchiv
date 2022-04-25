@@ -6,7 +6,7 @@
         None,
         ADMIN,
         VEDUCI,
-        USER1,
+        SERVISNY_TECHNIK,
         READONLY
     }
 }

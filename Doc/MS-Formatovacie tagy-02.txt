@@ -1,0 +1,125 @@
+MH: 22.04.2022
+
+3 mozne sposoby pre zadanie udaju typu string
+
+<div class="form-group" style="background-color:yellow" >
+                  
+                    html helper tagy
+                    <label asp-for="ZakazkaTg" class="control-label"></label>
+                    <input asp-for="ZakazkaTg" class="form-control" />
+                     <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
+                   
+                    HTML helpers
+                    @Html.DisplayNameFor(m=>m.ZakazkaTg)
+                    @Html.TextBoxFor(m=>m.ZakazkaTg,  htmlAttributes: new { @class="form-control"})
+                    @Html.ValidationMessageFor(m=>m.ZakazkaTg, "", htmlAttributes:  new { @class="text-danger"})   message je pod textboxom
+                    
+                   
+                   
+                     @Html.LabelFor(m=>m.ZakazkaTg, htmlAttributes: new { @class = "control-label col-md-2" })
+                     <div class="col-md-4">
+                    	@Html.EditorFor(m=>m.ZakazkaTg, "",  new { @class = "form-control" })
+                    	@Html.ValidationMessageFor(m=>m.ZakazkaTg, "", htmlAttributes:  new { @class="text-danger"})   message bude vpravo od textboxu
+                    </div>
+                   
+
+                </div>
+
+-----------------
+https://www.tutorialsteacher.com/mvc/htmlhelper-editor-editorfor
+
+Html.EditorFor  a Html.Editor generuju  HTML element podlu typu
+
+
+DataType	            Html Element
+string           	<input type="text" >
+int	                <input type="number" >
+decimal, float   	<input type="text" >
+boolean         	<input type="checkbox" >
+Enum	            <input type="text" >
+DateTime	        <input type="datetime" >
+
+--
+public class Student
+{
+    public int StudentId { get; set; }
+    [Display(Name="Name")]
+    public string StudentName { get; set; }
+    public int Age { get; set; }
+    public bool isNewlyEnrolled { get; set; }
+    public string Password { get; set; }
+    public DateTime DoB { get; set; }
+}
+--
+
+@model Student
+
+StudentId:      @Html.EditorFor(m => m.StudentId) <br />
+Student Name:   @Html.EditorFor(m => m.StudentName) <br />
+Age:            @Html.EditorFor(m => m.Age)<br />
+Password:       @Html.EditorFor(m => m.Password)<br />
+isNewlyEnrolled: @Html.EditorFor(m => m.isNewlyEnrolled)<br />
+DoB:            @Html.EditorFor(m => m.DoB)
+
+--
+HTML kod
+StudentId:      <input data-val="true" data-val-number="The field StudentId must be a number." data-val-required="The StudentId field is required." id="StudentId" name="StudentId" type="number" value="" /> 
+Student Name:   <input id="StudentName" name="StudentName" type="text" value="" />
+Age:            <input data-val="true" data-val-number="The field Age must be a number." data-val-required="The Age field is required." id="Age" name="Age" type="number" value="" />
+Password:       <input id="Password" name="Password" type="text" value="" />
+isNewlyEnrolled:<input class="check-box" data-val="true" data-val-required="The isNewlyEnrolled field is required." id="isNewlyEnrolled" name="isNewlyEnrolled" type="checkbox" value="true" />
+                <input name="isNewlyEnrolled" type="hidden" value="false" />
+DoB:            <input data-val="true" data-val-date="The field DoB must be a date." data-val-required="The DoB field is required." id="DoB" name="DoB" type="datetime" value="" />
+
+
+---
+
+   [Display(Name = "ZákazkaTG-MH")]
+   [StringLength(8, ErrorMessage = "Zadajte údaj na 8 znakov")]  8 znamena ze sa do textboxu moze zadat maximalne 8 znakov
+                                                                 ak sa zada menej pri Submite sa nehlasi chyba!!!
+   [StringLength(8, MinimumLength=8, ErrorMessage = "Zadajte údaj na 8 znakov")]//Musi sa zadat MinimumLength=8, potom je to oK!
+        public string ZakazkaTg
+        {
+            get;
+            set;
+        }
+
+<input class="text-box single-line" data-val="true" 
+       data-val-length="Zadajte údaj na 8 znakov" 
+       data-val-length-max="8" 
+       data-val-required="The ZákazkaTG-MH field is required." 
+       id="ZakazkaTg" 
+       maxlength="8" 
+       name="ZakazkaTg" 
+       type="text" value="">
+
+       ============
+
+        [Required(ErrorMessage ="Údaj je povinný ")]
+        [Display(Name = "ZákazkaTG-MH")]
+        [StringLength(8, ErrorMessage = "Zadajte údaj na 8 znakov")]
+        public string ZakazkaTg
+        {
+            get;
+            set;
+        }
+
+        <input class="text-box single-line"
+        data-val="true" 
+        data-val-length="Zadajte údaj na 8 znakov" 
+        data-val-length-max="8" 
+        data-val-required="Údaj je povinný " 
+        id="ZakazkaTg" 
+        maxlength="8" 
+        name="ZakazkaTg" 
+        type="text" value="">
+        <span class="text-danger field-validation-valid" data-valmsg-for="ZakazkaTg" data-valmsg-replace="true"></span>
+
+===
+   @Html.LabelFor(m=>m.ZakazkaTg, htmlAttributes: new { @class = "control-label col-md-2" })
+                     <div class="col-md-4">
+                    @Html.EditorFor(m=>m.ZakazkaTg, "",  new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m=>m.ZakazkaTg, "", htmlAttributes:  new { @class="text-danger"})
+
+                    ZOBRAL MI AJ 2 ZNAKY!!! a ulozil polozku do DB!!
+-------

@@ -4,8 +4,8 @@
 /*
  * MH: 05.04.2022
 
- * aplikacia pouziva DB: TOYOTA_DB2  na MH: Dell
- * "DefaultConnection": "Server=HRABCAK;Database=TOYOTA_DB2;Trusted_Connection=True;MultipleActiveResultSets=true"
+ * aplikacia pouziva DB: TOYOTA_T1  na MH: Dell
+ * "DefaultConnection": "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;MultipleActiveResultSets=true"
  * ----------------------------
  * 
  * https://www.sharepointcafe.net/2022/01/create-first-mvc-application-using-net-6-in-visual-studio-2022.html
@@ -44,7 +44,7 @@ builder.Services.AddDbContext<ToyotaContext>(options => options.UseSqlServer(con
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//registracia IZakazkaTransformService
+//MH: registracia IZakazkaTransformService Funkcie pre transformaciu Instacie typu ZakazkaZO <-> Zakazka
 builder.Services.AddSingleton<IZakazkaTransformService, ZakazkaServiceWeb>();
 
 
@@ -59,9 +59,6 @@ builder.Services.AddSingleton<IZakazkaTransformService, ZakazkaServiceWeb>();
 //-------------------------------
 
 #endregion --- Adding services in container ----
-
-
-
 
 var app = builder.Build();
 

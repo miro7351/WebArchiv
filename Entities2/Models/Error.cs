@@ -5,6 +5,8 @@ namespace PA.TOYOTA.DB
 {
     public partial class Error
     {
+        //MH: april 2022
+        //nad zaznamamy sa nedaju robit operacie: DELETE ani UPDATE !!! 
         public int ErrorLogId { get; set; }
         public DateTime ErrorDate { get; set; }
         public string? ErrorMsg { get; set; }

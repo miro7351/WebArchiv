@@ -30,22 +30,39 @@
     th, td {
         padding: 10px;
     }
+
+    table {
+    }
+
+        table tbody {
+        }
+
+            table tbody tr {
+                border-bottom: 1px solid rgba(0,0,0,.3);
+            }
+
+    /*Alternate shadow rows */
+    table {
+    }
+
+        table tbody {
+        }
+
+            table tbody tr:nth-child(2n + 2) {
+                background-color: rgba(0,0,0,.05);
+            }
 </style>
 
 <div class="container">
     <h6>Prehľad údajov pre garančnú opravu: @Model.ZakazkaTg</h6>
+
     @* <p>ZakazkyJQ: Edit;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>*@
     <hr />
 
-    @*<div class="row">
-        <div class="col-md-4">
-        <form asp-action="Edit" method="post" >
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <input type="hidden" asp-for="ZakazkaId" />*@
     <div style="width:90%; margin:0 auto;">
         @* Udaje o zakazke*@
-        <table width="100%" cellspacing="0">
+        <table cellspacing="0"> 
+           @* ZakazkaTg a prilozeny subor*@
             <tr>
                 <td>@Html.DisplayNameFor(m=>m.ZakazkaTg)</td>
                 <td>@Html.DisplayFor(m=>m.ZakazkaTg)</td>
@@ -53,8 +70,11 @@
                     if (@Model.ZakazkaTGdokument != null)
                     {
                         <td colspan="3">
-                            @Html.ActionLink(@Model.ZakazkaTGdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
+                            @if (!string.IsNullOrEmpty(@Model.ZakazkaTGdokument.NazovSuboru))
+                            {
+                                @Html.ActionLink(@Model.ZakazkaTGdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
                     new{ zakazkaTG=@Model.ZakazkaTg.Trim(), subor=@Model.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model.ZakazkaTGdokument?.Skupina} )
+                            }
                         </td>
                     }
                     else
@@ -65,14 +85,18 @@
                 <td></td>
                 <td></td>
             </tr>
+             @* ZakazkaTb a prilozeny subor*@
             <tr>
                 <td>@Html.DisplayNameFor(m=>m.ZakazkaTb)</td>
                 <td>@Html.DisplayFor(m=>m.ZakazkaTb)</td>
                 @if (@Model.ZakazkaTBdokument != null)
                 {
                     <td colspan="3">
-                        @Html.ActionLink(@Model.ZakazkaTBdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
-                    new{ zakazkaTG=@Model.ZakazkaTg.Trim(), subor=@Model.ZakazkaTBdokument?.NazovSuboru?.Trim(), skupina=@Model.ZakazkaTBdokument?.Skupina} )
+                        @if (!string.IsNullOrEmpty(@Model.ZakazkaTBdokument.NazovSuboru))
+                        {
+                            @Html.ActionLink(@Model.ZakazkaTBdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
+                         new{ zakazkaTG=@Model.ZakazkaTg.Trim(), subor=@Model.ZakazkaTBdokument?.NazovSuboru?.Trim(), skupina=@Model.ZakazkaTBdokument?.Skupina} )
+                        }
                     </td>
                 }
                 else
@@ -82,6 +106,7 @@
                 <td></td>
                 <td></td>
             </tr>
+           @* Ukoncena*@
             <tr>
                 <td>@Html.DisplayNameFor(m=>m.Ukoncena)</td>
                 <td>@Html.DisplayFor(m=>m.Ukoncena)</td>
@@ -89,6 +114,7 @@
                 <td></td>
                 <td></td>
             </tr>
+           @* VIN a CWS*@
             <tr>
                 <td>@Html.DisplayNameFor(m=>m.Vin)</td>
                 <td>@Html.DisplayFor(m=>m.Vin)</td>
@@ -96,6 +122,7 @@
                 <td>@Html.DisplayFor(m=>m.Cws)</td>
                 <td></td>
             </tr>
+            @*CisloProtokolu*@
             <tr>
                 <td>@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
                 <td>@Html.DisplayFor(m=>m.CisloProtokolu)</td>
@@ -103,6 +130,7 @@
                 <td></td>
                 <td></td>
             </tr>
+            @*Poznamka*@
             <tr>
                 <td>@Html.DisplayNameFor(m=>m.Poznamka)</td>
                 <td colspan="4">@Html.DisplayFor(m=>m.Poznamka)</td>
@@ -112,6 +140,7 @@
             </tr>
 
         </table>
+
         @*table-striped   susedne riadky maju roznu farbu *@
 
         <span>Povinné dokumenty</span>
@@ -134,8 +163,25 @@
                                 @Html.DisplayFor(modelItem => item.NazovDokumentu)
                             </td>
                             <td>
+                               Tu bude nazov suboru
+                            </td>
+                           @* <td>
                                 @Html.DisplayFor(modelItem => item.NazovSuboru)
                             </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.NazovSuboru))
+                                {
+                                    @Html.ActionLink(item.NazovSuboru, "ShowImage", "ZakazkyJQ",
+                                 new{ zakazkaTG=@Model.ZakazkaTg.Trim(), subor=item.NazovSuboru?.Trim(), skupina=item.Skupina} )
+                                }
+                            </td>
+                            <td >
+                                @if (!string.IsNullOrEmpty(@Model?.ZakazkaTBdokument?.NazovSuboru))
+                                {
+                                    @Html.ActionLink(@Model.ZakazkaTBdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
+                                 new{ zakazkaTG=@Model.ZakazkaTg.Trim(), subor=@Model.ZakazkaTBdokument?.NazovSuboru?.Trim(), skupina=@Model.ZakazkaTBdokument?.Skupina} )
+                                }
+                            </td>*@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Poznamka)
                             </td>
@@ -144,7 +190,7 @@
                 </tbody>
             </table>
         }
-         <span>Prílohy</span>
+        <span>Prílohy</span>
 
         @if (Model.Prilohy != null)
         {
@@ -176,19 +222,9 @@
             </table>
         }
     </div>
-
-
-    @*</form>
-        </div>
-        </div>*@
-
     <div>
         <a asp-action="Index">Návrat</a>
     </div>
 </div>
 
-@section Scripts {
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+

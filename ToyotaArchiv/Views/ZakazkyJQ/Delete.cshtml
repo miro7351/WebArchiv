@@ -3,19 +3,19 @@
 @{
     ViewData["Title"] = "Delete";
 }
-@*ZakazkayJQ: Delete/zakazkaID *@
-<h41>Vymazať</h41>
+@*MH: april 2022 ZakazkayJQ: Delete/zakazkaID *@
+
 
 <h3>Naozaj vymazať záznam o garančnej oprave?</h3>
 <div>
-    <h4>Garančná oprava</h4>
+    <h4>Garančná oprava: @Model.ZakazkaTg</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ZakazkaId)
+            @Html.DisplayNameFor(model => model.ZakazkaTg)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ZakazkaId)
+            @Html.DisplayFor(model => model.ZakazkaTg)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ZakazkaTb)
@@ -56,11 +56,10 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Vytvorene)
         </dt>
-        
-        @*<dd class = "col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Vytvorene)
         </dd>
-        <dt class = "col-sm-2">
+        @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Zmenil)
         </dt>
         <dd class = "col-sm-10">
@@ -71,13 +70,13 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Zmenene)
-        </dd>
+        </dd>*@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Poznamka)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Poznamka)
-        </dd>*@
+        </dd>
        
     </dl>
     

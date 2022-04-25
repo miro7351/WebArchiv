@@ -52,20 +52,22 @@ namespace ToyotaArchiv.Domain
     /// <summary>
     /// Typ pre uplny popis zarucnej opravy;
     /// </summary>
-    public class ZakazkaZO  //Zakazka Zarucnej Opravy
+    public class ZakazkaZO  //Zakazka Zarucnej Opravy; je to ViewModel pre typ Zakazka
     {
         public ZakazkaZO()
         {
          
-            ZakazkaTGdokument = new BaseItem();//NazovDokumentu=ZakazkaTG, Skupina=1;
-            ZakazkaTBdokument = new BaseItem();//NazovDokumentu=ZakazkaTB, Skupina=2;
+            ZakazkaTGdokument = new BaseItem() { Skupina=1 };//NazovDokumentu=ZakazkaTG, Skupina=1;
+            ZakazkaTBdokument = new BaseItem() { Skupina=2};//NazovDokumentu=ZakazkaTB, Skupina=2;
 
             //PovinneDokumenty = new ObservableCollection<BaseItem>(); //Skupina: 20,21,22,...,99
             //Prilohy = new ObservableCollection<BaseItem>();          //Skupina: 100, 101,.....
 
-            PovinneDokumenty = new List<BaseItem>(5); //Skupina: 20,21,22,...,99
-            Prilohy = new List<BaseItem>(10);          //Skupina: 100, 101,.....
+            PovinneDokumenty = new List<BaseItem>(); //Skupina: 20,21,22,...,99
+            Prilohy = new List<BaseItem>();          //Skupina: 100, 101,.....
+            ErrorMessage = string.Empty;
         }
+
 
         #region ==Properties==
 
@@ -103,15 +105,33 @@ namespace ToyotaArchiv.Domain
 
         /// <summary>
         /// Zakazka Toyota Garancia;
-        /// Identifikator v ramci predajne pre garancnu opravu;
+        /// Identifikator v ramci firmy pre garancnu opravu;
         /// </summary>
-        [Display(Name = "ZákazkaTG")]
-        [StringLength(8, ErrorMessage = "Zadajte údaj na 8 znakov")]
+        /// [
+        /// 
+
+        [Required(ErrorMessage ="Údaj je povinný ")] //OK ak sa nezada nic a spusti sa Submit
+        [Display(Name = "ZákazkaTG")]             //OK
+        [StringLength(8, MinimumLength=8, ErrorMessage = "Zadajte údaj na 8 znakov")]//Ak sa nezada MinimumLength=8; nejdeto
         public string ZakazkaTg
         {
             get;
             set;
         }
+        //ZakazkaTg
+        //22.04.2022 pri valiacii mi neberie ErrorMessage = "Zadajte údaj na 8 znakov", vypise  eng. text
+        //The field ZákazkaTG is required
+
+        /*<input class="text-box single-line" data-val="true" 
+       data-val-length="Zadajte údaj na 8 znakov" 
+       data-val-length-max="8" 
+       data-val-required="The ZákazkaTG-MH field is required." 
+       id="ZakazkaTg" 
+       maxlength="8" 
+       name="ZakazkaTg" 
+       type="text" value="">
+         * 
+         */
 
         /// <summary>
         /// Vznika v momente prijmu vozidla do servisu kedy este nie je jasne ci ide o zarucnu opravu
@@ -129,7 +149,7 @@ namespace ToyotaArchiv.Domain
         /// <summary>
         /// Kod opravy auta z europskej databazy
         /// </summary>
-        [StringLength(7, MinimumLength = 0, ErrorMessage = "Zadajte údaj na 7 znakov")]
+        [StringLength(20, MinimumLength = 0, ErrorMessage = "Zadajte údaj na 1 až 20 znakov")]
         [Display(Name = "CWS")]
         public string? Cws
         {
@@ -170,7 +190,7 @@ namespace ToyotaArchiv.Domain
         /// </summary>
         [Display(Name = "Ukončená")]
         [StringLength(1, ErrorMessage = "Zadajte údaj na A alebo N")]
-        public string? Ukoncena //Ukoncena A/N
+        public string? Ukoncena //Ukoncena A/N  needituje sa!!
         {
             get;
             set;
@@ -195,7 +215,7 @@ namespace ToyotaArchiv.Domain
         public string? Vytvoril { get; set; }
         
         [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
         [Display(Name = "Vytvorené")]
         public DateTime? Vytvorene { get; set; }
 
@@ -205,28 +225,13 @@ namespace ToyotaArchiv.Domain
         public string? Zmenil { get; set; }
 
         [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
         [Display(Name = "Zmenené")]
         public DateTime? Zmenene { get; set; }
 
 
-        [Display(Name = "Súbor TG")]
-        [MaxLength(64)]
-        public string? TgFileName { get; set; }
+        public string? ErrorMessage { get; set; }  //pre zobrazenie chyby, ktora nastane pri spracovani, alebo ukladani do DB
 
-        [Display(Name = "Súbor TB")]
-        [MaxLength(64)]
-        public string? TbFileName { get; set; }
-
-
-        //pre vyber suboru pre ZakazkaTGdokument na klientovi
-        [Display(Name = "Vyber subor")]
-        public IFormFile? TBFile { get; set; } = null!;
-
-
-        //pre vyber suboru pre ZakazkaTBdokument na klientovi
-        [Display(Name = "Vyber subor")]
-         public IFormFile? TGFile { get; set; } = null!;
 
         #endregion ==Properties==
 
@@ -235,8 +240,8 @@ namespace ToyotaArchiv.Domain
          * Zakazka: ZakazkaID, ZakazkaTG, ZakazkaTB, VIN, CWS, CisloProtokolu, Platna, Ukoncena, Poznamka, Vytvoril, Vytvorene, Zmenil, Zmenene, vsetko su to len jednoduche typy nvarchar(xx)
          * 
          * Dokument: subory pre zakazku, povinne dokumenty a prilohy; subory typu: *.pdf, *.txt, *.jpeg,....
-         *           DokumentID, ZakazkaTG, NazovDokumentu, NazovSuboru, DokumentPlatny, Skupina, Poznamka, Vytvoril, Vytvorene, Zmenil, Zmenene
-         * Document_Detail:  DokumentID, NazovDokumentu, DocumentContent,  Platny, Poznamka,  Vytvoril, Vytvorene, Zmenil, Zmenene          
+         *           DokumentID, ZakazkaTG, Skupina, NazovDokumentu, NazovSuboru, Skupina, Poznamka
+         * Document_Detail:  DokumentID, Skupina, DocumentContent          
          */
 
 

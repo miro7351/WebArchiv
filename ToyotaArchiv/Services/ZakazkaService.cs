@@ -28,7 +28,7 @@ namespace ToyotaArchiv.Services
         static short SkupinaPrvehoPovinnehoDokumentu => 20;
         static short SkupinaPrvejPrilohy => 100;
         static short PocetPovinnych => 5;
-        static short PocetPriloh => 10;
+        static short PocetPriloh => 5;
 
         /// <summary>
         /// Typ instancie Zakazka (z databazy) skonveruje do vytvorenej instancie typu ZakazkaZO (pre zobrazenie pre uzivatela);
@@ -42,17 +42,17 @@ namespace ToyotaArchiv.Services
             //zakazkaZO.ZakazkaTGdokument neobsahuje obrazok, tj. ZakazkaTGdokument.FileContent=null
             //obrazok sa na poziadanie vyberie z DB!!!
 
-            zakazkaZO.ZakazkaTb = zakazka.ZakazkaTb;
-            zakazkaZO.ZakazkaTg = zakazka.ZakazkaTg;
-            zakazkaZO.Poznamka = zakazka.Poznamka;
-            zakazkaZO.Ukoncena = zakazka.Ukoncena;
-            zakazkaZO.Vin = zakazka.Vin;
-            zakazkaZO.Cws = zakazka.Cws;
-            zakazkaZO.CisloProtokolu = zakazka.CisloProtokolu;
-            zakazkaZO.Vytvoril = zakazka.Vytvoril;  
-            zakazkaZO.Vytvorene = zakazka.Vytvorene;    
-            zakazkaZO.Zmenil = zakazka.Zmenil;
-            zakazkaZO.Zmenene = zakazka.Zmenene;    
+            zakazkaZO.ZakazkaTg = zakazka.ZakazkaTg.Trim();
+            zakazkaZO.ZakazkaTb = zakazka.ZakazkaTb?.Trim();
+            zakazkaZO.Poznamka = zakazka?.Poznamka?.Trim();
+            zakazkaZO.Ukoncena = zakazka?.Ukoncena;
+            zakazkaZO.Vin = zakazka?.Vin?.Trim();
+            zakazkaZO.Cws = zakazka?.Cws?.Trim();
+            zakazkaZO.CisloProtokolu = zakazka?.CisloProtokolu?.Trim();
+            zakazkaZO.Vytvoril = zakazka?.Vytvoril?.Trim();
+            zakazkaZO.Vytvorene = zakazka?.Vytvorene;    //DateTime
+            zakazkaZO.Zmenil = zakazka?.Zmenil?.Trim(); 
+            zakazkaZO.Zmenene = zakazka?.Zmenene;    //DateTime
 
             var d1 = zakazka.Dokuments.Where(d => d.Skupina == 1).FirstOrDefault();
             //var detaily = d1.DokumentDetails.FirstOrDefault(d => d.Skupina == 1);
@@ -65,17 +65,13 @@ namespace ToyotaArchiv.Services
                     Dokument? dok = zakazka.Dokuments.FirstOrDefault(d => d.Skupina == SkupinaZakazkaTGDokument);
                     DokumentDetail? detail = dok?.DokumentDetails.FirstOrDefault(d => d.Skupina == SkupinaZakazkaTGDokument);
 
-                    zakazkaZO.ZakazkaTGdokument.NazovDokumentu = dok?.NazovDokumentu;
-                    zakazkaZO.ZakazkaTGdokument.NazovSuboru    = dok?.NazovSuboru;
+                    zakazkaZO.ZakazkaTGdokument.NazovDokumentu = dok?.NazovDokumentu?.Trim();
+                    zakazkaZO.ZakazkaTGdokument.NazovSuboru    = dok?.NazovSuboru?.Trim();
 
                     zakazkaZO.ZakazkaTGdokument.FileContent = null;
 
-                    zakazkaZO.ZakazkaTGdokument.Skupina   = dok?.Skupina;
-                    zakazkaZO.ZakazkaTGdokument.Poznamka  = dok?.Poznamka;
-                    zakazkaZO.ZakazkaTGdokument.Vytvoril  = dok?.Vytvoril;
-                    zakazkaZO.ZakazkaTGdokument.Vytvorene = dok?.Vytvorene;
-                    zakazkaZO.ZakazkaTGdokument.Zmenil    = dok?.Zmenil;
-                    zakazkaZO.ZakazkaTGdokument.Zmenene   = dok?.Zmenene;
+                    zakazkaZO.ZakazkaTGdokument.Skupina   = dok?.Skupina;//short
+                    zakazkaZO.ZakazkaTGdokument.Poznamka  = dok?.Poznamka?.Trim();
                 }
 
                 //Test ci existuje dokument pre zakazkaZO.ZakazkaTGdokument
@@ -84,17 +80,13 @@ namespace ToyotaArchiv.Services
                     Dokument? dok = zakazka.Dokuments.FirstOrDefault(d => d.Skupina == SkupinaZakazkaTBDokument);
                    // DokumentDetail detail = dok?.DokumentDetails.FirstOrDefault(d => d.Skupina == SkupinaZakazkaTBDokument);
 
-                    zakazkaZO.ZakazkaTBdokument.NazovDokumentu = dok?.NazovDokumentu;
-                    zakazkaZO.ZakazkaTBdokument.NazovSuboru = dok?.NazovSuboru;
+                    zakazkaZO.ZakazkaTBdokument.NazovDokumentu = dok?.NazovDokumentu?.Trim();
+                    zakazkaZO.ZakazkaTBdokument.NazovSuboru = dok?.NazovSuboru?.Trim();
 
                     zakazkaZO.ZakazkaTGdokument.FileContent = null;
                    
-                    zakazkaZO.ZakazkaTBdokument.Skupina = dok?.Skupina;
-                    zakazkaZO.ZakazkaTBdokument.Poznamka = dok?.Poznamka;
-                    zakazkaZO.ZakazkaTBdokument.Vytvoril = dok?.Vytvoril;
-                    zakazkaZO.ZakazkaTBdokument.Vytvorene = dok?.Vytvorene;
-                    zakazkaZO.ZakazkaTBdokument.Zmenil = dok?.Zmenil;
-                    zakazkaZO.ZakazkaTBdokument.Zmenene = dok?.Zmenene;
+                    zakazkaZO.ZakazkaTBdokument.Skupina = dok?.Skupina;//short
+                    zakazkaZO.ZakazkaTBdokument.Poznamka = dok?.Poznamka?.Trim();
                 }
 
                 #region ==Povinne dokumenty ==
@@ -112,14 +104,10 @@ namespace ToyotaArchiv.Services
                             BaseItem bi = new BaseItem();
                             if (dok != null) //existuje povinny dokument, kde Skupina= (SkupinaPrvehoPovinnehoDokumentu+i)
                             {
-                                bi.Skupina = dok.Skupina;
-                                bi.NazovDokumentu = dok.NazovDokumentu;  //
-                                bi.Poznamka = dok.Poznamka;
-                                bi.NazovSuboru = dok.NazovSuboru;
-                                bi.Vytvoril = dok.Vytvoril;
-                                bi.Vytvorene = dok.Vytvorene;
-                                bi.Zmenil = dok.Zmenil;
-                                bi.Zmenene = dok.Zmenene;
+                                bi.Skupina = dok.Skupina; //short
+                                bi.NazovDokumentu = dok.NazovDokumentu?.Trim();  //
+                                bi.Poznamka = dok.Poznamka?.Trim();
+                                bi.NazovSuboru = dok.NazovSuboru?.Trim();
                             }
                             else //neexistuje povinny dokument, vytvorim prazdny dokument a nastavim  len jeho property NazovDokumentu a Skupina
                             {
@@ -175,14 +163,10 @@ namespace ToyotaArchiv.Services
                         {
                             BaseItem bi = new BaseItem();
                             bi.Skupina = dok1.Skupina;
-                            bi.NazovDokumentu = dok1.NazovDokumentu;  //
+                            bi.NazovDokumentu = dok1.NazovDokumentu?.Trim();  //
                             
-                            bi.Poznamka = dok1.Poznamka;
-                            bi.NazovSuboru = dok1.NazovSuboru;
-                            bi.Vytvoril = dok1.Vytvoril;
-                            bi.Vytvorene = dok1.Vytvorene;
-                            bi.Zmenil = dok1.Zmenil;
-                            bi.Zmenene = dok1.Zmenene;
+                            bi.Poznamka = dok1.Poznamka?.Trim();
+                            bi.NazovSuboru = dok1.NazovSuboru?.Trim();
                             zakazkaZO.Prilohy?.Add(bi);
                         }//for
 
@@ -294,7 +278,7 @@ namespace ToyotaArchiv.Services
                     foreach (var povinnyDokument in povinneDokumenty)
                     {
                         Dokument dokument1 = new Dokument();
-                        dokument1.ZakazkaTg = myZakZO?.ZakazkaTg ?? "0";
+                        dokument1.ZakazkaTg = myZakZO?.ZakazkaTg ?? "";
                         dokument1.NazovDokumentu = povinnyDokument.NazovDokumentu;
                         dokument1.NazovSuboru = povinnyDokument.NazovSuboru;
                         dokument1.Skupina = povinnyDokument.Skupina;
@@ -303,7 +287,7 @@ namespace ToyotaArchiv.Services
                         DokumentDetail dokDetail1 = new DokumentDetail();
                         
                         dokDetail1.Skupina = povinnyDokument.Skupina;
-                        if( povinnyDokument.FileContent != null)
+                        if( povinnyDokument.FileContent != null)  //FileContent pole bytov, obsahuje obrazok z klienta;
                         {
                             dokDetail1.DokumentContent = new byte[povinnyDokument.FileContent.Length];
                             povinnyDokument.FileContent?.CopyTo(dokDetail1.DokumentContent, 0);
@@ -318,7 +302,7 @@ namespace ToyotaArchiv.Services
             documentExist = myZakZO?.Prilohy?.Any(p => !string.IsNullOrEmpty(p.NazovSuboru));
             if (documentExist.HasValue && documentExist.Value)//je zadany aspon jeden subor
             {
-                var prilohy = myZakZO?.Prilohy?.Where(p => !string.IsNullOrEmpty(p.FilePath)).ToList();
+                var prilohy = myZakZO?.Prilohy?.Where(p => !string.IsNullOrEmpty(p.NazovSuboru)).ToList();
                 if (prilohy != null)
                 {
                     foreach (var priloha in prilohy)
@@ -333,7 +317,7 @@ namespace ToyotaArchiv.Services
                         DokumentDetail dokDetail1 = new DokumentDetail();
                         dokDetail1.Skupina = priloha.Skupina;
 
-                        if( priloha.FileContent != null)
+                        if( priloha.FileContent != null) //FileContent pole bytov, obsahuje obrazok z klienta;
                         {
                             dokDetail1.DokumentContent = new byte[priloha.FileContent.Length];
                             priloha.FileContent?.CopyTo(dokDetail1.DokumentContent, 0);
@@ -350,28 +334,51 @@ namespace ToyotaArchiv.Services
         /*
          * instancia myZakZO vzikla z instancie zakazkaDB, pri editovani myZakZO sa mohli zmenit obsahy instancii dokumentov, mohol pribudnut dokument do myZakZO;
          */
-        public  void ConvertZakazkaZO_To_Zakazka(ref ZakazkaZO myZakZO, ref Zakazka zakazkaDB)  //ked sa robi UPDATE zaznamu z DB!!!!
+        public void ConvertZakazkaZO_To_Zakazka(ref ZakazkaZO myZakZO, ref Zakazka zakazkaDB)  //ked sa robi UPDATE zaznamu z DB!!!!
         {
+            if (myZakZO == null)
+            {
+                throw new ArgumentNullException($"Chyba-ConvertZakazkaZO_To_Zakazka: Neplatný údaj pre vstupnú zákazku!");
+            }
+            if(zakazkaDB == null)
+            {
+                throw new ArgumentNullException($"Chyba-ConvertZakazkaZO_To_Zakazka: Neplatný údaj pre výstupnú zákazku!");
+            }
 
             //zakazkaDB.ZakazkaTg = myZakZO.ZakazkaTg;   //ZakazkaTg sa nemeni!!!
             zakazkaDB.ZakazkaTb = myZakZO.ZakazkaTb;
 
-            //zakazkaDB.Platna    = myZakZO.Platna; 
-            zakazkaDB.Poznamka = myZakZO.Poznamka;
-            zakazkaDB.Ukoncena = myZakZO.Ukoncena;
-            zakazkaDB.Vin = myZakZO.Vin;
-            zakazkaDB.Cws = myZakZO.Cws;
-            zakazkaDB.CisloProtokolu = myZakZO.CisloProtokolu;
+            zakazkaDB.Poznamka = myZakZO?.Poznamka?.Trim();
+            zakazkaDB.Ukoncena = myZakZO?.Ukoncena;
+            zakazkaDB.Vin = myZakZO?.Vin?.Trim();
+            zakazkaDB.Cws = myZakZO?.Cws?.Trim();
+            zakazkaDB.CisloProtokolu = myZakZO?.CisloProtokolu?.Trim();
 
             #region == Dokumenty  pre Skupina=1 a Skupina=2 ===
 
             var zakazkaTGdokument = zakazkaDB.Dokuments.FirstOrDefault(d => d.Skupina == SkupinaZakazkaTGDokument);
             if (zakazkaTGdokument != null)//zakazkaDB mala uz zakazkaTGdokument
             {
-                zakazkaTGdokument.Poznamka = myZakZO.ZakazkaTGdokument.Poznamka;
+                zakazkaTGdokument.Poznamka = myZakZO?.ZakazkaTGdokument?.Poznamka?.Trim();
                 //zakazkaTBdokument.NazovDokumentu = myZakZO.ZakazkaTBdokument.NazovDokumentu;  nemeni sa
-                zakazkaTGdokument.NazovSuboru = myZakZO.ZakazkaTGdokument.NazovSuboru;
+                zakazkaTGdokument.NazovSuboru = myZakZO?.ZakazkaTGdokument?.NazovSuboru?.Trim();
                 //zakazkaTBdokument.Skupina = myZakZO.ZakazkaTBdokument.Skupina;   nemeni sa
+                /**/
+                if(myZakZO?.ZakazkaTGdokument?.DokFormFile != null)  //nastala zmena obrazku
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        zakazkaTGdokument.NazovSuboru = myZakZO.ZakazkaTGdokument.DokFormFile.FileName;
+                        myZakZO.ZakazkaTGdokument.DokFormFile.CopyTo(ms);
+
+                        var detail1 = zakazkaTGdokument.DokumentDetails.FirstOrDefault(d => d.Skupina == SkupinaZakazkaTGDokument);
+                        if (detail1 != null && detail1.DokumentContent != null)
+                        {
+                            detail1.DokumentContent = ms.ToArray();
+                        }
+                    }
+                }
+             /*   */
             }
             else//zakazkaDB este nemala vytvoreny Dokument pre Skupina=1
             {
@@ -611,5 +618,40 @@ namespace ToyotaArchiv.Services
             #endregion == Prilohy ==
 
         }//ConvertZakazkaZO_To_Zakazka(ZakazkaZO myZakZO, ref Zakazka zakazkaDB)
+
+
+        /// <summary>
+        /// Vytvori instanciu ktora obsahuje vsetky vnorene udaje, ale udaje este nie su nastavene;
+        /// Povinne dokumenty obsahuju len NazovDokumentu a cislo skupiny;
+        /// Prilohy  obsahuju len NazovDokumentu  a cislo skupiny;
+        /// </summary>
+        /// <returns></returns>
+        public ZakazkaZO VytvorPrazdnuZakazkuZO()
+        {
+            ZakazkaZO zakazkaZO = new ZakazkaZO();
+
+            VytvorPovinneDokumenty();
+            VytvorPrilohy();
+
+            return zakazkaZO;
+
+            int VytvorPovinneDokumenty()
+            {
+                for (short i = 0; i < PocetPovinnych; i++)
+                {
+                    zakazkaZO.PovinneDokumenty?.Add(new BaseItem() { Skupina = (short)(SkupinaPrvehoPovinnehoDokumentu + i), NazovDokumentu = NazvyPovinnychDokumentov[i], Poznamka = $"Poznamka ABCD{i + 1:000}" });
+                }
+                return zakazkaZO.PovinneDokumenty?.Count ?? 0;
+            }
+
+            int VytvorPrilohy()
+            {
+                for (short i = 0; i < PocetPriloh; i++)
+                {
+                    zakazkaZO.Prilohy?.Add(new BaseItem() { Skupina = (short)(SkupinaPrvejPrilohy + i), NazovDokumentu = $"Priloha{(SkupinaPrvejPrilohy + i + 1) % SkupinaPrvejPrilohy:00}", Poznamka = $"POZNAMKA Priloha ABCD{i + 1:000}" });
+                }
+                return zakazkaZO.Prilohy?.Count ?? 0;
+            }
+        }
     }
 }

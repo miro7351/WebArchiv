@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PA.TOYOTA.DB
 {
+
     public partial class Zakazka
     {
         public Zakazka()
@@ -13,7 +12,9 @@ namespace PA.TOYOTA.DB
 
         public int ZakazkaId { get; set; }
 
-        [StringLength(8, MinimumLength = 5, ErrorMessage = "Zadajte údaj od 5 do max.8 znakov")]
+        [Required]
+
+        [StringLength(8, ErrorMessage = "Zadajte údaj na 8 znakov")]
         [Display(Name = "Zák. TG")]
         public string ZakazkaTg { get; set; } = null!;
 
@@ -48,7 +49,7 @@ namespace PA.TOYOTA.DB
         public string? Vytvoril { get; set; }
 
         [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}", ApplyFormatInEditMode = true)]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
         [Display(Name = "Vytvorené")]
         public DateTime? Vytvorene { get; set; }
 
@@ -58,7 +59,7 @@ namespace PA.TOYOTA.DB
         public string? Zmenil { get; set; }
 
         [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}", ApplyFormatInEditMode = true)]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
         [Display(Name = "Zmenené")]
         public DateTime? Zmenene { get; set; }
 

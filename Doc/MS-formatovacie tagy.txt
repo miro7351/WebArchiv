@@ -9,6 +9,8 @@ https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotation
 
 https://asp.mvc-tutorial.com/models/data-annotations/
 
+https://www.tutorialsteacher.com/mvc/implement-validation-in-asp.net-mvc
+
 Mozeme pridat metadata ku property. Ak sa pouziju DataAnnotations a model sa potom pouzije mimo MVC projektu, nic sa nepokazi; 
 DataAnnotations mozeme nechat v kode;
 
@@ -141,7 +143,7 @@ For instance, if the property on the model is decorated with the  [DataType(Data
 PRI EDITOVANI NA WEB STRANKE SA ZOBRAZI KALENDAR a s moznostou nastavenia hodin, minut a sekund.
 
      [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}", ApplyFormatInEditMode = true)]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!)]
         [Display(Name = "Zmenené")]
         public DateTime? Zmenene { get; set; }
 
@@ -182,6 +184,16 @@ So for example if your title was a date, you could define
 [DisplayFormat(DataFormatString = "{0:d}")]
 
 -----------
+toto generuje VS
+  <label asp-for="ZakazkaTg" class="control-label"></label>
+  <input asp-for="ZakazkaTg" class="form-control" />
+  <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
+
+  da sa to prepisat aj takto:
+
+  @Html.DisplayNameFor(m=>m.ZakazkaTg)
+  @Html.TextBoxFor(m=>m.ZakazkaTg, new { @class="form-control"})
+  @Html.ValidationMessageFor(m=>m.ZakazkaTg, "Chyba:",new { @class="text-danger"})//pod TextBoxom sa objavi popis: Chyba ma cervenu farbu;
 
 
 

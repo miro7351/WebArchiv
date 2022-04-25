@@ -3,6 +3,9 @@ using ToyotaArchiv.Domain;
 
 namespace ToyotaArchiv.Infrastructure
 {
+    //MH: april 2022
+    //funcie pre transformaciu typu ZakazkaZO <-> Zakazka
+    //ZakazkaZO je viewmodel pre typ Zakazka, len nazov |ZakazkaZO  nie je velmi dobry;
     public interface IZakazkaTransformService
     {
       
@@ -11,6 +14,7 @@ namespace ToyotaArchiv.Infrastructure
 
         void ConvertZakazkaZO_To_Zakazka(ref ZakazkaZO myZakZO, ref Zakazka zakazkaDB);
 
+        ZakazkaZO VytvorPrazdnuZakazkuZO();
 
     }
 }

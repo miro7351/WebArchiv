@@ -168,5 +168,8 @@ namespace PA.TOYOTA.DB
 21.04.2022
 PM> Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_DB;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force 
 
+23.04.2022
+Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force 
+
 
 

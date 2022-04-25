@@ -12,7 +12,7 @@ namespace ToyotaArchiv.Domain
     /// Skupina=20,...,99  Povinne dokumenty
     /// Skupina=100,101,... Prilohy
     /// </summary>
-    public class BaseItem 
+    public class BaseItem   //Je to ViewModel pre typ Dokument; lepsi nazov by bol DokumentViewModel ( BaseDokumentViewModel,DokumentVM ??)
     {
         public BaseItem()
         {
@@ -47,7 +47,6 @@ namespace ToyotaArchiv.Domain
         {
             get;
             set;
-            
         }
 
        /*
@@ -95,6 +94,13 @@ namespace ToyotaArchiv.Domain
         }
 
 
+        [MaxLength]
+        public byte[]? FileContent { get; set; }  //obsah suboru prijateho z klienta
+
+        //[Required]
+        [Display(Name = "Priložený dokument")]
+        public IFormFile? DokFormFile { get; set; } = null!;
+
         /*Pouziva sa pri nastaveni IsEnbled, Visibility, DropEnabled properties  
          * 
          * Pred zapisom do databazy ak je zadany FileName nastavim Completed="Y";
@@ -116,17 +122,13 @@ namespace ToyotaArchiv.Domain
         /*
          * Subory do jednej zakazky moze pridavat viac uzivatelov, preto pre sledovanie historie zaznamu
          * je potrebne mat aj tieto properties
-         */
+       
         public string? Vytvoril { get; set; }
 
         public DateTime? Vytvorene { get; set; }
         public string? Zmenil { get; set; }
         public DateTime? Zmenene { get; set; }
-
-        [MaxLength]
-        public byte[]? FileContent { get; set; }  //obsah suboru prijateho z klienta
-
-        [Display(Name = "Vyber subor")]
-        public IFormFile? MyIFormFile { get; set; } = null!;
+  */
+      
     }
 }

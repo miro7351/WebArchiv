@@ -1,18 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+
 using PA.TOYOTA.DB;
-using System.Diagnostics;
-using ToyotaArchiv.Global;
-using ToyotaArchiv.Infrastructure;
 using ToyotaArchiv.Models;
+using ToyotaArchiv.Infrastructure;
+
 
 namespace ToyotaArchiv.Controllers
 {
+    //MH: april 2022
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ToyotaContext _context;
-
-       
+              
 
         public HomeController(ILogger<HomeController> logger, ToyotaContext context)
         {
@@ -34,7 +35,7 @@ namespace ToyotaArchiv.Controllers
             //MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.ADMIN);
 
             MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.VEDUCI);
-            //MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.USER1);
+            //MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.SERVISNY_TECHNIK);
             //MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.READONLY);
             return View();
         }

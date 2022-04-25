@@ -64,7 +64,7 @@ $(document).ready(function () {
             { "data": "cws", "name": "Cws", "autoWidth": true },
             { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
             { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
-            { "data": "poznamka", "name": "Poznamka", "autoWidth": true },
+            { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
         ]
     });
 

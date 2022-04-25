@@ -1,0 +1,106 @@
+MH: 23.04.2022
+
+Ako zobrazit na klientovi hierarchicke data a po editacii a odoslani na server ako z nich dostat pozadovanu instanciu.
+
+Projekt stary 5 rokov robeny pre .NET Framework 4.6.2. Pouziva este EF 6.
+Ale hlavne je to AKO NA TO pri editovani MASTER-DETAIL udajov na klientovi a spracovanie v Controleri!!!!
+
+https://www.pluralsight.com/guides/asp.net-mvc-getting-default-data-binding-right-for-hierarchical-views
+
+-------------
+TOTO GENERUJE VS ak sa vytvori nejake view *.cshtml
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Orders[0].OrderID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Orders[0].OrderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Orders[0].Description)
+        </th>
+    </tr>
+    @if (Model.Orders != null)
+    {
+        foreach (var order in Model.Orders)
+        {
+            <tr>
+                @Html.HiddenFor(x => order.CustomerID)
+                <td>
+                    @Html.DisplayFor(x => order.OrderID)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => order.OrderDate)
+                </td>
+                <td>
+                    @Html.EditorFor(x => order.Description)
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+Ale ked potrebujeme EDITOVAT NA KLIENTOVI udaje, treba pouzit tento postup
+
+Correctly Binding Collection Data
+
+@if (Model.Orders != null)
+{
+    for (var i = 0; i < Model.Orders.Count(); i++)
+    {
+        <tr>
+            @Html.HiddenFor(x => Model.Orders[i].CustomerID)
+            <td>
+                @Html.TextBoxFor(x => Model.Orders[i].OrderID, new { @class = "form-control", @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.TextBoxFor(x => Model.Orders[i].OrderDate, new { @class = "form-control", @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.TextBoxFor(x => Model.Orders[i].Description, new { @class = "form-control" })
+            </td>
+        </tr>
+    }
+}
+
+TextBoxFor   NAMIESTO    DisplayFor alebo EditorFor
+Needitovatelne polozky znacit ako readonly !!!
+Pre TextBoxFor nastylujeme pomocou  { @class = "form-control" })
+
+
+--------------------------------
+
+ODOSLANIE NA SERVER A SPRACOVANIE v Controlleri
+
+[HttpPost]
+[ValidationAntiForgeryToken]
+public ActionResult Index( CustomerOrdersListViewModel  model)  //  !!!!! TU DOSTANEME INSTANCIU MODEL SO VSETKYMI UDAJMI Z KLIENTA !!!
+{
+    if( ModelState.IsValid)
+	{
+         if( model.Orders != null )
+   	     {
+           	 var repo = new OrdersRepository();
+    		repo.Save(model.Orders);
+          }
+	     return View(model);
+	}
+    return new HttpStatusCodeResult(HttpStatusCode.BadRequest)
+}
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
