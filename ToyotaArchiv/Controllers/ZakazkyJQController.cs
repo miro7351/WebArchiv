@@ -429,6 +429,8 @@ namespace ToyotaArchiv.Controllers
 
                 foreach(var d in zakazkaZO.PovinneDokumenty)
                 {
+                    if (d.DokFormFile == null)
+                        continue;
                     using (var ms = new MemoryStream())
                     {
                         d.DokFormFile.CopyTo(ms);
@@ -439,6 +441,8 @@ namespace ToyotaArchiv.Controllers
 
                 foreach (var d in zakazkaZO.Prilohy)
                 {
+                    if (d.DokFormFile == null)
+                        continue;
                     using (var ms = new MemoryStream())
                     {
                         d.DokFormFile.CopyTo(ms);
@@ -461,7 +465,7 @@ namespace ToyotaArchiv.Controllers
                     zakazkaZO.ErrorMessage = $"!! Nastala chyba pri uložení záznamu pre ZakazkaTg: {zakazkaZO.ZakazkaTg} !!";  //ex.Message;
                 }
             }
-            return View(zakazkaZO);
+            return View("NovaZakazka", zakazkaZO);
         }
 
         //UpdateZakazka.cshtml klik na button"Ulozit", po zadani parametrov pre zmenenu zakazku;
