@@ -574,23 +574,27 @@ namespace ToyotaArchiv.Controllers
                 int pp = zakazkaZO.PovinneDokumenty.Count;
                 int pr = zakazkaZO.Prilohy.Count;
 
-                foreach (var d in zakazkaZO.PovinneDokumenty)
+                foreach (var pd in zakazkaZO.PovinneDokumenty)
                 {
+                    if (pd.DokFormFile == null)//nebpl vybray subor
+                        continue;
                     using (var ms = new MemoryStream())
                     {
-                        d.DokFormFile.CopyTo(ms);
-                        d.FileContent = ms.ToArray();
-                        d.NazovSuboru = d.DokFormFile.FileName;
+                        pd.DokFormFile.CopyTo(ms);
+                        pd.FileContent = ms.ToArray();
+                        pd.NazovSuboru = pd.DokFormFile.FileName;
                     }
                 }
 
-                foreach (var d in zakazkaZO.Prilohy)
+                foreach (var prd in zakazkaZO.Prilohy)
                 {
+                    if( prd.DokFormFile == null)
+                        continue ;
                     using (var ms = new MemoryStream())
                     {
-                        d.DokFormFile.CopyTo(ms);
-                        d.FileContent = ms.ToArray();
-                        d.NazovSuboru = d.DokFormFile.FileName;
+                        prd.DokFormFile.CopyTo(ms);
+                        prd.FileContent = ms.ToArray();
+                        prd.NazovSuboru = prd.DokFormFile.FileName;
                     }
                 }
 
