@@ -1,0 +1,55 @@
+﻿@model PA.TOYOTA.DB.Account
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Nový účet</h4>
+
+<h4>Účet</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" >
+                <label asp-for="LoginName" class="control-label"></label>
+                <input asp-for="LoginName" class="form-control" />
+                <span asp-validation-for="LoginName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoginPassword" class="control-label"></label>
+                <input asp-for="LoginPassword" class="form-control" />
+                <span asp-validation-for="LoginPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+@*                <label asp-for="LoginRola" class="control-label"></label>
+                <input asp-for="LoginRola" class="form-control" />
+                <span asp-validation-for="LoginRola" class="text-danger"></span>*@
+
+
+
+              <select name="LoginRola" id="LoginRola" class="form-control">
+                  <option value="">--Vyber rolu--</option>
+                  <option value="ADMIN">ADMIN</option>
+                  <option value="VEDUCI">VEDUCI</option>
+                  <option value="SERVISNY_TECHNIK">SERVISNY_TECHNIK</option>
+                  <option value="READONLY">READONLY</option>
+               
+                </select>
+                <span asp-validation-for="LoginRola" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Uložiť" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

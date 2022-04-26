@@ -1,26 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace PA.TOYOTA.DB
 {
     public partial class ToyotaContext : DbContext
     {
-        public string? ConnectionString { get; }  //MH pridane
+        public string ConnectionString { get; }
+
         public ToyotaContext()
         {
-            ConnectionString = Database?.GetConnectionString();
         }
 
         public ToyotaContext(DbContextOptions<ToyotaContext> options)
             : base(options)
         {
-            ConnectionString = Database?.GetConnectionString();
+            ConnectionString = Database.GetConnectionString();
         }
 
+        public virtual DbSet<Account> Accounts { get; set; } = null!;
         public virtual DbSet<Dokument> Dokuments { get; set; } = null!;
         public virtual DbSet<DokumentDetail> DokumentDetails { get; set; } = null!;
         public virtual DbSet<Error> Errors { get; set; } = null!;
         public virtual DbSet<Log> Logs { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
+        public virtual DbSet<Table1> Table1s { get; set; } = null!;
         public virtual DbSet<Zakazka> Zakazkas { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,12 +33,33 @@ namespace PA.TOYOTA.DB
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=INTRA-MSSQL;Database=TOYOTA_DB;persist security info=False; User ID=toyota_user;Password=toyota;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.HasKey(e => e.LoginId);
+
+                entity.ToTable("Account");
+
+                entity.Property(e => e.LoginId).HasColumnName("LoginID");
+
+                entity.Property(e => e.LoginName)
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LoginPassword)
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LoginRola)
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Dokument>(entity =>
             {
                 entity.ToTable("Dokument");
@@ -166,6 +192,19 @@ namespace PA.TOYOTA.DB
                 entity.Property(e => e.Zmenil)
                     .HasMaxLength(32)
                     .HasDefaultValueSql("('')");
+            });
+
+            modelBuilder.Entity<Table1>(entity =>
+            {
+                entity.HasKey(e => e.Eeeeee);
+
+                entity.ToTable("Table_1");
+
+                entity.Property(e => e.Eeeeee).HasColumnName("eeeeee");
+
+                entity.Property(e => e.Dasdas)
+                    .HasColumnType("date")
+                    .HasColumnName("dasdas");
             });
 
             modelBuilder.Entity<Zakazka>(entity =>

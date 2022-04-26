@@ -35,25 +35,25 @@ class="container"  centruje obsah div na stred
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+  @*                      <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         
                         <li class="nav-item">
                           <a class="nav-link text-dark" asp-area="" asp-controller="ZakazkyJQ" asp-action="Index">Garančné opravy</a>
-                        </li>
+                        </li>*@
                        
                         @if (true)@*Len pre roly: ADMIN, VEDUCI*@
                         {
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="Index">Účty</a>
-                            </li>
-                            <li class="nav-item">
+@*                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roly</a>
+                            </li>*@
+                      @*      <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Logs" asp-action="Index">Logy</a>
-                            </li>
-                             <li class="nav-item">
+                            </li>*@
+   @*                          <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Errors" asp-action="Index">Chyby</a>
-                            </li>
+                            </li>*@
                             
                         }
 
