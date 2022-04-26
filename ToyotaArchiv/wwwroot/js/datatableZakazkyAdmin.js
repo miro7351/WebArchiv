@@ -24,29 +24,29 @@ $(document).ready(function () {
         "columnDefs":
             [{
                 "targets": [0],
-                "visible": false,
+                "visible": true,
                 "searchable": false
             },
+                
             {
                 "render": function (data, type, row) {
-
                     return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
                 },
                 "targets": [1]
             },
+            {/*Poznamka */
+                "targets": [7],
+                "visible": false,
+                "searchable": false,
+             
+            },
+
             {
-                "targets": [9],
+                "targets": [11],
                 "visible": true,
                 "searchable": false,
                 render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:MM')
-                },
-
-                {
-                    "targets": [11],
-                    "visible": true,
-                    "searchable": false,
-                    render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:MM')
-                },
+            },
             {
                 "render": function (data, type, row) {
                     return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazat(' + row['zakazkaId'] + ') </a>'

@@ -30,7 +30,8 @@ namespace ToyotaArchiv.Controllers
             ViewBag.Login = MHsessionService.ReadLoginFromSession(HttpContext.Session);
             ViewBag.Role = MHsessionService.ReadRoleFromSession(HttpContext.Session);
 
-            //MH: TU SA NEMUSIA nacitat udaje, lebo po spusteni stranky sa spusti AJAX metoda na nacitanie udajov LoadData();
+            //MH: TU SA NEMUSIA nacitat udaje, lebo po spusteni stranky sa spusti AJAX metoda na nacitanie udajov LoadData()
+            //a ta si nacita zadany pocet zoznamov;
 
             //List<Zakazka> zakazky = await _context.Zakazkas.ToListAsync();
             //if(zakazky.Any())
@@ -43,7 +44,7 @@ namespace ToyotaArchiv.Controllers
             //}
             return View();
 
-            //MH: 22.04.2022 ak neexistuju udaje, potom JQuery datatable vypise; Neexistuju ziadne zaznamy
+            //MH: 22.04.2022 ak neexistuju udaje, potom JQuery datatable vypise: "Nie sú k dispozícii žiadne data"
            
             //return NotFound();
             // vypise sa oznam: THis localhost page can't be found; 
@@ -74,6 +75,8 @@ namespace ToyotaArchiv.Controllers
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
+
+                //IOrderedQueryable<Zakazka> zakazkyDB;
 
                 // Getting all Zakazka
                 var zakazky = (from zakazka in _context.Zakazkas
@@ -143,7 +146,7 @@ namespace ToyotaArchiv.Controllers
             if (zakazkaDB == null)
                 return RedirectToAction(nameof(Index));
 
-            //ZakazkaZO je ViewMOdel pre typ Zakazka
+            //ZakazkaZO je ViewModel pre instanciu  typu Zakazka
             ZakazkaZO zakazkaZO = _transformService.ConvertZakazka_To_ZakazkaZO(ref zakazkaDB);
             if (rola == USER_ROLE.READONLY)
             {
@@ -207,14 +210,55 @@ namespace ToyotaArchiv.Controllers
             //    return View(zakazkaZO);  //len readonly 
         }
 
-        /* link zo stranky: Details, alebo UpdateZakazka
-         * <td>@Html.ActionLink(@Model.ZakazkaTGdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
-                new{ zakazkaTG=@Model.ZakazkaTg, subor=@Model.ZakazkaTGdokument.NazovSuboru, skupina=@Model.ZakazkaTGdokument.Skupina} )
+        /*
+         * UpdateZakazka.cshtml  klik na link Vymazat
+        @Html.ActionLink("Vymazať", "DeleteDokument", "ZakazkyJQ",
+                                    new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina} )
+ * 
+ */
 
-        MH: Ak  sa OTVORI  V OKNE BROWSERA KDE JE APLIKACIA TREBA KLINUT NA SIPKU PRE PRECHOD NA PREDCHADZAJUCU STRANU A TAM BUDE NASA APLIKACIA!!!!
-         */
-        //Tu sa pride z Details, alebo UpdateZakazka po kliku na link nazvu suboru;
-        //public async Task<FileStreamResult> ShowImage(string zakazkaTG, string subor, string skupina)
+        public async Task<IActionResult> DeleteDokument(string zakazkaTG, string subor, string skupina)
+        {
+            short.TryParse(skupina, out short mySkupina);
+            if (mySkupina == 0)
+                return null;
+
+            Zakazka z1 = await (_context.Zakazkas
+                     .Where(z => z.ZakazkaTg == zakazkaTG)
+                     .Include(z => z.Dokuments)
+                     ).FirstOrDefaultAsync();
+
+            Dokument dok1 = z1.Dokuments.FirstOrDefault(z => z.Skupina == mySkupina);
+            _context.Dokuments.Remove(dok1);
+            int pp = await _context.SaveChangesAsync();
+
+            //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
+            Zakazka zakazkaDB = await _context.Zakazkas
+                .Where(m => m.ZakazkaTg == zakazkaTG)
+               .Include(z => z.Dokuments)
+               .ThenInclude(d => d.DokumentDetails)
+               .OrderByDescending(z => z.Vytvorene)
+               .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
+
+            if (zakazkaDB == null)
+                return RedirectToAction(nameof(Index));
+
+            //ZakazkaZO je ViewModel pre instanciu  typu Zakazka
+            ZakazkaZO zakazkaZO = _transformService.ConvertZakazka_To_ZakazkaZO(ref zakazkaDB);
+            return View(nameof(UpdateZakazka), zakazkaZO); //vrati UpdateZakazka.cshtml s viemodelom zakazkaZO
+            
+        }
+
+
+
+            /* link zo stranky: Details, alebo UpdateZakazka
+             * <td>@Html.ActionLink(@Model.ZakazkaTGdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
+                    new{ zakazkaTG=@Model.ZakazkaTg, subor=@Model.ZakazkaTGdokument.NazovSuboru, skupina=@Model.ZakazkaTGdokument.Skupina} )
+
+            MH: Ak  sa OTVORI  V OKNE BROWSERA KDE JE APLIKACIA TREBA KLINUT NA SIPKU PRE PRECHOD NA PREDCHADZAJUCU STRANU A TAM BUDE NASA APLIKACIA!!!!
+             */
+            //Tu sa pride z Details, alebo UpdateZakazka po kliku na link nazvu suboru;
+            //public async Task<FileStreamResult> ShowImage(string zakazkaTG, string subor, string skupina)
         public async Task<IActionResult> ShowImage(string zakazkaTG, string subor, string skupina)
         {
             if (string.IsNullOrEmpty(zakazkaTG) || string.IsNullOrEmpty(subor) || string.IsNullOrEmpty(skupina))
@@ -376,9 +420,9 @@ namespace ToyotaArchiv.Controllers
 
 
         // Index.cshtml po kliku na link "Nova garancna oprava";  novy postup  24.04.2022
-        //Vytvorenie novej zakazky, Ppre vsetky roly okrem roly READONLY!
+        //Vytvorenie novej zakazky, Pre vsetky roly okrem roly READONLY!
         // GET: ZakazkyJQ/Create
-        public IActionResult NovaZakazka()  //pouziva Views\ZakazkyJQ\Create2.cshtml  NovaZakazka
+        public IActionResult NovaZakazka()  //pouziva Views\ZakazkyJQ\NovaZakazka.cshtml  
         {
             ZakazkaZO zakazkaZO = _transformService.VytvorPrazdnuZakazkuZO();
 
@@ -427,7 +471,8 @@ namespace ToyotaArchiv.Controllers
                 int pp = zakazkaZO.PovinneDokumenty.Count;
                 int pr = zakazkaZO.Prilohy.Count;
 
-                foreach(var d in zakazkaZO.PovinneDokumenty)
+                //zakazkaZO moze mat nastavene subory pre povinne dokumenty
+                foreach (BaseItem d in zakazkaZO.PovinneDokumenty)//nastavenie povinnych
                 {
                     if (d.DokFormFile == null)
                         continue;
@@ -438,8 +483,8 @@ namespace ToyotaArchiv.Controllers
                         d.NazovSuboru = d.DokFormFile.FileName;
                     }
                 }
-
-                foreach (var d in zakazkaZO.Prilohy)
+                //zakazkaZO moze mat nastavene subory pre prilohy
+                foreach (BaseItem d in zakazkaZO.Prilohy)
                 {
                     if (d.DokFormFile == null)
                         continue;
@@ -453,7 +498,8 @@ namespace ToyotaArchiv.Controllers
 
                 try
                 {
-                    Zakazka novaZakazka = _transformService.ConvertZakazkaZO_To_Zakazka(ref zakazkaZO);
+                    //Z instancie typu ZakazkaZO vytvorime instanciu typu Zakazka a pridame ju do _contextu
+                    Zakazka novaZakazka = _transformService.ConvertZakazkaZO_To_NewZakazka(ref zakazkaZO);
                     _context.Add(novaZakazka);
                     int pocetUlozenych = await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -478,23 +524,25 @@ namespace ToyotaArchiv.Controllers
 
             if (ModelState.IsValid)
             {
-                zakazkaZO.ErrorMessage = $"!! Update funkcionalita este nie je dokoncena pre ZakazkaTg: {zakazkaZO.ZakazkaTg} !!";
-/*
+               // zakazkaZO.ErrorMessage = $"!! Update funkcionalita este nie je dokoncena pre ZakazkaTg: {zakazkaZO.ZakazkaTg} !!";
+
+               
                 string zakazkaTg = zakazkaZO.ZakazkaTg;
-                Zakazka starZakazkaDB = await _context.Zakazkas
+                Zakazka povodnaZakazkaDB = await _context.Zakazkas
                 .Where(m => m.ZakazkaTg == zakazkaTg)
                .Include(z => z.Dokuments)
                .ThenInclude(d => d.DokumentDetails)
                .OrderByDescending(z => z.Vytvorene)
                .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
-               
-                //if (staraZakazka != null)
-                //{
-                //    _context.Zakazkas.Remove(staraZakazka); 
-                //   int result=_context.SaveChanges();    
-                //}
 
-                
+                /*
+                if (staraZakazka != null)
+                {
+                    _context.Zakazkas.Remove(staraZakazka);
+                    int result = _context.SaveChanges();
+                }
+                */
+
                 if (zakazkaZO.ZakazkaTGdokument.DokFormFile != null)
                 {
                     using (var ms = new MemoryStream())
@@ -548,8 +596,8 @@ namespace ToyotaArchiv.Controllers
 
                 try
                 {
-                    Zakazka novaZakazka = _transformService.ConvertZakazkaZO_To_Zakazka(ref zakazkaZO);
-                    _context.Add(novaZakazka);
+                    _transformService.ConvertZakazkaZO_To_Zakazka(ref zakazkaZO, ref povodnaZakazkaDB);
+                    
                     int pocetUlozenych = await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -559,10 +607,13 @@ namespace ToyotaArchiv.Controllers
                     //chybovy oznam sa zobrazi v hornej casti stranky
                     zakazkaZO.ErrorMessage = $"!! Nastala chyba pri uložení záznamu pre ZakazkaTg: {zakazkaZO.ZakazkaTg} !!";  //ex.Message;
                 }
-                */
+              
             }
             return View(zakazkaZO);
         }
+
+ 
+
     }
 
 }

@@ -32,6 +32,8 @@
      Otvori sa z Index.cshtml po kliku na link ZakazkaTG ak Role != USER_ROLE.READONLY
 
      UPDATE udajov pre uz existujucu zakazku
+     lokalizacia <input type="file"..../>  pomocou jQuery funkcii
+     https://docs.microsoft.com/en-us/answers/questions/567773/change-34choose-file34-and-34no-file-chosen34-text.html
    *@
 
 <div class="container">
@@ -40,46 +42,63 @@
         <h6>&nbsp;&nbsp; ZakazkyJQ: UpdateZakazka;   Rola:@ViewBag.Role; Login: @ViewBag.Login&nbsp;&nbsp;</h6>
         <span class="text-danger">@Model?.ErrorMessage</span>
     </div>
-
-    <a asp-action="Index">Návrat</a>
+    <div class="form-group">
+      <a asp-action="Index">Návrat</a>
+      <input type="button" style="margin-left:30px"    value="Uložiť zmeny" class="btn btn-primary btn-sm" onclick="document.forms['formUpdate'].submit();"   />
+    </div>
+   
    @* <hr />*@
 
     <div class="row">
         <div class="col-md-12">
-            <form asp-action="UpdateZakazka" enctype="multipart/form-data">
+            <form name="formUpdate"  asp-action="UpdateZakazka" enctype="multipart/form-data">
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div style="width:90%; margin:0 auto;">
                     @* Udaje o zakazke*@
                     <table width="100%" cellspacing="0">
+                        @*ZakazkaTGdokument*@
                         <tr>
                             <td width="150px">@Html.DisplayNameFor(m=>m.ZakazkaTg)</td>
                             <td width="250px">@Html.TextBoxFor(m=>m.ZakazkaTg, new {@class="form-control", @readonly="readonly"} )</td>
                             <td width="400px">
                                @*Vyber suboru pre zakazkaTG*@
-                                    <input asp-for="@Model.ZakazkaTGdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
+                               <input asp-for="@Model.ZakazkaTGdokument.DokFormFile" class="form-control" lang="sk"  /> @*vygeneruje sa <input  type="file"...   *@
                             </td>
                             
-                            <td width="300px" colspan="2">
+                            <td width="300px" colspan="2">@* Subor link*@
                                  @Html.ActionLink(@Model?.ZakazkaTGdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
                                     new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina} )
                             </td>
-                            <td><input type="button" value="Clear"/></td>
+                            <td>@* Vymazat link*@
+                               @if(!string.IsNullOrEmpty(@Model?.ZakazkaTGdokument?.NazovSuboru) )
+                               {
+                                 @Html.ActionLink("Vymazať", "DeleteDokument", "ZakazkyJQ",
+                                    new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina} )
+                               }
+                            </td>
                             
                         </tr>
+                        @*ZakazkaTBdokument*@
                         <tr>
                             <td>@Html.DisplayNameFor(m=>m.ZakazkaTb)</td>
                             <td>@Html.TextBoxFor(m=>m.ZakazkaTb, new {@class="form-control"})</td>
                             <td>
                                @*Vyber suboru pre zakazkaTG*@
-                                    <input asp-for="@Model.ZakazkaTBdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
+                               <input asp-for="@Model.ZakazkaTBdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
                             </td>
-                            <td colspan="2">
+                            <td colspan="2"> @* Subor link*@
                                  @Html.ActionLink(@Model?.ZakazkaTBdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
                                     new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.ZakazkaTBdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTBdokument?.Skupina} )
                             </td>
                            
-                             <td><input type="button" value="Clear"/></td>
+                             <td>@* Vymazat link*@
+                               @if(!string.IsNullOrEmpty(@Model?.ZakazkaTBdokument?.NazovSuboru) )
+                               {
+                                 @Html.ActionLink("Vymazať", "DeleteDokument", "ZakazkyJQ",
+                                    new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), skupina=@Model?.ZakazkaTBdokument?.Skupina} )
+                               }
+                            </td>
                             
                         </tr>
                       @*  <tr>
@@ -125,7 +144,7 @@
                         <table id="datatablePD" width="100%" cellspacing="0">
                             <thead class="tableHeaderColor">
                                 <tr>
-                                    <th width="180px">@*Dokument*@</th>
+                                    <th width="220px">@*Dokument*@</th>
                                     <th width="600px">@*Súbor*@</th>
                                      <th width="400px">@*Link*@</th>
                                     <th></th>
@@ -144,13 +163,17 @@
                                        <td>
                                             <input asp-for="@Model.PovinneDokumenty[i].DokFormFile" class="form-control" lang="sk" />
                                         </td>
-                                        <td>
+                                        <td>@* Subor link*@
                                           @Html.ActionLink(@Model?.PovinneDokumenty[i].NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
                                              new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.PovinneDokumenty[i].NazovSuboru?.Trim(), skupina=@Model?.PovinneDokumenty[i]?.Skupina} )
                                         </td>
                                         
-                                        <td>
-                                            <input type="button" value="Clear" style="margin: 5px, 20px, 5px, 20px"/>
+                                        <td>@* Vymazat link*@
+                                            @if(!string.IsNullOrEmpty(@Model?.PovinneDokumenty[i].NazovSuboru) )
+                                            { 
+                                                @Html.ActionLink("Vymazať", "DeleteDokument", "ZakazkyJQ",
+                                                new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), skupina=@Model?.PovinneDokumenty[i]?.Skupina} )
+                                            }
                                         </td>
                                         <td>
                                             @Html.TextBoxFor(x => Model.PovinneDokumenty[i].Poznamka, new {@class="form-control"})
@@ -168,7 +191,7 @@
                         <table id="datatablePrilohy"  width="100%" cellspacing="0">
                             <thead class="tableHeaderColor">
                                 <tr>
-                                    <th width="180px">@*Dokument*@</th>
+                                    <th width="220px">@*Dokument*@</th>
                                     <th width="600px">@*Súbor*@</th>
                                     <th width="400px">@*Link*@</th>
                                      <th></th>
@@ -188,12 +211,16 @@
                                         <td>
                                             <input asp-for="@Model.Prilohy[i].DokFormFile" class="form-control" lang="sk" />
                                         </td>
-                                       <td>
+                                       <td>@* Subor link*@
                                           @Html.ActionLink(@Model?.Prilohy[i].NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
                                              new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.Prilohy[i].NazovSuboru?.Trim(), skupina=@Model?.Prilohy[i]?.Skupina} )
                                         </td>
-                                        <td>
-                                            <input type="button" value="Clear" style="margin: 5px, 20px, 5px, 20px"/>
+                                        <td>@* Vymazat link*@
+                                            @if(!string.IsNullOrEmpty(@Model?.Prilohy[i].NazovSuboru) )
+                                            {
+                                             @Html.ActionLink("Vymazať", "DeleteDokument", "ZakazkyJQ",
+                                                new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), skupina=@Model?.Prilohy[i]?.Skupina} )
+                                            }
                                         </td>
                                         <td>
                                             @Html.TextBoxFor(x => Model.Prilohy[i].Poznamka, new { @class="form-control"})
@@ -203,9 +230,9 @@
                             </tbody>
                         </table>
                     }
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <input type="submit" value="Uložiť zmeny" class="btn btn-primary" />
-                    </div>
+                    </div>*@
                 </div>
             </form>
 
