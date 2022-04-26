@@ -31,8 +31,8 @@ namespace ToyotaArchiv.Controllers
 #endif
             //HttpContext.Session is available after session state is configured.
             //testovanie session: nastavenie pociatocnych hodnot
-            MHsessionService.WriteLoginToSession(HttpContext.Session, "MH");
-            MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.ADMIN);
+            //MHsessionService.WriteLoginToSession(HttpContext.Session, "MH");
+            //MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.ADMIN);
 
             //MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.VEDUCI);
             //MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.SERVISNY_TECHNIK);

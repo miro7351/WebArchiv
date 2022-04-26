@@ -15,6 +15,8 @@
  */
 
 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using PA.TOYOTA.DB;
 using ToyotaArchiv.Infrastructure;
@@ -41,6 +43,15 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddDbContext<ToyotaContext>(options => options.UseSqlServer(conString));
+
+//pre login
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Unauthorized/";
+        options.AccessDeniedPath = "/Account/Forbidden/";
+    });
+
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -81,10 +92,23 @@ app.UseSession();
 //Call UseSession after UseRouting and before UseEndpoints.
 //---
 
+// pre login
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.None,
+    HttpOnly = HttpOnlyPolicy.Always
+
+}); ;
+app.UseAuthentication();
+
 app.UseAuthorization();
+
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Accounts}/{action=Login}/{id?}");
 
 app.Run();
