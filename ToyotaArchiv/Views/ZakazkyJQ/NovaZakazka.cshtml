@@ -30,6 +30,27 @@
     }
 
 </style>
+<script type="text/javascript" >
+
+function vymazPolozku( skupina)
+{
+    var p = document.getElementById("vybrataSkupina");
+    //alert("Skupina value:" + p.value);
+     
+    p.value=skupina;
+    //alert("Nova skupina:" + p.value);
+    document.forms['f1'].submit();
+    return true;
+}
+
+function pridajPrilohu(skupina)
+{
+    var p = document.getElementById("vybrataSkupina");
+    p.value=skupina;
+    document.forms['f1'].submit();
+    return true;
+}
+</script>
   
 
 <div class="container">
@@ -49,7 +70,7 @@
         @*<div class="col-md-12">*@
             <form name="f1"   asp-action="Create" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+                <input type="hidden" name="vybrataSkupina"  id="vybrataSkupina" value="0"/>
                 @*<div style="width:90%; margin:0 auto;">*@
                      <div class="col-md-12">
                     @* Udaje o zakazke*@
@@ -66,7 +87,7 @@
                                  @Html.ActionLink(@Model?.ZakazkaTGdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
                                     new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina} )
                             </td>
-                            <td><input type="button" value="Clear"/></td>
+                            <td> <input type="submit" onclick="vymazPolozku( '@Model.ZakazkaTGdokument.Skupina')"   class="btn btn-sm btn-danger" value="Vymazať"/></td>
                             
                         </tr>
                         <tr>
@@ -83,7 +104,15 @@
                                     new{ zakazkaTB=@Model?.ZakazkaTb?.Trim(), subor=@Model?.ZakazkaTBdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTBdokument?.Skupina} )
                             </td>
                            
-                             <td><input type="button" value="Clear"/></td>
+                             <td class="text-center">
+                               @*  <input type="button" value="Vymazať"/>  ' + @Model.ZakazkaTBdokument.Skupina + '
+                            <input type="submit" onclick="return confirm('Vymazať záznam ?')"   class="btn btn-sm btn-danger" value="Vymazať"/>
+                             <input type="submit" onclick="return confirm('Vymazať záznam ' + @Model.ZakazkaTBdokument.Skupina + '?')"   class="btn btn-sm btn-danger" value="Vymazať"/>
+                              <input type="submit" onclick="return vymazPolozku( '99')"   class="btn btn-sm btn-danger" value="Vymazať"/>
+                                 <input type="submit" onclick="return vymazPolozku( '@Model.ZakazkaTBdokument.Skupina')"   class="btn btn-sm btn-danger" value="Vymazať"/>*@
+                                    <input type="submit" onclick="vymazPolozku( '@Model.ZakazkaTBdokument.Skupina')"   class="btn btn-sm btn-danger" value="Vymazať"/>
+                             
+                             </td>
                             
                         </tr>
                        @* <tr>
@@ -153,7 +182,7 @@
                                         </td>
                                         
                                         <td>
-                                            <input type="button" value="Clear" style="margin: 5px, 20px, 5px, 20px"/>
+                                             <input type="button" onclick="vymazPolozku( '@Model?.PovinneDokumenty[i].Skupina')"   class="btn btn-sm btn-danger" value="Vymazať"/>
                                         </td>
                                         <td>
                                             @Html.TextBoxFor(x => Model.PovinneDokumenty[i].Poznamka, new {@class="form-control"})
@@ -164,7 +193,7 @@
                         </table>
 
                     }
-                    <span>Prílohy</span>
+                    <span>Prílohy <input type="button" onclick="pridajPrilohu('111')"   class="btn btn-sm btn-primary" value="Pridaj prílohu"/></span>
                     @*table-bordered  rows maju border, table-striped susedne riadky maju roznu farbu, biela-siva 
                     *@
                     @if (Model?.Prilohy != null)
@@ -197,7 +226,7 @@
                                              new{ zakazkaTB=@Model?.ZakazkaTb?.Trim(), subor=@Model?.Prilohy[i].NazovSuboru?.Trim(), skupina=@Model?.Prilohy[i]?.Skupina} )
                                         </td>
                                         <td>
-                                            <input type="button" value="Clear" style="margin: 5px, 20px, 5px, 20px"/>
+                                          <input type="button" onclick="vymazPolozku( '@Model?.Prilohy[i].Skupina')"   class="btn btn-sm btn-danger" value="Vymazať"/>
                                         </td>
                                         <td>
                                             @Html.TextBoxFor(x => Model.Prilohy[i].Poznamka, new { @class="form-control"})
