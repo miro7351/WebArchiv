@@ -1,11 +1,6 @@
 ﻿
 $(document).ready(function () {
 
-    //var table = $('#datatableZakazky').DataTable();
-
-    
-
-
     $('#datatableZakazky').dataTable({
        
 
@@ -24,32 +19,37 @@ $(document).ready(function () {
         "columnDefs":
             [{
                 "targets": [0],
-                "visible": true,
+                "visible": false,
                 "searchable": false
             },
-                
+            {
+                "targets": [1],
+                "visible": true,
+                "searchable": false,
+                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY')
+            },
             {
                 "render": function (data, type, row) {
                     return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
                 },
-                "targets": [1]
+                "targets": [2]
             },
             {/*Poznamka */
-                "targets": [7],
+                "targets": [8],
                 "visible": false,
                 "searchable": false,
              
             },
-
-            {
-                "targets": [11],
-                "visible": true,
-                "searchable": false,
-                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:MM')
-            },
+                {
+                    "targets": [11],
+                    "visible": true,
+                    "searchable": false,
+                    render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY')
+                },
+                
             {
                 "render": function (data, type, row) {
-                    return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazat(' + row['zakazkaId'] + ') </a>'
+                    return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>'
                 },
                 "targets": [12]
             }
@@ -57,6 +57,7 @@ $(document).ready(function () {
             ],
         "columns": [
             { "data": "zakazkaId", "name": "ZakazkaId", "autoWidth": true },
+            { "data": "vytvorene", "name": "Vytvorene", "autoWidth": true },
             { "data": "zakazkaTg", "name": "ZakazkaTg", "autoWidth": true },
             { "data": "zakazkaTb", "name": "ZakazkaTb", "autoWidth": true },
             { "data": "vin", "name": "Vin", "autoWidth": true },
@@ -67,7 +68,7 @@ $(document).ready(function () {
             { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
 
             { "data": "vytvoril", "name": "Vytvoril", "autoWidth": true },
-            { "data": "vytvorene", "name": "Vytvorene", "autoWidth": true },
+           
             { "data": "zmenil", "name": "Zmenil", "autoWidth": true },
             { "data": "zmenene", "name": "Zmenene", "autoWidth": true },
 
@@ -84,49 +85,8 @@ $(document).ready(function () {
     //    });
 });
 
-/*  OK!!  return '<a  href="/ZakazkyJQ/Edit2/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
- *  
- *  return '<a href="/ZakazkyJQ/Delete/' + row['zakazkaId'] + '">' + 'Vymazat('+ row['zakazkaId'] +') </a>';
- *  return "<a href='#'  onclick=DeleteData1('" + row['zakazkaTg'] + "'); >Vymazať</a>";
- *  
- *   return '<a  href="/ZakazkyJQ/Edit2/zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
- *  
- *   //return '<a  href="/ZakazkyJQ/Edit/#zakazkaTg' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
+/*  
  * It is important to use camelCasing while defining the names of the variables. firstName will work. But FirstName won’t.
  * Quite weird, but that’s how js works.
  * Make sure you follow camelCasing standard while working with js scripts. */
 
-function DeleteData1(zakazkaId) {
-    if (confirm("Naozaj vymazať záznam: " + zakazkaId + "?")) {
-        Delete(zakazkaId);
-    }
-    else {
-        return false;
-    }
-}
-
-
-function DeleteData(zakazkaTg) {
-    if (confirm("Naozaj vymazať záznam ...?")) {
-        Delete(zakazkaTg);
-    }
-    else {
-        return false;
-    }
-}
-
-function Delete(zakazkaId) {
-    //var url = '@Url.Content("~/")' + "ZakazkyJQ/Delete";
-
-    var url = '@Url.Content("~/ZakazkyJQ/Delete")';
-
-    $.post(url, { ID: zakazkaId }, function (data) {
-        if (data) {
-            oTable = $('#datatableZakazky').DataTable();
-            oTable.draw();
-        }
-        else {
-            alert("Niekde nastala chyba!");
-        }
-    });
-}

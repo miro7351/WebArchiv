@@ -1,11 +1,6 @@
 ﻿
 $(document).ready(function () {
 
-    //var table = $('#datatableZakazky').DataTable();
-
-    
-
-
     $('#datatableZakazky').dataTable({
        
 
@@ -32,32 +27,27 @@ $(document).ready(function () {
 
                     return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
                 },
-                "targets": [1]
+                "targets": [2]
             },
-            //{
-            //    "targets": [9],
-            //    "visible": true,
-            //    "searchable": false,
-            //    render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:MM')
-            //    },
+            {
+                "targets": [1],
+                "visible": true,
+                "searchable": false,
+                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY')
+                },
 
-            //    {
-            //        "targets": [11],
-            //        "visible": true,
-            //        "searchable": false,
-            //        render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:MM')
-            //    },
             {
                 "render": function (data, type, row) {
 
-                    return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať(' + row['zakazkaId'] + ') </a>'
+                    return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>'
                 },
-                "targets": [8]
+                "targets": [9]
             }
 
             ],
         "columns": [
-            { "data": "zakazkaId", "name": "ZakazkaId", "autoWidth": true },
+            { "data": "zakazkaId", "name": "ZakazkaId", "autoWidth": false },
+            { "data": "vytvorene", "name": "Vytvorne", "autoWidth": false },
             { "data": "zakazkaTg", "name": "ZakazkaTg", "autoWidth": true },
             { "data": "zakazkaTb", "name": "ZakazkaTb", "autoWidth": true },
             { "data": "vin", "name": "Vin", "autoWidth": true },
@@ -65,6 +55,7 @@ $(document).ready(function () {
             { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
             { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
             { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
+           
         ]
     });
 
@@ -81,39 +72,9 @@ $(document).ready(function () {
  *  return "<a href='#'  onclick=DeleteData1('" + row['zakazkaTg'] + "'); >Vymazať</a>";
  * It is important to use camelCasing while defining the names of the variables. firstName will work. But FirstName won’t.
  * Quite weird, but that’s how js works.
- * Make sure you follow camelCasing standard while working with js scripts. */
-
-function DeleteData1(zakazkaId) {
-    if (confirm("Naozaj vymazať záznam: " + zakazkaId + "?")) {
-        Delete(zakazkaId);
-    }
-    else {
-        return false;
-    }
-}
+ * Make sure you follow camelCasing standard while working with js scripts. 
+ *  * */
 
 
-function DeleteData(zakazkaTg) {
-    if (confirm("Naozaj vymazať záznam ...?")) {
-        Delete(zakazkaTg);
-    }
-    else {
-        return false;
-    }
-}
 
-function Delete(zakazkaId) {
-    //var url = '@Url.Content("~/")' + "ZakazkyJQ/Delete";
 
-    var url = '@Url.Content("~/ZakazkyJQ/Delete")';
-
-    $.post(url, { ID: zakazkaId }, function (data) {
-        if (data) {
-            oTable = $('#datatableZakazky').DataTable();
-            oTable.draw();
-        }
-        else {
-            alert("Niekde nastala chyba!");
-        }
-    });
-}

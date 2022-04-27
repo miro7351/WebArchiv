@@ -2,10 +2,12 @@
 @attribute [RequestSizeLimitAttribute(15000000)]
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nová zákazka";
 }
 
-@*ZakazkyJQ:NovaZakazka*@
+@*ZakazkyJQ:NovaZakazka
+   Otvori sa z Index.cshtml po kliku na link "Nova garancna oprava" pre rolu ADMIN, VEDUCI, SERVISNY_TECHNIK
+*@
 
 <style>
     table {
@@ -28,27 +30,24 @@
     }
 
 </style>
-   @*ZakazkyJQ:NovaZakazka
-     Otvori sa z Index.cshtml po kliku na link "Nova garancna oprava"
-   *@
+  
 
 <div class="container">
-   @* <div class="form-inline">
-        <span>1:@Model?.PovinneDokumenty[0]?.NazovDokumentu</span>
-         <span>2:@Model?.PovinneDokumenty[1]?.NazovDokumentu</span>
-         <span>---@Html.ActionLink("xxxx", "ShowImage", "ZakazkyJQ")---></span>
-          <span>---@Html.ActionLink("", "ShowImage", "ZakazkyJQ")---></span>
-    </div>*@
+ 
   
     <div class="form-inline">
         <h5>Nová zákazka pre garančnú opravu</h5>
         <span class="text-danger">@Model?.ErrorMessage</span>
     </div>
-    <a asp-action="Index">Návrat</a>
+     <div class="d-flex p-2 justify-content-center">
+          <a asp-action="Index"  style="margin-right:50px;">Návrat</a>
+          <input type="submit" value="Uložiť" class="btn btn-sm  btn-primary"  onclick="document.forms['f1'].submit();"/>
+   
+    </div>
    @* <hr />*@
     <div class="row">
         @*<div class="col-md-12">*@
-            <form asp-action="Create" enctype="multipart/form-data">
+            <form name="f1"   asp-action="Create" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 @*<div style="width:90%; margin:0 auto;">*@
@@ -208,9 +207,9 @@
                             </tbody>
                         </table>
                     }
-                    <div class="form-group">
-                        <input type="submit" value="Uložiť" class="btn btn-primary" />
-                    </div>
+                   @* <div class="form-group">
+                        <input type="submit" value="Uložiť" class="btn btn-sm  btn-primary" />
+                    </div>*@
                 </div>
                 
             </form>
@@ -226,5 +225,5 @@
 @section Scripts {
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+    }
 }

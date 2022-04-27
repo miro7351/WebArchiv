@@ -4,15 +4,9 @@
     ViewData["Title"] = "Garančné opravy"; /*zobrazi sa v titule stranky*/ 
 }
 
-<p>ZakazkyJQ: Index;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>
 
-<p>
-  @if(ViewBag.Role != "READONLY")
-  {
-     <a asp-action="NovaZakazka">Nová garančná oprava</a>
-  }
-     
-</p>
+
+
 
 @*Here we are importing the stylesheet of Datatable (Bootstrap4) that we had installed earlier.*@
 <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
@@ -32,8 +26,22 @@ _Layout.cshtml
 20.04.2022 dal som    <div class="container-fluid">
 *@
 
-<h3>Zoznam garančných opráv</h3>
+ <div class="d-flex p-0 justify-content-center">
+<h4>Zoznam garančných opráv</h4>
+
+</div>
 <hr/>
+<span>
+  @if(ViewBag.Role != "READONLY")
+  {
+     <a asp-action="NovaZakazka" style="margin-left:50px;">Nová garančná oprava</a>
+  }
+</span>
+
+@* pozri datatableZakazkyXX.js
+
+
+*@
 <div class="teal accent-1 ">  
     <br />  
     <div style="width:90%; margin:0 auto;">  
@@ -41,6 +49,7 @@ _Layout.cshtml
             <thead class="tableHeaderColor">  
                 <tr>  
                     <th>ZakazkaId</th> 
+                    <th>Vytvorene</th>
                     <th>ZakazkaTg</th>  
                     <th>ZakazkaTb</th>
                     <th>Vin</th> 
@@ -52,7 +61,6 @@ _Layout.cshtml
                      @if( ViewBag.Role=="ADMIN")
                      {
                          <th>Vytvoril</th>
-                         <th>Vytvorene</th>  
                          <th>Zmenil</th>  
                          <th>Zmenene</th>
                      }

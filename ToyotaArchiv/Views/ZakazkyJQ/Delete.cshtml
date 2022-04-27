@@ -1,14 +1,17 @@
 ﻿@model PA.TOYOTA.DB.Zakazka
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Vymazanie zákazky";
 }
 @*MH: april 2022 ZakazkayJQ: Delete/zakazkaID *@
 
-
-<h3>Naozaj vymazať záznam o garančnej oprave?</h3>
-<div>
-    <h4>Garančná oprava: @Model.ZakazkaTg</h4>
+<div class="container px-4" >
+   <h3>Naozaj vymazať záznam o garančnej oprave?</h3>
+    @* <h4>Garančná oprava: @Model.ZakazkaTg</h4>*@
+    <div class="form-inline">
+      <span class="text-primary mr-1" style="font-size: 90%; text-align:center">Garančná oprava:</span>
+      <span class="text-danger ml-1" style="font-size: 100%; text-align:center"><b> @Model.ZakazkaTg</b></span>
+      </div>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -82,7 +85,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ZakazkaTg" />
-        <input type="submit" value="Vymazať" class="btn btn-danger" /> |
+        <input type="submit" value="Vymazať" class="btn btn-sm btn-danger" /> |
         <a asp-action="Index">Návrat</a>
     </form>
 </div>

@@ -100,7 +100,8 @@ namespace ToyotaArchiv.Controllers
                                                m.ZakazkaTg.Contains(searchValue) ||
                                                m.Vin.Contains(searchValue) ||
                                                m.Cws.Contains(searchValue) ||
-                                               m.CisloProtokolu.Contains(searchValue)
+                                               m.CisloProtokolu.Contains(searchValue) ||
+                                               m.Ukoncena.Contains( searchValue)
                                               );
                 }
 

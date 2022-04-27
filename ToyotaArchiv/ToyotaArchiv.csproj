@@ -12,6 +12,12 @@
     <Compile Remove="Services\ZakazkaTransformService2.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\ZakazkyJQ\Create.cshtml" />
+    <Content Remove="Views\ZakazkyJQ\Details1.cshtml" />
+    <Content Remove="Views\ZakazkyJQ\Edit1.cshtml" />
+  </ItemGroup>
+
   
 
   <ItemGroup>

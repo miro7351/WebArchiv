@@ -1,6 +1,6 @@
 ﻿@model ToyotaArchiv.Domain.ZakazkaZO
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Parametre zákazky";
 }
 
 @*
@@ -12,7 +12,7 @@
     class="col-md-4"  margin down 4 em
 
     ZakazkyJQ:Edit
-    Tu sa pride po kliku na link ZakazkaTG,  ak  rola prihlaseneho  nie je ADMIN alebo VEDUCI;
+    Tu sa pride po kliku na link ZakazkaTG,  ak  rola prihlaseneho je READOLNY  (nie je ADMIN alebo VEDUCI);
 
     <td>@Html.DisplayFor(m => m.ZakazkaTGdokument.NazovSuboru)</td>
 *@
@@ -55,8 +55,6 @@
 
 <div class="container">
     <h6>Prehľad údajov pre garančnú opravu: @Model.ZakazkaTg</h6>
-
-    @* <p>ZakazkyJQ: Edit;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>*@
     <hr />
 
     <div style="width:90%; margin:0 auto;">

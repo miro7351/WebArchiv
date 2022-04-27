@@ -1,20 +1,12 @@
 ﻿@model ToyotaArchiv.Domain.ZakazkaZO
 @using ToyotaArchiv.Infrastructure
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Detaily zákazky";
 }
 
 @*
-    @Html.DropDownListFor(m => m.Ukoncena,
-    new List<SelectListItem>
-    { new SelectListItem{Text="Áno", Value="A"},
-    new SelectListItem{Text="Nie", Value="N"}}, "Vyberte možnosť")
-
-    class="col-md-4"  margin down 4 em
-
     ZakazkyJQ:Details.cshtml222
     Tu sa pride z Index.cshtml po kliku na link ZakazkaTG,  ak  rola prihlaseneho  je READONLY;
-
    
 *@
 
@@ -42,13 +34,11 @@
 </style>
 
 <div class="container">
-    <div class="form-inline">
+    <div class="d-flex p-2 justify-content-center">
         <h6>Prehľad údajov pre garančnú opravu: @Model.ZakazkaTg</h6>
-        <h6>&nbsp;&nbsp;| ZakazkyJQ: Details;   Rola:@ViewBag.Role; Login: @ViewBag.Login&nbsp;&nbsp;</h6>
-        <a asp-action="Index">Návrat</a>
+        <h6><a asp-action="Index" style="margin-left:50px;"   >Návrat</a></h6>
     </div>
     <hr />
-
 
     <div style="width:90%; margin:0 auto;">
         @* Udaje o zakazke*@
@@ -123,7 +113,8 @@
 
         </table>
 
-        <span>Povinné dokumenty</span>
+      @*  <span>Povinné dokumenty</span>*@
+         <span class="light-blue darken-4 text-primary ml-1" style="font-size: 80%; text-align:center">Povinné dokumenty</span>
         @*class="table table-striped table-bordered dt-responsive nowrap"*@
         @if (Model.PovinneDokumenty != null)
         {
@@ -157,7 +148,8 @@
             </table>
 
         }
-        <span>Prílohy</span>
+        @*<span>Prílohy</span>*@
+         <span class="light-blue darken-4 text-primary ml-1" style="font-size: 80%; text-align:center">Prílohy</span>
         @*table-bordered  rows maju border, table-striped susedne riadky maju roznu farbu, biela-siva  *@
         @if (Model.Prilohy != null)
         {
@@ -191,11 +183,9 @@
             </table>
         }
     </div>
-
-    <div>
+    @*<div>
         <a asp-action="Index">Návrat</a>
-
-    </div>
+    </div>*@
 </div>
 
 
