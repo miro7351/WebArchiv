@@ -37,6 +37,8 @@ namespace ToyotaArchiv.Controllers
             //MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.VEDUCI);
             //MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.SERVISNY_TECHNIK);
             //MHsessionService.WriteRoleToSession(HttpContext.Session, USER_ROLE.READONLY);
+            //Global.AppData.CurrentUserDetail.UserRole = USER_ROLE.READONLY;
+            //Global.AppData.CurrentUserDetail.UserLogin = string.Empty;
             return View();
         }
 

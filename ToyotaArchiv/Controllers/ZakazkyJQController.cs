@@ -28,7 +28,7 @@ namespace ToyotaArchiv.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Login = MHsessionService.ReadLoginFromSession(HttpContext.Session);
-            ViewBag.Role = MHsessionService.ReadRoleFromSession(HttpContext.Session);
+            ViewBag.Role = MHsessionService.ReadRoleFromSession(HttpContext.Session).ToString();
 
             //MH: TU SA NEMUSIA nacitat udaje, lebo po spusteni stranky sa spusti AJAX metoda na nacitanie udajov LoadData()
             //a ta si nacita zadany pocet zoznamov;
@@ -126,9 +126,10 @@ namespace ToyotaArchiv.Controllers
 
         public async Task<IActionResult> Details(string zakazkaTg)
         {
-            USER_ROLE rola = USER_ROLE.READONLY;
+            // USER_ROLE rola = USER_ROLE.READONLY;
+            string rola = "READONLY";
             ViewBag.Login = MHsessionService.ReadLoginFromSession(HttpContext.Session);
-            ViewBag.Role = rola = MHsessionService.ReadRoleFromSession(HttpContext.Session);
+            ViewBag.Role = rola = MHsessionService.ReadRoleFromSession(HttpContext.Session).ToString();
 
             if (zakazkaTg == null)
             {
@@ -148,7 +149,7 @@ namespace ToyotaArchiv.Controllers
 
             //ZakazkaZO je ViewModel pre instanciu  typu Zakazka
             ZakazkaZO zakazkaZO = _transformService.ConvertZakazka_To_ZakazkaZO(ref zakazkaDB);
-            if (rola == USER_ROLE.READONLY)
+            if (rola == "READONLY")
             {
                 return View(zakazkaZO);  //vrati Details.cshtml
             }

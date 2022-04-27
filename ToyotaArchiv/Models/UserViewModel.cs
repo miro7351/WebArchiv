@@ -23,7 +23,8 @@ namespace ToyotaArchiv.Models
         public string Email { get; set; }
 
         [Display(Name = "Rola")]
-        public USER_ROLE UserRole { get; set; }
+        //public USER_ROLE UserRole { get; set; }
+        public string UserRole { get; set; }
 
     }
 }

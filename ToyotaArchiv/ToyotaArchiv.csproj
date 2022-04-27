@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\UserViewModel.cs" />
+    <Compile Remove="Models\ZakazkaZOViewModel.cs" />
     <Compile Remove="Services\ZakazkaTransformService2.cs" />
   </ItemGroup>
 

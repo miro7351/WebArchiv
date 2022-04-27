@@ -60,11 +60,8 @@
                     if (@Model.ZakazkaTGdokument != null)
                     {
                         <td colspan="3">
-                            @if (!string.IsNullOrEmpty(@Model?.ZakazkaTGdokument?.NazovSuboru))
-                            {
-                                @Html.ActionLink(@Model.ZakazkaTGdokument.NazovSuboru, "ShowImage", "ZakazkyJQ",
+                               @Html.ActionLink(@Model.ZakazkaTGdokument.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
                                     new{ zakazkaTG=@Model.ZakazkaTg.Trim(), subor=@Model.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model.ZakazkaTGdokument?.Skupina} )
-                            }
                         </td>
                     }
                     else

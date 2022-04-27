@@ -1,13 +1,8 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PA.TOYOTA.DB;
 using ToyotaArchiv.Global;
@@ -30,7 +25,7 @@ namespace ToyotaArchiv.Controllers
             return View(await _context.Accounts.ToListAsync());
         }
 
-        
+
         public IActionResult Create()
         {
             return View();
@@ -135,6 +130,7 @@ namespace ToyotaArchiv.Controllers
 
             MHsessionService.WriteLoginToSession(HttpContext.Session, user.LoginName);
             MHsessionService.WriteRoleToSession(HttpContext.Session, user.LoginRola);
+            AppData.SetCurrentUser(login: user.LoginName, role: user.LoginRola);
 
 
             //if (username == "admin" && password == "admin")
@@ -154,11 +150,17 @@ namespace ToyotaArchiv.Controllers
                 var principal = new ClaimsPrincipal(identity);
                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                return RedirectToAction("Index", "Home");
+                //return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "ZakazkyJQ");
             }
 
             return View();
         }
 
+        public IActionResult Logout()
+        {
+            AppData.LogoutCurrentUser();
+            return View(nameof(Login));
+        }
     }
 }
