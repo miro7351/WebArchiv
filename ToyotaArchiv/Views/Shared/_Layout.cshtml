@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ToyotaArchiv</title>
 
+      <!-- Font Awesome, icony-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-     <!-- Bootstrap core CSS, farby, mh pridane 20.04.2022 -->
+     <!-- Bootstrap core CSS, farby, mh pridane 20.04.2022; mdb.min.css obsahuje farby-->
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
+     <link rel="stylesheet" href="~/css/mdb.min.css">
+     <!--  ---------------------------------------------  -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
     <link rel="stylesheet" href="~/ToyotaArchiv.styles.css" asp-append-version="true" />
@@ -68,7 +73,7 @@ class="container"  centruje obsah div na stred
             </div>
         </nav>
     </header>
-    @*<div class="container">  MH zmena 20.04.2022  *@
+  <div class="container">   @* MH zmena 20.04.2022  *@
        <main role="main" class="pb-2">
             @RenderBody()
         </main>

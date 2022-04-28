@@ -35,6 +35,11 @@ builder.Services.AddControllersWithViews();
 //For local development, the ASP.NET Core configuration system reads the connection string from the appsettings.json file.
 var conString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+//nacitanie nastavenia z konfig suboru
+var openFileString = builder.Configuration["AutoOpenFile"];
+Boolean.TryParse(openFileString, out bool openFile);   
+ToyotaArchiv.Global.AppData.AutoOpenFile = openFile;    
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromHours(8);

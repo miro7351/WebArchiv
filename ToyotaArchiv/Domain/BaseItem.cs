@@ -18,10 +18,13 @@ namespace ToyotaArchiv.Domain
         {
             //FileItem = new FileItem();
         }
-     
+
         /// <summary>
         /// Nazov polozky
         /// </summary>
+        /// 
+        [Display(Name = "Názov dokumentu")]
+        [StringLength(64, ErrorMessage = "Pre 'Názov dokumentu' zadajte max.64 znaov.")]
         public string? NazovDokumentu   //Nazov: napr. Foto1, BlokMotora2, LaveDvere,... nazvy pre jednu zakazku musia byt rozne!!!
         {
             get;
@@ -49,21 +52,24 @@ namespace ToyotaArchiv.Domain
             set;
         }
 
-       /*
-        /// <summary>
-        /// Udava platnost polozky
-        /// </summary>
-        public string DokumentPlatny //A/N
-        {
-            get;
-            set;
-        }
-        */
+        /*
+         /// <summary>
+         /// Udava platnost polozky
+         /// </summary>
+         public string DokumentPlatny //A/N
+         {
+             get;
+             set;
+         }
+         */
 
-       
+
         /// <summary>
         /// Poznamka pre polozku
         /// </summary>
+        
+        [Display(Name = "Poznámka")]
+        [StringLength(128, MinimumLength = 0, ErrorMessage = "Pre údaj 'Poznamka' zadajte max. 128 znakov.")]
         public string? Poznamka 
         {
             get;
@@ -85,7 +91,7 @@ namespace ToyotaArchiv.Domain
 
        
         /// <summary>
-        /// Urcuje k akemu dokumentu patri polozka
+        /// Urcuje k akemu dokumentu patri polozka; needituje sa;
         /// </summary>
         public short? Skupina
         {
@@ -97,7 +103,7 @@ namespace ToyotaArchiv.Domain
         [MaxLength]
         public byte[]? FileContent { get; set; }  //obsah suboru prijateho z klienta
 
-        //[Required]
+        //vygeneruje sa element <input type="file".../> uz ma zabudovany Drag and Drop!!!!
         [Display(Name = "Priložený dokument")]
         public IFormFile? DokFormFile { get; set; } = null!;
 

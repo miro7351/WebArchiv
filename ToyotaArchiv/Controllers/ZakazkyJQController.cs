@@ -120,20 +120,12 @@ namespace ToyotaArchiv.Controllers
 
         }
 
-        /*
-         * vymaze subor pre vybratu polozku z typu  ZakazkaZO
-         */
-        //public async Task<IActionResult> NovaZakazkaDeleteItem(ZakazkaZO  zakazkaZO)
-        //{
 
-        //}
+        //Details Tu sa pride po kliku na link ZakazkaTg,  v tab. Garancne opravy
+        //Pozri datatableZakazkyAdmin.js, datatableZakazkyVeduci.js, datatableZakazkyReadOnly.js
+        //volanie:  return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';  IDE!!!!
 
-
-            //Details Tu sa pride po kliku na link ZakazkaTg,  v tab. Garancne opravy
-            //Pozri datatableZakazkyAdmin.js, datatableZakazkyVeduci.js, datatableZakazkyReadOnly.js
-            //volanie:  return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';  IDE!!!!
-
-            public async Task<IActionResult> Details(string zakazkaTg)
+        public async Task<IActionResult> Details(string zakazkaTg)
         {
             // USER_ROLE rola = USER_ROLE.READONLY;
             string rola = "READONLY";
@@ -169,64 +161,31 @@ namespace ToyotaArchiv.Controllers
         }
 
 
-        // Index.cshtml po kliku na link ZakazkaTG
+        
         //Uprava uz existujucej zakazky
         public IActionResult UpdateZakazka(string zakazkaTg)  //pouziva Views\ZakazkyJQ\UPdateZakazka.cshtml 
         {
-            ZakazkaZO zakazkaZO = _transformService.VytvorPrazdnuZakazkuZO();
+            short pocetPriloh = 1;
+            ZakazkaZO zakazkaZO = _transformService.VytvorPrazdnuZakazkuZO(pocetPriloh: pocetPriloh);
 
             return View(zakazkaZO);
         }
 
 
-        //GET: ZakazkyJQ/Edit/?zakazkaTg=ZakTG102  tu sa pride po kliku na link ZakazkaTg,  v tab. Garancne opravy
-        //volanie:  return '<a  href="/ZakazkyJQ/Edit/zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';  NEJDE!!
-        //volanie:  return '<a  href="/ZakazkyJQ/Edit/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';  IDE!!!!
-        public async Task<IActionResult> Edit(string zakazkaTg)
-        {
-            USER_ROLE userRole = MHsessionService.ReadRoleFromSession(HttpContext.Session);
-            ViewBag.Login = MHsessionService.ReadLoginFromSession(HttpContext.Session);
-            ViewBag.Role = MHsessionService.ReadRoleFromSession(HttpContext.Session);
-
-            if (zakazkaTg == null)
-            {
-                return NotFound();
-            }
-
-            //var zakazka = await _context.Zakazkas.FindAsync(zakazkaTg); /* FindAsync MUSI MAT PRIMARY KEY!!! */
-            //if (zakazka == null)
-            //{
-            //    return NotFound();
-            //}
-            // return View(zakazka);
-
-            //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
-            Zakazka zakazkaDB = await _context.Zakazkas
-                .Where(m => m.ZakazkaTg == zakazkaTg)
-               .Include(z => z.Dokuments)
-               .ThenInclude(d => d.DokumentDetails)
-               .OrderByDescending(z => z.Vytvorene)
-               .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
-
-            if (zakazkaDB == null)
-                return RedirectToAction(nameof(Index));
-
-            ZakazkaZO zakazkaZO = _transformService.ConvertZakazka_To_ZakazkaZO(ref zakazkaDB);
-            return View(zakazkaZO);  //vrati Edit.cshtml
-
-            //if (( userRole== USER_ROLE.ADMIN) || (userRole== USER_ROLE.VEDUCI) )
-            //    return View(zakazka); //moze sa aj editovat
-            //else
-            //    return View(zakazkaZO);  //len readonly 
-        }
-
         /*
          * UpdateZakazka.cshtml  klik na link Vymazat
-        @Html.ActionLink("Vymazať", "DeleteDokument", "ZakazkyJQ",
+             @Html.ActionLink("Vymazať", "DeleteDokument", "ZakazkyJQ",
                                     new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina} )
- * 
- */
-
+         * 
+         */
+        /// <summary>
+        /// Odstrani dokument z _context.Dokuments, ulozi zmeny, nacita udaje pre zakazku, 
+        /// transformuje ju do typu ZakazkaZO a zobrazi instanciu ZakazkaZO
+        /// </summary>
+        /// <param name="zakazkaTG"></param>
+        /// <param name="subor"></param>
+        /// <param name="skupina"></param>
+        /// <returns></returns>
         public async Task<IActionResult> DeleteDokument(string zakazkaTG, string subor, string skupina)
         {
             short.TryParse(skupina, out short mySkupina);
@@ -238,10 +197,13 @@ namespace ToyotaArchiv.Controllers
                      .Include(z => z.Dokuments)
                      ).FirstOrDefaultAsync();
 
-            Dokument dok1 = z1.Dokuments.FirstOrDefault(z => z.Skupina == mySkupina);
-            _context.Dokuments.Remove(dok1);
-            int pp = await _context.SaveChangesAsync();
-
+            //dokDB moze byt Dokument pre ZakazkaTGdokument, ZakazkaTBdokument, alebo Povinny alebo Priloha;
+            Dokument? dokDB = z1.Dokuments.FirstOrDefault(z => z.Skupina == mySkupina);//Dokument, ktory sa ma vymazat
+            if (dokDB != null)
+            {
+                _context.Dokuments.Remove(dokDB);
+                int pp = await _context.SaveChangesAsync();
+            }
             //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
             Zakazka zakazkaDB = await _context.Zakazkas
                 .Where(m => m.ZakazkaTg == zakazkaTG)
@@ -252,6 +214,16 @@ namespace ToyotaArchiv.Controllers
 
             if (zakazkaDB == null)
                 return RedirectToAction(nameof(Index));
+
+            if (zakazkaDB.Ukoncena == "A")//test ci sa nevymazal Povinny dokument
+            {
+                int pocetPovinnych = zakazkaDB?.Dokuments?.Count(d => !string.IsNullOrEmpty(d.NazovDokumentu) && d.Skupina > 2 && d.Skupina < 100) ?? 0;
+                if (pocetPovinnych < 5)
+                {
+                    zakazkaDB.Ukoncena = "N";
+                }
+            }
+            
 
             //ZakazkaZO je ViewModel pre instanciu  typu Zakazka
             ZakazkaZO zakazkaZO = _transformService.ConvertZakazka_To_ZakazkaZO(ref zakazkaDB);
@@ -317,7 +289,11 @@ namespace ToyotaArchiv.Controllers
             //na strane web klienta sa prijaty subor ulozi do adresara "Downloads", browser ukaze prijate-downloadnute subory na karte v pravom hornom rohu;
             //return File(filecontent, "application/octet-stream", fileName);
 
-            //return File(filecontent, mimeType);
+            if(Global.AppData.AutoOpenFile)
+            {
+                return File(filecontent, mimeType);
+            }
+            //
 
             //Subor na klientovi sa otvori v tom okne web browsera kde bezi klient-aplikacia, takze ju akoby zrusi!!!
             //Ak sa klikne na <- v okne browsera ukaze sa obrazovka nasej aplikacie, aplikacia dalej funguje!!!!
@@ -359,39 +335,6 @@ namespace ToyotaArchiv.Controllers
 
 
         
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ZakazkaId,ZakazkaTg,ZakazkaTb,CisloProtokolu,Cws,Vin,Platna,Ukoncena,Vytvoril,Vytvorene,Zmenil,Zmenene,Poznamka")] Zakazka zakazka)
-        {
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(zakazka);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ZakazkaExists(zakazka.ZakazkaTg))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(zakazka);
-        }
-
-
-
-
-
-
         //Ak je prihlaseny ADMIN alebo VEDUCI, potom po kliku na link Vymazat v tab. "Garancne opravy" sa otvori formular Delete.
         //Ak vo formulari delete klikne uzivatel na button "Vymazat", potom sa prejde na DeleteConfirmed(string zakazkaTg).
 
@@ -439,7 +382,8 @@ namespace ToyotaArchiv.Controllers
         // volanie: <a asp-action="NovaZakazka" style="margin-left:50px;">Nová garančná oprava</a>
         public IActionResult NovaZakazka()  //pouziva Views\ZakazkyJQ\NovaZakazka.cshtml  
         {
-            ZakazkaZO zakazkaZO = _transformService.VytvorPrazdnuZakazkuZO();
+            short pocetPriloh = 1;
+            ZakazkaZO zakazkaZO = _transformService.VytvorPrazdnuZakazkuZO(pocetPriloh: pocetPriloh);
 
             return View(zakazkaZO);
         }
@@ -452,16 +396,101 @@ namespace ToyotaArchiv.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( ZakazkaZO zakazkaZO)
         {
-            var vybrataSkupina = Request.Form["vybrataSkupina"].FirstOrDefault();//vybrata skupina >0 bola klik na button na mazanie suboru
-            int skupina =  vybrataSkupina != null ? Convert.ToInt32(vybrataSkupina) : 0;
-          
+            var vybrataSkupina = Request.Form["vybrataSkupina"].FirstOrDefault();//vybrata  (skupina > 0) && (skupina < 200) bol klik na button na mazanie suboru
+
+            _ = short.TryParse(vybrataSkupina, out short skupina);
+            /*
+             * skupina=1 mazanie obrazku pre ZakazkaTGdokument
+               skupina=2 mazanie obrazku pre ZakazkaTBdokument
+               skupina=20,21,22,23,24  mazanie obrazku pre Povinny dokument
+               skupina=100,101,...  mazanie obrazku pre Prilohu
+
+               skupina = 222 pridanie prilohy;
+             */
+           
 
             if (skupina == 0)//nebol klik na button na mazanie suboru; zakazkaZO sa ulozi do DB
             { 
                 bool mv = ModelState.IsValid;
+                if (ModelState.IsValid)//ulozim zakazkuZO do DB
+                {
+                    int pd = NastavZakazkuZO( ref zakazkaZO );  
+                    try
+                    {
+                        //Z instancie typu ZakazkaZO vytvorime instanciu typu Zakazka a pridame ju do _contextu
+                        Zakazka novaZakazka = _transformService.ConvertZakazkaZO_To_NewZakazka(ref zakazkaZO);
+                        _context.Add(novaZakazka);
+                        int pocetUlozenych = await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch //ak nastane exception pri spracovani, napr. zada sa ZakazkaTG, ktore uz existuje v DB!
+                    {
+                        //string msg = ex.Message;
+                        //chybovy oznam sa zobrazi v hornej casti stranky
+                        zakazkaZO.ErrorMessage = $"!! Nastala chyba pri uložení záznamu pre ZakazkaTg: {zakazkaZO.ZakazkaTg} !!";  //ex.Message;
+                    }
+                }// if (ModelState.IsValid)
+
+                return View("NovaZakazka", zakazkaZO);
+            }
+            else if ((skupina > 0) && (skupina < 200))
+            {
+                //nastavi zakazkuZO a vymaze dokument pre skupinu 
+                int pd = NastavZakazkuZO(ref zakazkaZO);//nema este nastaveny ani jeden dokument
+                if (pd == 0)
+                {
+                    return View("NovaZakazka", zakazkaZO); ;
+                }
+                int pd2 = VymazDokument(ref zakazkaZO, skupinaDokumentu: skupina);
+                return View("NovaZakazka", zakazkaZO);
+            }
+            else if(skupina==222) //priznak ze bol klik na button 'Pridaj prilohu'
+            {
+                int pd = NastavZakazkuZO(ref zakazkaZO);//nastavi zakazku podla prijatych udajov, vrati pocet dokumentov ktore maju nastavenu prilohu;
+                //pridanie polozky do Priloh
+                 short maxSkupina = zakazkaZO?.Prilohy.Max(d => d.Skupina) ?? 0;//prilohy maju skupinu: 100,101,102,...
+                if (maxSkupina > 0)  
+                {
+                    //napr. max Skupina=104
+                    short novaSkupina = (short)(maxSkupina + 1);
+                    zakazkaZO.Prilohy.Add(new BaseItem() { NazovDokumentu=$"Priloha{(novaSkupina+1)%100:00}",  Skupina = novaSkupina });
+                }
+               //niekde nastala chyba: maxSkupina==0;
+            }
+            return View("NovaZakazka", zakazkaZO);
+        }
+
+
+        //UpdateZakazka.cshtml klik na button"Ulozit", po zadani parametrov pre zmenenu zakazku;
+        //Volanie z UpdateZakazka.cshtml po kliku na button "Pridaj prilohu",  pre pridanie prilohy pre novu zakazku;
+        //Nahratie suboru z klienta na server a ulozenie do DB
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateZakazka(ZakazkaZO zakazkaZO)
+        {
+            var vybrataSkupina = Request.Form["vybrataSkupina"].FirstOrDefault();//vybrataSkupina >0 bol klik na button na pridanie prilohy
+            _ = short.TryParse(vybrataSkupina, out short skupina);
+
+
+            if (skupina == 0)//nebol klik na button pre pridanie Prilohy
+            {
+                bool mv = ModelState.IsValid;
+
                 if (ModelState.IsValid)
                 {
+                    // zakazkaZO.ErrorMessage = $"!! Update funkcionalita este nie je dokoncena pre ZakazkaTg: {zakazkaZO.ZakazkaTg} !!";
 
+
+                    string zakazkaTg = zakazkaZO.ZakazkaTg;
+                    Zakazka povodnaZakazkaDB = await _context.Zakazkas
+                    .Where(m => m.ZakazkaTg == zakazkaTg)
+                   .Include(z => z.Dokuments)
+                   .ThenInclude(d => d.DokumentDetails)
+                   .OrderByDescending(z => z.Vytvorene)
+                   .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
+
+                    int pd = NastavZakazkuZO(ref zakazkaZO);
+                    /*
                     if (zakazkaZO.ZakazkaTGdokument.DokFormFile != null)
                     {
                         using (var ms = new MemoryStream())
@@ -493,36 +522,34 @@ namespace ToyotaArchiv.Controllers
                     int pp = zakazkaZO.PovinneDokumenty.Count;
                     int pr = zakazkaZO.Prilohy.Count;
 
-                    //zakazkaZO moze mat nastavene subory pre povinne dokumenty
-                    foreach (BaseItem d in zakazkaZO.PovinneDokumenty)//nastavenie povinnych
+                    foreach (var pd in zakazkaZO.PovinneDokumenty)
                     {
-                        if (d.DokFormFile == null)
+                        if (pd.DokFormFile == null)//nebpl vybray subor
                             continue;
                         using (var ms = new MemoryStream())
                         {
-                            d.DokFormFile.CopyTo(ms);
-                            d.FileContent = ms.ToArray();
-                            d.NazovSuboru = d.DokFormFile.FileName;
-                        }
-                    }
-                    //zakazkaZO moze mat nastavene subory pre prilohy
-                    foreach (BaseItem d in zakazkaZO.Prilohy)
-                    {
-                        if (d.DokFormFile == null)
-                            continue;
-                        using (var ms = new MemoryStream())
-                        {
-                            d.DokFormFile.CopyTo(ms);
-                            d.FileContent = ms.ToArray();
-                            d.NazovSuboru = d.DokFormFile.FileName;
+                            pd.DokFormFile.CopyTo(ms);
+                            pd.FileContent = ms.ToArray();
+                            pd.NazovSuboru = pd.DokFormFile.FileName;
                         }
                     }
 
+                    foreach (var prd in zakazkaZO.Prilohy)
+                    {
+                        if (prd.DokFormFile == null)
+                            continue;
+                        using (var ms = new MemoryStream())
+                        {
+                            prd.DokFormFile.CopyTo(ms);
+                            prd.FileContent = ms.ToArray();
+                            prd.NazovSuboru = prd.DokFormFile.FileName;
+                        }
+                    }
+                    */
                     try
                     {
-                        //Z instancie typu ZakazkaZO vytvorime instanciu typu Zakazka a pridame ju do _contextu
-                        Zakazka novaZakazka = _transformService.ConvertZakazkaZO_To_NewZakazka(ref zakazkaZO);
-                        _context.Add(novaZakazka);
+                        _transformService.ConvertZakazkaZO_To_Zakazka(ref zakazkaZO, ref povodnaZakazkaDB);
+
                         int pocetUlozenych = await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Index));
                     }
@@ -532,32 +559,36 @@ namespace ToyotaArchiv.Controllers
                         //chybovy oznam sa zobrazi v hornej casti stranky
                         zakazkaZO.ErrorMessage = $"!! Nastala chyba pri uložení záznamu pre ZakazkaTg: {zakazkaZO.ZakazkaTg} !!";  //ex.Message;
                     }
-                }// if (ModelState.IsValid)
-                return View("NovaZakazka", zakazkaZO);
+
+                }//if (ModelState.IsValid)
+                return View(zakazkaZO);
             }
-            else if(skupina==111) //priznak ze bol klik na button 'Pridaj prilohu'
+            else if (skupina == 222) //priznak ze bol klik na button 'Pridaj prilohu'
             {
                 //pridanie polozky do Priloh
-                 short maxSkupina = zakazkaZO.Prilohy.Max(d => d.Skupina) ?? 0;
-                if (maxSkupina > 0)  
+                short maxSkupina = zakazkaZO.Prilohy.Max(d => d.Skupina) ?? 0;
+                if (maxSkupina > 0)
                 {
                     //napr. max Skupina=104
                     short novaSkupina = (short)(maxSkupina + 1);
-                    zakazkaZO.Prilohy.Add(new BaseItem() { NazovDokumentu=$"Priloha{(novaSkupina+1)%100:00}",  Skupina = novaSkupina });
+                    zakazkaZO.Prilohy.Add(new BaseItem() { NazovDokumentu = $"Priloha{(novaSkupina + 1) % 100:00}", Skupina = novaSkupina });
                 }
-               //niekde nastala chyba
+                //niekde nastala chyba
             }
-            return View("NovaZakazka", zakazkaZO);
+            return View(zakazkaZO);
         }
 
-        //UpdateZakazka.cshtml klik na button"Ulozit", po zadani parametrov pre zmenenu zakazku;
+        #region ==stary kod ==
+        /*
+         * //UpdateZakazka.cshtml klik na button"Ulozit", po zadani parametrov pre zmenenu zakazku;
+        //Volanie z UpdateZakazka.cshtml po kliku na button "Pridaj prilohu",  pre pridanie prilohy pre novu zakazku;
         //Nahratie suboru z klienta na server a ulozenie do DB
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateZakazka(ZakazkaZO zakazkaZO)
         {
             var vybrataSkupina = Request.Form["vybrataSkupina"].FirstOrDefault();//vybrataSkupina >0 bol klik na button na pridanie prilohy
-            int skupina = vybrataSkupina != null ? Convert.ToInt32(vybrataSkupina) : 0;
+            _ = short.TryParse(vybrataSkupina, out short skupina);
 
 
             if (skupina == 0)//nebol klik na button pre pridanie Prilohy
@@ -576,14 +607,6 @@ namespace ToyotaArchiv.Controllers
                    .ThenInclude(d => d.DokumentDetails)
                    .OrderByDescending(z => z.Vytvorene)
                    .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
-
-                    /*
-                    if (staraZakazka != null)
-                    {
-                        _context.Zakazkas.Remove(staraZakazka);
-                        int result = _context.SaveChanges();
-                    }
-                    */
 
                     if (zakazkaZO.ZakazkaTGdokument.DokFormFile != null)
                     {
@@ -671,9 +694,142 @@ namespace ToyotaArchiv.Controllers
             }
             return View(zakazkaZO);
         }
+         * */
+        #endregion ==stary kod ==
 
- 
+        /// <summary>
+        /// Vymaze udaje o dokumente podla zadanej hodnoty skupina
+        /// </summary>
+        /// <param name="zakazkaZO"></param>
+        /// <param name="skupinaDokumentu"></param>
+        /// <returns>Pocet dokumentov, ktore maju nastaveny NazovDokumentu</returns>
+        private int VymazDokument( ref ZakazkaZO zakazkaZO, short skupinaDokumentu)
+        {
+            int pocetDokumentov = 0;
+            if (skupinaDokumentu > 0)
+            {
+                //int pd = NastavZakazkuZO(ref zakazkaZO);//nema este nastaveny ani jeden dokument
+                //if( pd == 0)
+                //{
+                //    return 0;
+                //}
+                if (skupinaDokumentu == 1)
+                {
+                    zakazkaZO.ZakazkaTGdokument.FileContent = null;
+                    zakazkaZO.ZakazkaTGdokument.NazovSuboru = null;
+                }
+                else if (skupinaDokumentu == 2)
+                {
+                    zakazkaZO.ZakazkaTBdokument.FileContent = null;
+                    zakazkaZO.ZakazkaTBdokument.NazovSuboru = null;
+                }
+                else if (skupinaDokumentu >= 20 && skupinaDokumentu < 100)//Povinne dokumenty
+                {
+                    int pp = zakazkaZO.PovinneDokumenty.Count;  //20,21,22,23,24
+                    int index = skupinaDokumentu - 20;
+                    if(index<pp)
+                    {
+                        zakazkaZO.PovinneDokumenty[index].NazovSuboru = null;
+                        zakazkaZO.PovinneDokumenty[index].FileContent = null;
+                    }
+                }
+                else if (skupinaDokumentu >= 100)//Prilohy
+                {
+                    int pp = zakazkaZO.Prilohy.Count;  //100,101,102,103,104,....
+                    int index = skupinaDokumentu - 100;
+                    if (index < pp)
+                    {
+                        zakazkaZO.Prilohy[index].NazovSuboru = null;
+                        zakazkaZO.Prilohy[index].FileContent = null;
+                    }
+                }
 
+                pocetDokumentov = (zakazkaZO?.PovinneDokumenty?.Count(p => string.IsNullOrEmpty(p.NazovDokumentu)) ?? 0) + (zakazkaZO?.Prilohy?.Count(p => string.IsNullOrEmpty(p.NazovDokumentu)) ?? 0);
+                if (!string.IsNullOrEmpty(zakazkaZO.ZakazkaTGdokument.NazovSuboru))
+                {
+                    pocetDokumentov++;
+                }
+                if (!string.IsNullOrEmpty(zakazkaZO.ZakazkaTBdokument.NazovSuboru))
+                {
+                    pocetDokumentov++;
+                }
+            }
+
+            return pocetDokumentov;
+        }
+
+        /// <summary>
+        /// Nastavi NazovDokumentu a FileContent pre dokument, ktory ma nastaveny subor;
+        /// </summary>
+        /// <param name="zakazkaZO"></param>
+        /// <returns>Pocet dokumentov, ktore maju nastaveny NazovDokumentu</returns>
+        private int NastavZakazkuZO( ref ZakazkaZO zakazkaZO)
+        {
+            if (zakazkaZO.ZakazkaTGdokument.DokFormFile != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    zakazkaZO.ZakazkaTGdokument.DokFormFile.CopyTo(ms);
+                    zakazkaZO.ZakazkaTGdokument.FileContent = ms.ToArray();
+                    zakazkaZO.ZakazkaTGdokument.NazovSuboru = zakazkaZO.ZakazkaTGdokument.DokFormFile.FileName;
+                    zakazkaZO.ZakazkaTGdokument.NazovDokumentu = "ZakazkaTG";
+                    // zakazka.ZakazkaTGdokument.Poznamka = zakazka.TGFile.ContentType;//len na skusku!!!
+                    zakazkaZO.ZakazkaTGdokument.Skupina = (short)1;
+                }
+            }
+
+            if (zakazkaZO.ZakazkaTBdokument?.DokFormFile != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    zakazkaZO.ZakazkaTBdokument.DokFormFile.CopyTo(ms);
+                    zakazkaZO.ZakazkaTBdokument.FileContent = ms.ToArray();
+                    zakazkaZO.ZakazkaTBdokument.NazovSuboru = zakazkaZO.ZakazkaTBdokument.DokFormFile.FileName;
+                    zakazkaZO.ZakazkaTBdokument.NazovDokumentu = "ZakazkaTB";
+                    //zakazka.ZakazkaTBdokument.Poznamka = zakazka.TGFile.ContentType;//len na skusku!!!
+                    zakazkaZO.ZakazkaTBdokument.Skupina = (short)2;
+                }
+            }
+
+            zakazkaZO.Ukoncena = "N";
+
+            int pp = zakazkaZO.PovinneDokumenty.Count;
+            int pr = zakazkaZO.Prilohy.Count;
+
+            //zakazkaZO moze mat nastavene subory pre povinne dokumenty
+            foreach (BaseItem d in zakazkaZO.PovinneDokumenty)//nastavenie povinnych
+            {
+                if (d.DokFormFile == null)
+                    continue;
+                using (var ms = new MemoryStream())
+                {
+                    d.DokFormFile.CopyTo(ms);
+                    d.FileContent = ms.ToArray();
+                    d.NazovSuboru = d.DokFormFile.FileName;
+                }
+            }
+            //zakazkaZO moze mat nastavene subory pre prilohy
+            foreach (BaseItem d in zakazkaZO.Prilohy)
+            {
+                if (d.DokFormFile == null)
+                    continue;
+                using (var ms = new MemoryStream())
+                {
+                    d.DokFormFile.CopyTo(ms);
+                    d.FileContent = ms.ToArray();
+                    d.NazovSuboru = d.DokFormFile.FileName;
+                }
+            }
+            int pocetDokumentov = (zakazkaZO?.PovinneDokumenty?.Count(p => string.IsNullOrEmpty(p.NazovDokumentu))  ?? 0) + ( zakazkaZO?.Prilohy?.Count(p =>string.IsNullOrEmpty(p.NazovDokumentu)) ?? 0) ;
+            if( !string.IsNullOrEmpty(zakazkaZO.ZakazkaTGdokument.NazovSuboru))
+            {
+                pocetDokumentov++;
+            }
+            if (!string.IsNullOrEmpty(zakazkaZO.ZakazkaTBdokument.NazovSuboru))
+            {
+                pocetDokumentov++;
+            }
+            return pocetDokumentov;
+        }
     }
-
 }

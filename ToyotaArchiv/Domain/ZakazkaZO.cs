@@ -1,5 +1,4 @@
 ﻿
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ToyotaArchiv.Domain
@@ -54,14 +53,13 @@ namespace ToyotaArchiv.Domain
     /// </summary>
     public class ZakazkaZO  //Zakazka Zarucnej Opravy; je to ViewModel pre typ Zakazka
     {
+        /// <summary>
+        /// Vytvori PovinneDokumenty, Prilohy, ZakazkaTGdokument a ZakazkaTBdokument
+        /// </summary>
         public ZakazkaZO()
         {
-         
             ZakazkaTGdokument = new BaseItem() { Skupina=1 };//NazovDokumentu=ZakazkaTG, Skupina=1;
-            ZakazkaTBdokument = new BaseItem() { Skupina=2};//NazovDokumentu=ZakazkaTB, Skupina=2;
-
-            //PovinneDokumenty = new ObservableCollection<BaseItem>(); //Skupina: 20,21,22,...,99
-            //Prilohy = new ObservableCollection<BaseItem>();          //Skupina: 100, 101,.....
+            ZakazkaTBdokument = new BaseItem() { Skupina=2 };//NazovDokumentu=ZakazkaTB, Skupina=2;
 
             PovinneDokumenty = new List<BaseItem>(); //Skupina: 20,21,22,...,99
             Prilohy = new List<BaseItem>();          //Skupina: 100, 101,.....
@@ -85,7 +83,7 @@ namespace ToyotaArchiv.Domain
             get;
             set;
         }
-        public IList<BaseItem>? PovinneDokumenty //Skupina=20,21,,..,99; nemoze obsahovat 2 polozky  s rovnakym Name, je to osetrene??
+        public IList<BaseItem>? PovinneDokumenty //Skupina=20,21,,..,99; NazovDokumentu v polozke je pevne dany, nemoze sa menit;
         {
             get;
             set;
@@ -95,13 +93,11 @@ namespace ToyotaArchiv.Domain
         /// <summary>
         /// Zoznam priloh k zarucnej oprave
         /// </summary>
-
-        public IList<BaseItem>? Prilohy //Skupina=100,101,,..; nemoze obsahovat 2 polozky  s rovnakym Name, je to osetrene??
+        public IList<BaseItem>? Prilohy //Skupina=100,101,102,..;  NazovDokumentu je v polozke prednastaveny na Prilohaxx, uzivatel ho moze menit;
         {
             get;
             set;
         }
-
 
         /// <summary>
         /// Zakazka Toyota Garancia;
@@ -110,46 +106,33 @@ namespace ToyotaArchiv.Domain
         /// [
         /// 
 
-        [Required(ErrorMessage ="Údaj je povinný ")] //OK ak sa nezada nic a spusti sa Submit
+        [Required(ErrorMessage = "Údaj ZakazkaTg je povinný.")] //OK ak sa nezada nic a spusti sa Submit
         [Display(Name = "ZákazkaTG")]             //OK
-        [StringLength(8, MinimumLength=8, ErrorMessage = "Zadajte údaj na 8 znakov")]//Ak sa nezada MinimumLength=8; nejdeto
+        [StringLength(8, MinimumLength=8, ErrorMessage = "Pre údaj ZakazkaTg zadajte 8 znakov.")]//Ak sa nezada MinimumLength=8; nejdeto
         public string ZakazkaTg
         {
             get;
             set;
         }
-        //ZakazkaTg
-        //22.04.2022 pri valiacii mi neberie ErrorMessage = "Zadajte údaj na 8 znakov", vypise  eng. text
-        //The field ZákazkaTG is required
-
-        /*<input class="text-box single-line" data-val="true" 
-       data-val-length="Zadajte údaj na 8 znakov" 
-       data-val-length-max="8" 
-       data-val-required="The ZákazkaTG-MH field is required." 
-       id="ZakazkaTg" 
-       maxlength="8" 
-       name="ZakazkaTg" 
-       type="text" value="">
-         * 
-         */
+        
+       
 
         /// <summary>
         /// Vznika v momente prijmu vozidla do servisu kedy este nie je jasne ci ide o zarucnu opravu
         /// Identifikator v ramci predajne pre garancnu opravu; Nemusi za zadat pri vytvoreni zakazkyô
         /// </summary>
         [Display(Name = "ZákazkaTB")]
-        [StringLength(8, MinimumLength = 0, ErrorMessage = "Zadajte údaj na 8 znakov")]
+        [StringLength(8, MinimumLength = 8, ErrorMessage = "Pre údaj ZakazkaTb zadajte 8 znakov.")]//nemusi sa zadat, ale ak sa zada, potom to musi byt 8 znakov;
         public string? ZakazkaTb
         {
             get;
             set;
         }
 
-
         /// <summary>
         /// Kod opravy auta z europskej databazy
         /// </summary>
-        [StringLength(20, MinimumLength = 0, ErrorMessage = "Zadajte údaj na 1 až 20 znakov")]
+        [StringLength(20, MinimumLength = 0, ErrorMessage = "Pre údaj CWS zadajte max.20 znakov.")]//nemusi sa zadat, ale ak sa zada, potom to musi byt max. 20 znakov;
         [Display(Name = "CWS")]
         public string? Cws
         {
@@ -162,19 +145,17 @@ namespace ToyotaArchiv.Domain
         /// Udaj znamy po schvaleni garancnej opravy od importera;
         /// </summary>
         [Display(Name = "Číslo prot.")]
-        [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max. 16 znakov")]
+        [StringLength(16, MinimumLength = 0, ErrorMessage = "Pre údaj CisloProtokolu zadajte max. 16 znakov.")]//nemusi sa zadat, ale ak sa zada, potom to musi byt max. 16 znakov;
         public string? CisloProtokolu
         {
             get;
             set;
         }
 
-
-
         /// <summary>
         /// VIN kod z tech. preukazu automobilu, 17 znakov
         /// </summary>
-        [StringLength(17, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max. 17 znakov")]
+        [StringLength(17, MinimumLength = 17, ErrorMessage = "Pre údaj VIN zadajte 17 znakov.")]//nemusi sa zadat, ale ak sa zada, potom to musi byt 17 znakov;
         [Display(Name = "VIN")]
         public string? Vin
         {
@@ -204,7 +185,7 @@ namespace ToyotaArchiv.Domain
         /// Poznamka nvarchar(128), null
         /// </summary>
         [Display(Name = "Poznámka")]
-        [StringLength(128, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.128 znakov")]
+        [StringLength(128, MinimumLength = 0, ErrorMessage = "Pre údaj Poznamka zadajte max. 128 znakov.")]
         public string? Poznamka   
         {
             get;

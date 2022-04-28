@@ -6,17 +6,19 @@
 }
 
 @*ZakazkyJQ:NovaZakazka
-   Otvori sa z Index.cshtml po kliku na link "Nova garancna oprava" pre rolu ADMIN, VEDUCI, SERVISNY_TECHNIK
+    Otvori sa z Index.cshtml po kliku na link "Nova garancna oprava" pre rolu ADMIN, VEDUCI, SERVISNY_TECHNIK
 *@
 
 <style>
     table {
         border: 1px solid black;
     }
-    table.center {
+
+        table.center {
             margin-left: auto;
             margin-right: auto;
-    }
+        }
+
     th {
         padding: 4px, 10px,4px,10px;
     }
@@ -26,233 +28,284 @@
     }
 
     table tbody tr {
-                border-bottom: 1px solid rgba(0,0,0,.3);
+        border-bottom: 1px solid rgba(0,0,0,.3);
+    }
+
+    /* disabled link */
+    a {
     }
 
 </style>
-<script type="text/javascript" >
+<script type="text/javascript">
 
-function vymazPolozku( skupina)
-{
-    var p = document.getElementById("vybrataSkupina");
-    //alert("Skupina value:" + p.value);
-     
-    p.value=skupina;
-    //alert("Nova skupina:" + p.value);
-    document.forms['f1'].submit();
-    return true;
-}
+    @*Vymaze subor pre Dokument
+        Nastavi value pre hidden element vybrataSkupina a urobi Submit stranky
+    *@
+    function vymazPolozku( skupina)
+    {
+        var p = document.getElementById("vybrataSkupina");
+        p.value=skupina;
+        document.forms['formCreate'].submit();
+        return true;
+    }
 
-function pridajPrilohu(skupina)
-{
-    var p = document.getElementById("vybrataSkupina");
-    p.value=skupina;
-    document.forms['f1'].submit();
-    return true;
-}
+    @*Prida prilohu do kolekcie Prilohy
+        Nastavi value pre hidden element vybrataSkupina a urobi Submit stranky
+    *@
+    function pridajPrilohu(skupina)
+    {
+        var p = document.getElementById("vybrataSkupina");
+        p.value=skupina;
+        document.forms['formCreate'].submit();
+        return true;
+    }
 </script>
-  
 
+
+@*Po vybere viacerych suborov a vymazani jedneho suboru, nazvy suborov sa zobrazia len ako texty, subory este neboli ulozene do DB;
+    Aj ked obsah suboru je uz ulozeny instacii Dokument!!
+
+*@
+
+@*ZakazkyJQ:NovaZakazka.cshtml*@
 <div class="container">
- 
-  
     <div class="form-inline">
         <h5>Nová zákazka pre garančnú opravu</h5>
         <span class="text-danger">@Model?.ErrorMessage</span>
     </div>
-     <div class="d-flex p-2 justify-content-center">
-          <a asp-action="Index"  style="margin-right:50px;">Návrat</a>
-          <input type="submit" value="Uložiť" class="btn btn-sm  btn-primary"  onclick="document.forms['f1'].submit();"/>
-   
+    <div class="d-flex p-2 justify-content-center">
+        <a asp-action="Index" class="btn btn-sm btn-primary" style="margin-right:50px;">Návrat</a>
+        <input type="submit" value="Uložiť" class="btn btn-sm  btn-warning" onclick="document.forms['formCreate'].submit();" />
+
     </div>
-   @* <hr />*@
+    @* <hr />*@
     <div class="row">
         @*<div class="col-md-12">*@
-            <form name="f1"   asp-action="Create" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" name="vybrataSkupina"  id="vybrataSkupina" value="0"/>
-                @*<div style="width:90%; margin:0 auto;">*@
-                     <div class="col-md-12">
-                    @* Udaje o zakazke*@
-                    <table width="100%" cellspacing="0">
-                        <tr>
-                            <td width="150px">@Html.DisplayNameFor(m=>m.ZakazkaTg)</td>
-                            <td width="250px">@Html.TextBoxFor(m=>m.ZakazkaTg, new {@class="form-control"} )</td>
-                            <td width="400px">
-                               @*Subor pre zakazkaTG*@
-                                    <input asp-for="@Model.ZakazkaTGdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
-                            </td>
-                            
-                            <td width="300px" colspan="2">
-                                 @Html.ActionLink(@Model?.ZakazkaTGdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
-                                    new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina} )
-                            </td>
-                            <td> <input type="submit" onclick="vymazPolozku( '@Model.ZakazkaTGdokument.Skupina')"   class="btn btn-sm btn-danger" value="Vymazať"/></td>
-                            
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(m=>m.ZakazkaTb)</td>
-                            <td>@Html.TextBoxFor(m=>m.ZakazkaTb, new {@class="form-control"})</td>
-                            <td>
-                               @*Subor pre zakazkaTG*@
-                              
-                                    <input asp-for="@Model.ZakazkaTBdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
-                               
-                            </td>
-                            <td colspan="2">
-                                 @Html.ActionLink(@Model?.ZakazkaTBdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
-                                    new{ zakazkaTB=@Model?.ZakazkaTb?.Trim(), subor=@Model?.ZakazkaTBdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTBdokument?.Skupina} )
-                            </td>
-                           
-                             <td class="text-center">
-                               @*  <input type="button" value="Vymazať"/>  ' + @Model.ZakazkaTBdokument.Skupina + '
-                            <input type="submit" onclick="return confirm('Vymazať záznam ?')"   class="btn btn-sm btn-danger" value="Vymazať"/>
-                             <input type="submit" onclick="return confirm('Vymazať záznam ' + @Model.ZakazkaTBdokument.Skupina + '?')"   class="btn btn-sm btn-danger" value="Vymazať"/>
-                              <input type="submit" onclick="return vymazPolozku( '99')"   class="btn btn-sm btn-danger" value="Vymazať"/>
-                                 <input type="submit" onclick="return vymazPolozku( '@Model.ZakazkaTBdokument.Skupina')"   class="btn btn-sm btn-danger" value="Vymazať"/>*@
-                                    <input type="submit" onclick="vymazPolozku( '@Model.ZakazkaTBdokument.Skupina')"   class="btn btn-sm btn-danger" value="Vymazať"/>
-                             
-                             </td>
-                            
-                        </tr>
-                       @* <tr>
-                            <td>@Html.DisplayNameFor(m=>m.Ukoncena)</td>
-                            <td>@Html.DisplayFor(m=>m.Ukoncena)</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+        <form name="formCreate" asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="vybrataSkupina" id="vybrataSkupina" value="0" />
+
+            @*<div style="width:90%; margin:0 auto;">*@
+            <div class="col-md-12">
+                @* Udaje o zakazke*@
+                <table width="100%" cellspacing="0">
+                    <tr>
+                        @Html.HiddenFor(x => Model.ZakazkaTGdokument.Skupina)
+                        @Html.HiddenFor(x => Model.ZakazkaTGdokument.NazovSuboru)
+                        @Html.HiddenFor(x => Model.ZakazkaTGdokument.NazovDokumentu)
+                        @*ZakazkaTg 8 znakov*@
+                        <td width="150px">@Html.DisplayNameFor(m=>m.ZakazkaTg)</td>
+                        <td width="250px">@Html.TextBoxFor(m=>m.ZakazkaTg, new {@class="form-control"} )</td>
+                        <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
+
+                        @*Vyber suboru pre zakazkaTG*@
+                        <td width="400px">
+                            @*Subor pre zakazkaTG*@
+                            <input asp-for="@Model.ZakazkaTGdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
+                        </td>
+                        @*Subor link pre zakazkaTG*@
+                        <td width="300px" colspan="2">
+                           @* @if (!string.IsNullOrEmpty(Model?.ZakazkaTGdokument?.NazovSuboru))
+                            {
+                                @Html.DisplayFor( x => Model.ZakazkaTGdokument.NazovSuboru)
+                            }*@
+
+                             @Html.ActionLink(@Model?.ZakazkaTGdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
+                                new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina})
+                        </td>
+                        @*Button delete subor*@
+                        <td class="text-center">
+                            @*<input type="submit" onclick="vymazPolozku( '@Model?.ZakazkaTBdokument?.Skupina ?? 0')" class="btn btn-sm btn-danger" value="Vymazať" />*@
+                            <div class="fixed-action-btn ">
+                                <a class="btn-floating btn-sm red" onclick="vymazPolozku( '@Model?.ZakazkaTGdokument?.Skupina');"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+
+                     @*ZakazkaTBdokument*@
+                    <tr>
+                        @Html.HiddenFor(x => Model.ZakazkaTBdokument.Skupina)
+                        @Html.HiddenFor(x => Model.ZakazkaTBdokument.NazovSuboru)
+                        @Html.HiddenFor(x => Model.ZakazkaTBdokument.NazovDokumentu)
+                        
+                        <td>@Html.DisplayNameFor(m=>m.ZakazkaTb)</td>
+                        <td>@Html.TextBoxFor(m=>m.ZakazkaTb, new {@class="form-control"})</td>
+                        <span asp-validation-for="ZakazkaTb" class="text-danger"></span>
+
+                        @*Subor pre zakazkaTB*@
+                        <td>
+                            <input asp-for="@Model.ZakazkaTBdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
+                        </td>
+                         @* Subor link*@
+                        <td colspan="2">
+                            @Html.ActionLink(@Model?.ZakazkaTBdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
+                            new{ zakazkaTB=@Model?.ZakazkaTb?.Trim() ?? "", subor=@Model?.ZakazkaTBdokument?.NazovSuboru?.Trim() ?? "", skupina=@Model?.ZakazkaTBdokument?.Skupina ?? (short)0} )
+                        </td>
+                        @* Vymazat-button s ikonou*@
+                        <td class="text-center">
+                            <div class="fixed-action-btn ">
+                                <a class="btn-floating btn-sm red" onclick="vymazPolozku( '@Model?.ZakazkaTBdokument?.Skupina');"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                        </td>
+
+                    </tr>
+                    @* <tr>
+                        <td>@Html.DisplayNameFor(m=>m.Ukoncena)</td>
+                        <td>@Html.DisplayFor(m=>m.Ukoncena)</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         </tr>*@
-                        <tr>
-                            <td>@Html.DisplayNameFor(m=>m.Vin)</td>
-                            <td colspan="1">@Html.TextBoxFor(m=>m.Vin, new {@class="form-control"})</td>
+                    <tr>
+                        @*VIN 17 znakov*@
+                        <td>@Html.DisplayNameFor(m=>m.Vin)</td>
+                        <td>@Html.TextBoxFor(m=>m.Vin, new {@class="form-control"})</td>
+                        <span asp-validation-for="Vin" class="text-danger"></span>
 
-                            <td>@Html.DisplayNameFor(m=>m.Cws)</td>
-                            <td>@Html.TextBoxFor(m=>m.Cws, new {@class="form-control"})</td>
-                             <td></td>
-                              <td></td>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
-                            <td>@Html.TextBoxFor(m=>m.CisloProtokolu, new {@class="form-control"})</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                             <td></td>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(m=>m.Poznamka)</td>
-                            <td colspan="5">@Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control"})</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <td>@Html.DisplayNameFor(m=>m.Cws)</td>
+                        <td>@Html.TextBoxFor(m=>m.Cws, new {@class="form-control"})</td>
+                        <span asp-validation-for="Cws" class="text-danger"></span>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
+                        <td>@Html.TextBoxFor(m=>m.CisloProtokolu, new {@class="form-control"})</td>
+                        <span asp-validation-for="CisloProtokolu" class="text-danger"></span>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(m=>m.Poznamka)</td>
+                        <td colspan="5">@Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control"})</td>
+                        <span asp-validation-for="Poznamka" class="text-danger"></span>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
 
+                </table>
+
+                @* <span>Povinné dokumenty</span>*@
+                @if (Model?.PovinneDokumenty != null)
+                {
+                    <table id="datatablePD" width="100%" cellspacing="0">
+                        <thead class="tableHeaderColor">
+                            <tr>
+                                <th width="180px">@*Dokument*@</th>
+                                <th width="600px">@*Súbor*@</th>
+                                <th width="400px">@*Link*@</th>
+                                <th></th>
+                                <th width="400px">@*Poznámka*@</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @for (int i = 0; i < Model.PovinneDokumenty.Count; i++)
+                            {
+                                <tr>
+                                    @*@Html.HiddenFor(x => Model.PovinneDokumenty[i].Skupina)
+                                    @Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovSuboru)
+                                    @Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovDokumentu)
+                                    @Html.HiddenFor(x => Model.PovinneDokumenty[i].Poznamka)*@
+                                    <td>
+                                        @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly"})
+                                    </td>
+                                     @*HTML element pre vyber suboru*@
+                                    <td>
+                                        <input asp-for="@Model.PovinneDokumenty[i].DokFormFile" class="form-control" lang="sk" />
+                                    </td>
+                                     @*Link pre vybraty subor*@
+                                    <td>
+                                        @Html.ActionLink(@Model?.PovinneDokumenty[i].NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
+                                new{ zakazkaTB=@Model?.ZakazkaTb?.Trim(), subor=@Model?.PovinneDokumenty[i].NazovSuboru?.Trim(), skupina=@Model?.PovinneDokumenty[i]?.Skupina}, new { @enabled="false"} )
+                                    </td>
+
+                                    @*Button delete subor*@
+                                    <td class="text-center">
+                                        <div class="fixed-action-btn ">
+                                            <a class="btn-floating btn-sm red" onclick="vymazPolozku( '@Model.PovinneDokumenty[i].Skupina');"><i class="fas fa-trash-alt"></i></a>
+                                        </div>
+                                    </td>
+                                     @*Poznamka*@
+                                    <td>
+                                        @Html.TextBoxFor(x => Model.PovinneDokumenty[i].Poznamka, new {@class="form-control"})
+                                    </td>
+                                    <span asp-validation-for="@Model.PovinneDokumenty[i].Poznamka" class="text-danger"></span>
+                                </tr>
+                            }
+                        </tbody>
                     </table>
 
-                    <span>Povinné dokumenty</span>
-                    @*class="table table-striped table-bordered dt-responsive nowrap"*@
-                    @if (Model?.PovinneDokumenty != null)
-                    {
-                        <table id="datatablePD" width="100%" cellspacing="0">
-                            <thead class="tableHeaderColor">
+                }
+                 <div class="d-flex py-1 justify-content-center">
+                        <span>Prílohy<input type="button" onclick="pridajPrilohu('222');" class="btn btn-sm btn-primary ml-4" value="Pridaj prílohu" /></span>
+                    </div>
+                @if (Model?.Prilohy != null)
+                {
+                    <table id="datatablePrilohy" width="100%" cellspacing="0">
+                        <thead class="tableHeaderColor">
+                            <tr>
+                                <th width="180px">@*Dokument*@</th>
+                                <th width="600px">@*Súbor*@</th>
+                                <th width="400px">@*Link*@</th>
+                                <th></th>
+                                <th width="400px">@*Poznámka*@</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @for (int i = 0; i < Model.Prilohy.Count; i++)
+                            {
                                 <tr>
-                                    <th width="180px">@*Dokument*@</th>
-                                    <th width="600px">@*Súbor*@</th>
-                                     <th width="400px">@*Link*@</th>
-                                    <th></th>
-                                    <th width="400px">@*Poznámka*@</th>
+                                    @Html.HiddenFor(x => Model.Prilohy[i].Skupina)
+                                    @*Nazov dokumentu, prednastaveny nazov: PrilohaXX*@
+                                    <td>
+                                        @Html.TextBoxFor(x => Model.Prilohy[i].NazovDokumentu, new { @class="form-control"})
+                                    </td>
+                                    <span asp-validation-for="@Model.Prilohy[i].NazovDokumentu" class="text-danger"></span>
+
+                                    @*HTML element pre vyber suboru*@
+                                    <td>
+                                        <input asp-for="@Model.Prilohy[i].DokFormFile" class="form-control" lang="sk" />
+                                    </td>
+                                    @*Link pre vybraty subor*@
+                                    <td>
+                                        @Html.ActionLink(@Model?.Prilohy[i].NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
+                                new{ zakazkaTB=@Model?.ZakazkaTb?.Trim() ?? "", subor=@Model?.Prilohy[i].NazovSuboru?.Trim() ?? "", skupina=@Model?.Prilohy[i]?.Skupina ?? 0}, new { @enabled="false"} )
+                                    </td>
+                                    @*Button delete subor*@
+                                    <td class="text-center">
+                                        <div class="fixed-action-btn ">
+                                            <a class="btn-floating btn-sm red" onclick="vymazPolozku( '@Model.Prilohy[i].Skupina');"><i class="fas fa-trash-alt"></i></a>
+                                        </div>
+                                    </td>
+                                    @*Poznamka*@
+                                    <td>
+                                        @Html.TextBoxFor(x => Model.Prilohy[i].Poznamka, new { @class="form-control"})
+                                    </td>
+                                    <span asp-validation-for="@Model.Prilohy[i].Poznamka" class="text-danger"></span>
                                 </tr>
-                            </thead>
-                            <tbody>
-
-                                @for (int i=0; i< Model.PovinneDokumenty.Count; i++)
-                                {
-                                    <tr>
-                                          @Html.HiddenFor(x => Model.PovinneDokumenty[i].Skupina)
-                                        <td>
-                                             @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly"})
-                                            @*@Model.PovinneDokumenty[i].NazovDokumentu*@
-                                        </td>
-                                       <td>
-                                            <input asp-for="@Model.PovinneDokumenty[i].DokFormFile" class="form-control" lang="sk" />
-                                        </td>
-                                        <td>
-                                          @Html.ActionLink(@Model?.PovinneDokumenty[i].NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
-                                             new{ zakazkaTB=@Model?.ZakazkaTb?.Trim(), subor=@Model?.PovinneDokumenty[i].NazovSuboru?.Trim(), skupina=@Model?.PovinneDokumenty[i]?.Skupina} )
-                                        </td>
-                                        
-                                        <td>
-                                             <input type="button" onclick="vymazPolozku( '@Model?.PovinneDokumenty[i].Skupina')"   class="btn btn-sm btn-danger" value="Vymazať"/>
-                                        </td>
-                                        <td>
-                                            @Html.TextBoxFor(x => Model.PovinneDokumenty[i].Poznamka, new {@class="form-control"})
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-
-                    }
-                    <span>Prílohy <input type="button" onclick="pridajPrilohu('111')"   class="btn btn-sm btn-primary" value="Pridaj prílohu"/></span>
-                    @*table-bordered  rows maju border, table-striped susedne riadky maju roznu farbu, biela-siva 
-                    *@
-                    @if (Model?.Prilohy != null)
-                    {
-                        <table id="datatablePrilohy"  width="100%" cellspacing="0">
-                            <thead class="tableHeaderColor">
-                                <tr>
-                                    <th width="180px">@*Dokument*@</th>
-                                    <th width="600px">@*Súbor*@</th>
-                                    <th width="400px">@*Link*@</th>
-                                     <th></th>
-                                    <th width="400px">@*Poznámka*@</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @for (int i=0; i< Model.Prilohy.Count; i++)
-                                {
-                                    <tr>
-                                          @Html.HiddenFor(x => Model.Prilohy[i].Skupina)
-                                        <td>
-                                             @Html.TextBoxFor(x => Model.Prilohy[i].NazovDokumentu, new { @class="form-control", @readonly="readonly"})
-                                           @* @Model.Prilohy[i].NazovDokumentu*@
-                                        </td>
-                                        <td>
-                                            <input asp-for="@Model.Prilohy[i].DokFormFile" class="form-control" lang="sk" />
-                                        </td>
-                                       <td>
-                                          @Html.ActionLink(@Model?.Prilohy[i].NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
-                                             new{ zakazkaTB=@Model?.ZakazkaTb?.Trim(), subor=@Model?.Prilohy[i].NazovSuboru?.Trim(), skupina=@Model?.Prilohy[i]?.Skupina} )
-                                        </td>
-                                        <td>
-                                          <input type="button" onclick="vymazPolozku( '@Model?.Prilohy[i].Skupina')"   class="btn btn-sm btn-danger" value="Vymazať"/>
-                                        </td>
-                                        <td>
-                                            @Html.TextBoxFor(x => Model.Prilohy[i].Poznamka, new { @class="form-control"})
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                   @* <div class="form-group">
-                        <input type="submit" value="Uložiť" class="btn btn-sm  btn-primary" />
+                            }
+                        </tbody>
+                    </table>
+                }
+                @* <div class="form-group">
+                    <input type="submit" value="Uložiť" class="btn btn-sm  btn-primary" />
                     </div>*@
-                </div>
-                
-            </form>
-
-        @*</div>*@
+            </div>
+        </form>
     </div>
 </div>
 
 @*<div>
     <a asp-action="Index">Návrat</a>
-</div>*@
+    </div>*@
 
 @section Scripts {
     @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }

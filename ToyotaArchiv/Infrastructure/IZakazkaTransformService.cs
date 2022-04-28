@@ -14,7 +14,7 @@ namespace ToyotaArchiv.Infrastructure
 
         void ConvertZakazkaZO_To_Zakazka(ref ZakazkaZO myZakZO, ref Zakazka zakazkaDB);
 
-        ZakazkaZO VytvorPrazdnuZakazkuZO();
+        ZakazkaZO VytvorPrazdnuZakazkuZO(short pocetPriloh);
 
     }
 }

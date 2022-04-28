@@ -15,6 +15,7 @@
   <ItemGroup>
     <Content Remove="Views\ZakazkyJQ\Create.cshtml" />
     <Content Remove="Views\ZakazkyJQ\Details1.cshtml" />
+    <Content Remove="Views\ZakazkyJQ\Edit.cshtml" />
     <Content Remove="Views\ZakazkyJQ\Edit1.cshtml" />
   </ItemGroup>
 
