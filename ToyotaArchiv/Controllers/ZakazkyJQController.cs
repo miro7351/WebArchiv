@@ -382,7 +382,7 @@ namespace ToyotaArchiv.Controllers
         // volanie: <a asp-action="NovaZakazka" style="margin-left:50px;">Nová garančná oprava</a>
         public IActionResult NovaZakazka()  //pouziva Views\ZakazkyJQ\NovaZakazka.cshtml  
         {
-            short pocetPriloh = 1;
+            short pocetPriloh = 5;
             ZakazkaZO zakazkaZO = _transformService.VytvorPrazdnuZakazkuZO(pocetPriloh: pocetPriloh);
 
             return View(zakazkaZO);
@@ -418,8 +418,8 @@ namespace ToyotaArchiv.Controllers
                     try
                     {
                         //Z instancie typu ZakazkaZO vytvorime instanciu typu Zakazka a pridame ju do _contextu
-                        Zakazka novaZakazka = _transformService.ConvertZakazkaZO_To_NewZakazka(ref zakazkaZO);
-                        _context.Add(novaZakazka);
+                        Zakazka novaZakazkaDB = _transformService.ConvertZakazkaZO_To_NewZakazka(ref zakazkaZO);
+                        _context.Add(novaZakazkaDB);
                         int pocetUlozenych = await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Index));
                     }
@@ -460,6 +460,9 @@ namespace ToyotaArchiv.Controllers
             return View("NovaZakazka", zakazkaZO);
         }
 
+        /*
+         * Pre Vymazanie suboru sa vola DeleteDokument
+         */ 
 
         //UpdateZakazka.cshtml klik na button"Ulozit", po zadani parametrov pre zmenenu zakazku;
         //Volanie z UpdateZakazka.cshtml po kliku na button "Pridaj prilohu",  pre pridanie prilohy pre novu zakazku;
@@ -563,6 +566,7 @@ namespace ToyotaArchiv.Controllers
                 }//if (ModelState.IsValid)
                 return View(zakazkaZO);
             }
+            
             else if (skupina == 222) //priznak ze bol klik na button 'Pridaj prilohu'
             {
                 //pridanie polozky do Priloh
@@ -698,7 +702,7 @@ namespace ToyotaArchiv.Controllers
         #endregion ==stary kod ==
 
         /// <summary>
-        /// Vymaze udaje o dokumente podla zadanej hodnoty skupina
+        /// Vymaze udaje o dokumente z viemodelu ZakazkaZO podla zadanej hodnoty skupina zo
         /// </summary>
         /// <param name="zakazkaZO"></param>
         /// <param name="skupinaDokumentu"></param>

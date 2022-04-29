@@ -9,7 +9,7 @@ namespace ToyotaArchiv.Services
      * Typ ZakazkaZO je ViewModel pre typ Zakazka;
      * Modul obsahuje funcie na transformaciu typu ZakazkaZO <-> typ Zakazka
      */ 
-    internal class ZakazkaServiceWeb : IZakazkaTransformService
+    internal partial class ZakazkaServiceWeb : IZakazkaTransformService
     {
         public ZakazkaServiceWeb()
         {
@@ -397,6 +397,7 @@ namespace ToyotaArchiv.Services
          * 
          * Pri editovani zakazkaZO sa mohli zmenit obsahy  dokumentov, mohol pribudnut dokument (pridal sa subor) do zakazkaZO, mohol sa odobrat dokument (vymazal sa subor) ;
          */
+        /*
         public void ConvertZakazkaZO_To_Zakazka(ref ZakazkaZO zakazkaZO, ref Zakazka zakazkaDB)  //ked sa robi UPDATE zaznamu z DB!!!!
         {
             if (zakazkaZO == null)
@@ -745,7 +746,7 @@ namespace ToyotaArchiv.Services
             #endregion == Prilohy ==
 
         }//ConvertZakazkaZO_To_Zakazka(ZakazkaZO myZakZO, ref Zakazka zakazkaDB)
-    
+    */
 
         /// <summary>
         /// Vytvori instanciu ktora obsahuje vsetky vnorene udaje, ale udaje este nie su nastavene;

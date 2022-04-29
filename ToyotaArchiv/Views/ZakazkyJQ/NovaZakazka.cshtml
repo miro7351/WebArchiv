@@ -206,8 +206,8 @@
                             @for (int i = 0; i < Model.PovinneDokumenty.Count; i++)
                             {
                                 <tr>
-                                    @*@Html.HiddenFor(x => Model.PovinneDokumenty[i].Skupina)
-                                    @Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovSuboru)
+                                    @Html.HiddenFor(x => Model.PovinneDokumenty[i].Skupina)@*Skupina sa needituje tak ju prenasam ako hidden element*@
+                                    @*@Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovSuboru)
                                     @Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovDokumentu)
                                     @Html.HiddenFor(x => Model.PovinneDokumenty[i].Poznamka)*@
                                     <td>
