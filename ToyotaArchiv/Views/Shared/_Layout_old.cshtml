@@ -19,7 +19,6 @@
 
     <!--MH pridany css subor-->
     <link rel="stylesheet" href="~/css/mhstyle1.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/styleToyota.css" asp-append-version="true" />
 </head>
 
 @*
@@ -37,38 +36,34 @@ class="container"  centruje obsah div na stred
     string login = ToyotaArchiv.Global.AppData.CurrentUserDetail.UserLogin;
 }
 <body>
-
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm py-4 navbar-dark bg-dark box-shadow mb-3 shadow-sm ">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="ZakazkyJQ" asp-action="Index">
-                    <img src="~/images/logo_toyota.png" height="50" align="left" alt="" class="d-inline-block ali gn-middle mr-2"> 
-                </a>
-                <a class="navbar-brand" asp-area="" asp-controller="ZakazkyJQ" asp-action="Index">
-                    <span class="text-uppercase font-weight-bold align-self-center">Archív garančných opráv</span>
-                </a>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ToyotaArchiv</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" >
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
                         
                         <li class="nav-item">
-                          <a class="nav-link " asp-area="" asp-controller="ZakazkyJQ" asp-action="Index">Garančné opravy</a>
+                          <a class="nav-link text-dark" asp-area="" asp-controller="ZakazkyJQ" asp-action="Index">Garančné opravy</a>
                         </li>
                        
                         @if (rola=="ADMIN" || rola=="VEDUCI")   @*Len pre roly: ADMIN, VEDUCI*@
                         {
                              <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-controller="Accounts" asp-action="Index">Účty</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="Index">Účty</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-controller="Logs" asp-action="Index">Logy</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Logs" asp-action="Index">Logy</a>
                             </li>
                              <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-controller="Errors" asp-action="Index">Chyby</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Errors" asp-action="Index">Chyby</a>
                             </li>
                         }
 
@@ -78,19 +73,11 @@ class="container"  centruje obsah div na stred
             </div>
         </nav>
     </header>
-
-
   <div class="container">   @* MH zmena 20.04.2022  *@
        <main role="main" class="pb-2">
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted bg-dark py-4">
-        <div class="container">
-            &copy; 2022 - Archív garancných opráv @*<a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
-        </div>
-    </footer>
 
     @*<footer class="border-top footer text-muted">
         <div class="container">
