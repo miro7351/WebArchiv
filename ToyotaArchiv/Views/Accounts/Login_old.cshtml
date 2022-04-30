@@ -8,30 +8,25 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="text-center">
-  <div class="div-center">
-    <div class="content">
-
-      <h3>Prihlásenie</h3>
-      <hr style="height:2.5px;color:black;opacity:100%"  />
-
+<div class="container">
+    <div class="row>">
+        <div class="col-md-3">
+        <h3>Login</h3>
         <form asp-action="Login" method="post">
             <div class="form-group">
                 <label>Meno</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Meno"/> 
+                <input type="text" class="form-control" id="username" name="username"/> 
             </div>
             <div class="form-group">
                 <label>Heslo</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Heslo"/> 
+                <input type="password" class="form-control" id="password" name="password"/> 
             </div>
-            <hr style="width:0%">
             <div class="form-group">
                 <label></label>
-                <input type="submit" class="btn btn-primary" value="Vstup"/> 
+                <input type="submit" class="btn btn-primary" value="Login"/> 
             </div>
         </form>
-
+        </div>
     </div>
-  </div>
 </div>
 

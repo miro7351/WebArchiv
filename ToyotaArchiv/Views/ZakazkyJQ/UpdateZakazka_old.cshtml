@@ -209,12 +209,10 @@
                                 @for (int i = 0; i < Model.PovinneDokumenty.Count; i++)
                                 {
                                     <tr>
-                                        @*Hidden su len polozky ktore sa needituju, ale ich treba!!!*@
                                         @Html.HiddenFor(x => Model.PovinneDokumenty[i].Skupina)
                                         @Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovSuboru)
-                                        @*@Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovDokumentu)*@
-                                        @*@Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovSuboru)*@
-                                        @*@Html.HiddenFor(x => Model.PovinneDokumenty[i].Poznamka)*@
+                                        @Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovDokumentu)
+                                        @Html.HiddenFor(x => Model.PovinneDokumenty[i].Poznamka)
                                         @* NazovDokumentu readonly*@
                                         <td>
                                             @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly"})
@@ -270,12 +268,10 @@
                                 @for (int i = 0; i < Model.Prilohy.Count; i++)
                                 {
                                     <tr>
-                                        @*len tie polozky su Hidden co sa needituju cez extBoxFor*@
                                         @Html.HiddenFor(x => Model.Prilohy[i].Skupina)
-                                       @Html.HiddenFor(x => Model.Prilohy[i].NazovSuboru)
-                                       
-                                       @*  @Html.HiddenFor(x => Model.Prilohy[i].NazovDokumentu)*@
-                                        @*@Html.HiddenFor(x => Model.Prilohy[i].Poznamka)*@
+                                        @Html.HiddenFor(x => Model.Prilohy[i].NazovSuboru)
+                                        @Html.HiddenFor(x => Model.Prilohy[i].NazovDokumentu)
+                                        @Html.HiddenFor(x => Model.Prilohy[i].Poznamka)
                                         @*Nazov dokumentu, prednastaveny nazov: PrilohaXX*@
                                         <td>
                                             @Html.TextBoxFor(x => Model.Prilohy[i].NazovDokumentu, new { @class="form-control"})
