@@ -7,7 +7,7 @@ using System.Linq.Dynamic.Core;  //z NUgetu
 using PA.TOYOTA.DB;
 using ToyotaArchiv.Infrastructure;
 using ToyotaArchiv.Domain;
-
+using System.Globalization;
 
 namespace ToyotaArchiv.Controllers
 {
@@ -76,7 +76,14 @@ namespace ToyotaArchiv.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                //IOrderedQueryable<Zakazka> zakazkyDB;
+                var datumSearchValue = Request.Form["columns[1][search][value]"].FirstOrDefault() ?? string.Empty;
+                var zakazkaTgSearchValue  = Request.Form["columns[2][search][value]"].FirstOrDefault() ?? string.Empty;
+                var zakazkaTbSearchValue = Request.Form["columns[3][search][value]"].FirstOrDefault() ?? string.Empty;
+                var vinSearchValue = Request.Form["columns[4][search][value]"].FirstOrDefault() ?? string.Empty;
+
+                var cwsSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault() ?? string.Empty;
+                var cisloProtSearchValue = Request.Form["columns[6][search][value]"].FirstOrDefault() ?? string.Empty;
+                var ukoncenaSearchValue = Request.Form["columns[7][search][value]"].FirstOrDefault() ?? string.Empty;
 
                 // Getting all Zakazka
                 var zakazky = (from zakazka in _context.Zakazkas
@@ -87,7 +94,44 @@ namespace ToyotaArchiv.Controllers
                 {
                     zakazky = zakazky.OrderBy(sortColumn + " " + sortColumnDirection);
                 }
-                //Search
+
+                if (!string.IsNullOrEmpty(datumSearchValue))
+                {
+                    //zakazky = zakazky.Where(m => m.Vytvorene.Value.ToString("dd.MM.yyyy HH:mm").Contains(datumSearchValue));toto nejde!!
+                    
+                       _ = DateTime.TryParse(datumSearchValue, new CultureInfo("sk-SK"), System.Globalization.DateTimeStyles.None, out DateTime dt);
+
+                    if(dt != DateTime.MinValue ) 
+                         zakazky = zakazky.Where(m =>  m.Vytvorene.Value.Year==dt.Year && m.Vytvorene.Value.Month==dt.Month && m.Vytvorene.Value.Day == dt.Day);
+                }
+             
+                if (!string.IsNullOrEmpty(zakazkaTgSearchValue))
+                {
+                    zakazky = zakazky.Where(m => m.ZakazkaTg.Contains(zakazkaTgSearchValue));
+                }
+                else if (!string.IsNullOrEmpty(zakazkaTbSearchValue))
+                {
+                    zakazky = zakazky.Where(m => m.ZakazkaTb.Contains(zakazkaTbSearchValue));
+                }
+
+                else if (!string.IsNullOrEmpty(vinSearchValue))
+                {
+                    zakazky = zakazky.Where(m => m.Vin.Contains(vinSearchValue));
+                }
+                else if (!string.IsNullOrEmpty(cwsSearchValue))
+                {
+                    zakazky = zakazky.Where(m => m.Cws.Contains(cwsSearchValue));
+                }
+                else if (!string.IsNullOrEmpty(cisloProtSearchValue))
+                {
+                    zakazky = zakazky.Where(m => m.CisloProtokolu.Contains(cisloProtSearchValue));
+                }
+                else if (!string.IsNullOrEmpty(ukoncenaSearchValue))
+                {
+                    zakazky = zakazky.Where(m => m.Ukoncena.Contains(ukoncenaSearchValue));
+                }
+                //--------------------
+                //Search podla search okna celkom hore napravo
                 if (!string.IsNullOrEmpty(searchValue))
                 {
                     //zakazky = zakazky.Where(m => m.ZakazkaTb == searchValue ||
@@ -382,7 +426,7 @@ namespace ToyotaArchiv.Controllers
         // volanie: <a asp-action="NovaZakazka" style="margin-left:50px;">Nová garančná oprava</a>
         public IActionResult NovaZakazka()  //pouziva Views\ZakazkyJQ\NovaZakazka.cshtml  
         {
-            short pocetPriloh = 5;
+            short pocetPriloh = 1;
             ZakazkaZO zakazkaZO = _transformService.VytvorPrazdnuZakazkuZO(pocetPriloh: pocetPriloh);
 
             return View(zakazkaZO);

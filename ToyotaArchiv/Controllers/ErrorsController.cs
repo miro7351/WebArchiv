@@ -23,6 +23,16 @@ namespace ToyotaArchiv.Controllers
         }
 
         //MH: funkcia sa spusti z klienta po otvoreni stranky, pomocou AJAXu
+        /*
+         * When making a request to the server using server-side processing,
+         * DataTables will send the following data in order to let the server know what data is required:
+         * draw : int
+         * start: int
+         * length:int
+         * serach[value]: string  To be applied to all columns which have searchable=true
+         */ 
+
+
         [HttpPost]
         public IActionResult LoadData()
         {
@@ -34,11 +44,18 @@ namespace ToyotaArchiv.Controllers
                 // Paging Length 10,20
                 var length = Request.Form["length"].FirstOrDefault();
                 // Sort Column Name
+                //vysklada napr: columns[0][name]  ak sa sortuje podla columnu s indexom=0
                 var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
                 // Sort Column Direction ( asc ,desc)
                 var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                
+                var colErrorMsgSearchValue = Request.Form["columns[2][search][value]"].FirstOrDefault().ToString();  
+                
                 // Search Value from (Search box)
-                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+                //Global search value. To be applied to all columns which have searchable=true
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();//MH: searchValue je zo Search textboxu nad tabulkou!!! 
+
+                System.Diagnostics.Debug.WriteLine($"SearchValue: {searchValue}");
 
                 //Paging Size (10,20,50,100)
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;
@@ -54,12 +71,20 @@ namespace ToyotaArchiv.Controllers
                 {
                     chyby = chyby.OrderBy(sortColumn + " " + sortColumnDirection);
                 }
+                //MH
+                if (!string.IsNullOrEmpty(colErrorMsgSearchValue))
+                {
+                  
+                    chyby = chyby.Where(m => m.ErrorMsg.Contains(colErrorMsgSearchValue));
+                }
                 //Search box sa nezobrazuje, pozri datatableErrors.js
-                //if (!string.IsNullOrEmpty(searchValue))
-                //{
-                //    // tu vznika exception
-                //    chyby = chyby.Where(  m => m.ErrorDate.ToString("dd.MM.yyyy HH:mm") == searchValue );
-                //}
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    // tu vznika exception
+                    //chyby = chyby.Where(m => m.ErrorDate.ToString("dd.MM.yyyy HH:mm") == searchValue);
+                    //System.Diagnostics.Debug.WriteLine($"SearchValue: {searchValue}");
+                    chyby = chyby.Where(m => m.ErrorMsg.Contains( searchValue) || m.ErrorProcedure.Contains(searchValue));
+                }
 
                 //total number of rows count 
                 recordsTotal = chyby.Count();

@@ -8,8 +8,8 @@
 
 
 
-@*Here we are importing the stylesheet of Datatable (Bootstrap4) that we had installed earlier.*@
-<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+@*Here we are importing the stylesheet of Datatable (Bootstrap4) that we had installed earlier.
+<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />*@
 
 @*
 <th>Platna</th> 
@@ -23,20 +23,29 @@ _Layout.cshtml
         </main>
     </div>
 
-20.04.2022 dal som    <div class="container-fluid">
+20.04.2022 
+dal som    <div class="container-fluid">
 *@
 
- <div class="d-flex p-0 justify-content-center">
-<h4>Zoznam garančných opráv</h4>
 
+
+ <div class="d-flex p-0 justify-content-center" >
+    <h3 class="text-left d-inline mr-4">Zoznam garančných opráv</h3>
+     <span class="d-inline ml-4 mt-2">
+  @if(ViewBag.Role != "READONLY")
+  {
+     <a asp-action="NovaZakazka" >Nová garančná oprava</a>
+  } 
+</span>
 </div>
-<hr/>
+
+@*<hr/>
 <span>
   @if(ViewBag.Role != "READONLY")
   {
      <a asp-action="NovaZakazka" style="margin-left:50px;">Nová garančná oprava</a>
   }
-</span>
+</span>*@
 
 @* pozri datatableZakazkyXX.js
     Po kliku na link ZakazkaTG  sa ide na Details/?zakazkaTg
@@ -51,20 +60,20 @@ _Layout.cshtml
             <thead class="tableHeaderColor">  
                 <tr>  
                     <th>ZakazkaId</th> 
-                    <th>Vytvorene</th>
-                    <th>ZakazkaTg</th>  
-                    <th>ZakazkaTb</th>
-                    <th>Vin</th> 
-                    <th>Cws</th>
-                    <th>CisloProtokolu</th> 
-                    <th>Ukoncena</th> 
+                    <th>Dátum</th>
+                    <th>Zakazka Tg</th>  
+                    <th>Zakazka Tb</th>
+                    <th>VIN</th> 
+                    <th>CWS</th>
+                    <th>Číslo prot.</th> 
+                    <th>Ukončená</th> 
                     <th width="150px">Poznamka</th>
                    
                      @if( ViewBag.Role=="ADMIN")
                      {
                          <th>Vytvoril</th>
                          <th>Zmenil</th>  
-                         <th>Zmenene</th>
+                         <th>Zmenené</th>
                      }
                      @if( ViewBag.Role=="ADMIN"  || ViewBag.Role=="VEDUCI")  @*Stlpec pre link Delete*@
                      {
@@ -72,23 +81,42 @@ _Layout.cshtml
                     }
                 </tr>  
             </thead>  
+            <tbody>
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>ZakazkaId</th>  
+                    <th>Vytvorene</th>  
+                    <th>ZakazkaTg</th>
+                    <th>ZakazkaTb</th> 
+                    
+                    <th>VIN</th>
+                    <th>CWS</th> 
+                    <th>CisloProtokolu</th>
+                    <th>Ukoncena</th>
+                    
+                    <th>Poznamka</th>
+                    <th>Vytvoril</th>
+                    <th>Zmenil</th>
+                    <th>Zmenene</th>
+                 </tr>
+            </tfoot>
         </table>  
     </div>  
 </div>
 
 
-@*
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/datetime-moment.js"></script>
 
-*@
 
 @section Scripts
 {
-    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
+    <!-- MH: 29.04.2022  jquery.dataTables.js musi byt prvy v poradi!!!-->
+   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+   <!-- MH musi tu byt: moment.min.js-->
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+   <!-- MH musi tu byt: datetime.js-->
+   <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
    
     @if(ViewBag.Role=="ADMIN") @*ma link Vymazat*@
     {
