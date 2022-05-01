@@ -67,7 +67,7 @@ dal som    <div class="container-fluid">
                     <th>CWS</th>
                     <th>Číslo prot.</th> 
                     <th>Ukončená</th> 
-                    <th width="150px">Poznamka</th>
+                    <th>Poznamka</th>
                    
                      @if( ViewBag.Role=="ADMIN")
                      {
@@ -78,7 +78,7 @@ dal som    <div class="container-fluid">
                      @if( ViewBag.Role=="ADMIN"  || ViewBag.Role=="VEDUCI")  @*Stlpec pre link Delete*@
                      {
                          <th></th>
-                    }
+                     }
                 </tr>  
             </thead>  
             <tbody>
@@ -97,9 +97,16 @@ dal som    <div class="container-fluid">
                     <th>Ukoncena</th>
                     
                     <th>Poznamka</th>
-                    <th>Vytvoril</th>
-                    <th>Zmenil</th>
-                    <th>Zmenene</th>
+                    @if( ViewBag.Role=="ADMIN")
+                     {
+                         <th>Vytvoril</th>
+                         <th>Zmenil</th>  
+                         <th>Zmenené</th>
+                     }
+                     @if( ViewBag.Role=="ADMIN"  || ViewBag.Role=="VEDUCI")  @*Stlpec pre link Delete*@
+                     {
+                         <th></th>
+                     }
                  </tr>
             </tfoot>
         </table>  

@@ -5,6 +5,7 @@ using System.Linq.Dynamic.Core;
 
 using PA.TOYOTA.DB;
 using ToyotaArchiv.Infrastructure;
+using System.Globalization;
 
 namespace ToyotaArchiv.Controllers
 {
@@ -42,7 +43,16 @@ namespace ToyotaArchiv.Controllers
                 var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
                 // Sort Column Direction ( asc ,desc)
                 var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
-                // Search Value from (Search box)
+
+
+                //aby fungoval filter musi byt:     "filter": true,  pozri datatableLogy.js  !!!!
+                var colDatumSearchValue = Request.Form["columns[1][search][value]"].FirstOrDefault() ?? string.Empty;
+                var colTableNameSearchValue = Request.Form["columns[2][search][value]"].FirstOrDefault().ToString();
+                var colLogMessageSearchValue = Request.Form["columns[3][search][value]"].FirstOrDefault().ToString();
+                var colUserActionSearchValue = Request.Form["columns[4][search][value]"].FirstOrDefault().ToString();
+                var colUserNameSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault().ToString();
+
+                // Search Value from (Search box);   "filter": true, // pozri datatableLogy.js
                 var searchValue = Request.Form["search[value]"].FirstOrDefault();
 
                 //Paging Size (10,20,50,100)
@@ -59,11 +69,42 @@ namespace ToyotaArchiv.Controllers
                 {
                     logy = logy.OrderBy(sortColumn + " " + sortColumnDirection);
                 }
-                //Search
+
+                //MH-----------
+                if (!string.IsNullOrEmpty(colDatumSearchValue))
+                {
+                    _ = DateTime.TryParse(colDatumSearchValue, new CultureInfo("sk-SK"), DateTimeStyles.None, out DateTime dt);
+
+                    if (dt != DateTime.MinValue)
+                        logy = logy.Where(m => m.LogDate.Year == dt.Year && m.LogDate.Month == dt.Month && m.LogDate.Day == dt.Day);
+                }
+                else if (!string.IsNullOrEmpty(colTableNameSearchValue))
+                {
+                    logy = logy.Where(m => m.TableName.Contains(colTableNameSearchValue));
+                }
+                else if (!string.IsNullOrEmpty(colLogMessageSearchValue))
+                {
+                    logy = logy.Where(m => m.LogMessage.Contains(colLogMessageSearchValue));
+                }
+                else if (!string.IsNullOrEmpty(colUserActionSearchValue))
+                {
+                    logy = logy.Where(m => m.UserAction.Contains(colUserActionSearchValue));
+                }
+                else if (!string.IsNullOrEmpty(colUserNameSearchValue))
+                {
+                    logy = logy.Where(m => m.UserName.Contains(colUserNameSearchValue));
+                }
+
+                //------------------------
+
+
+                //Search podla  hodnoty v search boxe celkom vpravo hore nad tabulkou
                 if (!string.IsNullOrEmpty(searchValue))
                 {
-                    logy = logy.Where(m=> m.TableName == searchValue || m.UserAction == searchValue || m.UserName == searchValue);
-                    //logy = logy.Where(m => m.LogDate.ToString("dd.MM.yyyy HH:mm") == searchValue || m.TableName == searchValue || m.UserAction == searchValue || m.UserName == searchValue);
+                    logy = logy.Where(m=> m.TableName.Contains(searchValue) ||
+                                     m.LogMessage.Contains(searchValue) ||
+                                     m.UserAction.Contains(searchValue) ||
+                                     m.UserName.Contains(searchValue));
                 }
 
                 //total number of rows count 

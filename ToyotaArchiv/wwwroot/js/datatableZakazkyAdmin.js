@@ -30,7 +30,7 @@ $(document).ready(function () {
         },
         "processing": true, // for show progress bar
         "serverSide": true, // for process server side
-        "filter": true, // this is for disable filter (search box)
+        "filter": true, // this is for disable filter (search box), ak je false nefunguju ani filtre nad stlpcami!!!!
         "orderMulti": false, // for disable multiple column at once
         "ajax": {
             "url": "/ZakazkyJQ/LoadData",
@@ -47,7 +47,6 @@ $(document).ready(function () {
                 "targets": [1],//Vytvorene
                 "visible": true,
                     "searchable": false,
-                    "width": 200,
                     render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY'),
                 },
                 {
@@ -99,19 +98,19 @@ $(document).ready(function () {
                 },
                 {
                     "targets": [9],/*Vytvoril */
-                    "visible": false,
+                    "visible": true,
                     "searchable": false
 
                 },
                 {
                     "targets": [10],/*Zmenil */
-                    "visible": false,
+                    "visible": true,
                     "searchable": false
 
                 },
                 {
                     "targets": [11],//Zmenene
-                    "visible": false,
+                    "visible": true,
                     "searchable": false,
                     render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:mm'),
                 },
@@ -144,7 +143,7 @@ $(document).ready(function () {
 
     });
 
-
+      //Filtre su v headeri tabulky
     $('#datatableZakazky tfoot tr').appendTo('#datatableZakazky thead');
     
 });

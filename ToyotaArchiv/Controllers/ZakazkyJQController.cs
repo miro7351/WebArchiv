@@ -76,14 +76,15 @@ namespace ToyotaArchiv.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var datumSearchValue = Request.Form["columns[1][search][value]"].FirstOrDefault() ?? string.Empty;
-                var zakazkaTgSearchValue  = Request.Form["columns[2][search][value]"].FirstOrDefault() ?? string.Empty;
-                var zakazkaTbSearchValue = Request.Form["columns[3][search][value]"].FirstOrDefault() ?? string.Empty;
-                var vinSearchValue = Request.Form["columns[4][search][value]"].FirstOrDefault() ?? string.Empty;
+                //aby fungoval filter musi byt:     "filter": true,  pozri datatableZakazky*.js  !!!!
+                var colDatumSearchValue = Request.Form["columns[1][search][value]"].FirstOrDefault() ?? string.Empty;
+                var colZakazkaTgSearchValue  = Request.Form["columns[2][search][value]"].FirstOrDefault() ?? string.Empty;
+                var colZakazkaTbSearchValue = Request.Form["columns[3][search][value]"].FirstOrDefault() ?? string.Empty;
+                var colVinSearchValue = Request.Form["columns[4][search][value]"].FirstOrDefault() ?? string.Empty;
 
-                var cwsSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault() ?? string.Empty;
-                var cisloProtSearchValue = Request.Form["columns[6][search][value]"].FirstOrDefault() ?? string.Empty;
-                var ukoncenaSearchValue = Request.Form["columns[7][search][value]"].FirstOrDefault() ?? string.Empty;
+                var colCwsSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault() ?? string.Empty;
+                var colCisloProtSearchValue = Request.Form["columns[6][search][value]"].FirstOrDefault() ?? string.Empty;
+                var colUkoncenaSearchValue = Request.Form["columns[7][search][value]"].FirstOrDefault() ?? string.Empty;
 
                 // Getting all Zakazka
                 var zakazky = (from zakazka in _context.Zakazkas
@@ -95,58 +96,67 @@ namespace ToyotaArchiv.Controllers
                     zakazky = zakazky.OrderBy(sortColumn + " " + sortColumnDirection);
                 }
 
-                if (!string.IsNullOrEmpty(datumSearchValue))
+                if (!string.IsNullOrEmpty(colDatumSearchValue))
                 {
                     //zakazky = zakazky.Where(m => m.Vytvorene.Value.ToString("dd.MM.yyyy HH:mm").Contains(datumSearchValue));toto nejde!!
                     
-                       _ = DateTime.TryParse(datumSearchValue, new CultureInfo("sk-SK"), System.Globalization.DateTimeStyles.None, out DateTime dt);
+                       _ = DateTime.TryParse(colDatumSearchValue, new CultureInfo("sk-SK"), DateTimeStyles.None, out DateTime dt);
 
                     if(dt != DateTime.MinValue ) 
                          zakazky = zakazky.Where(m =>  m.Vytvorene.Value.Year==dt.Year && m.Vytvorene.Value.Month==dt.Month && m.Vytvorene.Value.Day == dt.Day);
                 }
              
-                if (!string.IsNullOrEmpty(zakazkaTgSearchValue))
+                else if (!string.IsNullOrEmpty(colZakazkaTgSearchValue))
                 {
-                    zakazky = zakazky.Where(m => m.ZakazkaTg.Contains(zakazkaTgSearchValue));
+                    zakazky = zakazky.Where(m => m.ZakazkaTg.Contains(colZakazkaTgSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(zakazkaTbSearchValue))
+                else if (!string.IsNullOrEmpty(colZakazkaTbSearchValue))
                 {
-                    zakazky = zakazky.Where(m => m.ZakazkaTb.Contains(zakazkaTbSearchValue));
+                    zakazky = zakazky.Where(m => m.ZakazkaTb.Contains(colZakazkaTbSearchValue));
                 }
 
-                else if (!string.IsNullOrEmpty(vinSearchValue))
+                else if (!string.IsNullOrEmpty(colVinSearchValue))
                 {
-                    zakazky = zakazky.Where(m => m.Vin.Contains(vinSearchValue));
+                    zakazky = zakazky.Where(m => m.Vin.Contains(colVinSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(cwsSearchValue))
+                else if (!string.IsNullOrEmpty(colCwsSearchValue))
                 {
-                    zakazky = zakazky.Where(m => m.Cws.Contains(cwsSearchValue));
+                    zakazky = zakazky.Where(m => m.Cws.Contains(colCwsSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(cisloProtSearchValue))
+                else if (!string.IsNullOrEmpty(colCisloProtSearchValue))
                 {
-                    zakazky = zakazky.Where(m => m.CisloProtokolu.Contains(cisloProtSearchValue));
+                    zakazky = zakazky.Where(m => m.CisloProtokolu.Contains(colCisloProtSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(ukoncenaSearchValue))
+                else if (!string.IsNullOrEmpty(colUkoncenaSearchValue))
                 {
-                    zakazky = zakazky.Where(m => m.Ukoncena.Contains(ukoncenaSearchValue));
+                    zakazky = zakazky.Where(m => m.Ukoncena.Contains(colUkoncenaSearchValue));
                 }
                 //--------------------
                 //Search podla search okna celkom hore napravo
                 if (!string.IsNullOrEmpty(searchValue))
                 {
-                    //zakazky = zakazky.Where(m => m.ZakazkaTb == searchValue ||
-                    //                            m.ZakazkaTg == searchValue || 
-                    //                            m.Vin == searchValue || 
-                    //                            m.Cws == searchValue ||
-                    //                            m.CisloProtokolu == searchValue ||
-                    //                            m.Ukoncena == searchValue);
-                    zakazky = zakazky.Where(m => m.ZakazkaTb.Contains(searchValue) ||
-                                               m.ZakazkaTg.Contains(searchValue) ||
-                                               m.Vin.Contains(searchValue) ||
-                                               m.Cws.Contains(searchValue) ||
-                                               m.CisloProtokolu.Contains(searchValue) ||
-                                               m.Ukoncena.Contains( searchValue)
-                                              );
+                    bool dtReady = DateTime.TryParse(searchValue, new CultureInfo("sk-SK"), System.Globalization.DateTimeStyles.None, out DateTime dt);
+
+                    if (dtReady && dt != DateTime.MinValue)
+                    {
+                        zakazky = zakazky.Where(m => m.Vytvorene.Value.Year == dt.Year && m.Vytvorene.Value.Month == dt.Month && m.Vytvorene.Value.Day == dt.Day);
+                    }
+                    else
+                    {
+                        //zakazky = zakazky.Where(m => m.ZakazkaTb == searchValue ||
+                        //                            m.ZakazkaTg == searchValue || 
+                        //                            m.Vin == searchValue || 
+                        //                            m.Cws == searchValue ||
+                        //                            m.CisloProtokolu == searchValue ||
+                        //                            m.Ukoncena == searchValue);
+                        zakazky = zakazky.Where(m => m.ZakazkaTb.Contains(searchValue) ||
+                                                   m.ZakazkaTg.Contains(searchValue) ||
+                                                   m.Vin.Contains(searchValue) ||
+                                                   m.Cws.Contains(searchValue) ||
+                                                   m.CisloProtokolu.Contains(searchValue) ||
+                                                   m.Ukoncena.Contains(searchValue)
+                                                  );
+                    }
                 }
 
                 //total number of rows count 
