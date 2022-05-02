@@ -9,7 +9,7 @@ $(document).ready(function () {
 
 
     $('#datatableZakazky').dataTable({
-       
+
 
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.18/i18n/Slovak.json"
@@ -32,6 +32,7 @@ $(document).ready(function () {
         "serverSide": true, // for process server side
         "filter": true, // this is for disable filter (search box), ak je false nefunguju ani filtre nad stlpcami!!!!
         "orderMulti": false, // for disable multiple column at once
+        
         "ajax": {
             "url": "/ZakazkyJQ/LoadData",
             "type": "POST",
@@ -80,6 +81,7 @@ $(document).ready(function () {
                     "targets": [7],//Ukoncena
                     "visible": true,
                     "searchable": true,
+                  
                     //render: function (data, type) {  //NEJDE
                     //    if (type === 'display') {
                     //        if (data == 'A') {
