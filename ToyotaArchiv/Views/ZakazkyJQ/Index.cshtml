@@ -33,6 +33,7 @@
     }
 </style>
 
+
 <div class="container-fluid">
     <div class="d-flex p-0 justify-content-center">
         <h3 class="text-left d-inline mr-4">Zoznam garančných opráv</h3>
@@ -42,7 +43,6 @@
                 <a asp-action="NovaZakazka">Nová garančná oprava</a>
             }
         </span>
-        <input type="button" onclick="f1();" value="Test"/>
     </div>
 
     @*<hr/>
@@ -62,7 +62,7 @@
     <div>
         <br />
         <div style="width:90%; margin:0 auto;">
-            <table id="datatableZakazky" class="table table-hover   table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+            <table id="datatableZakazky" class="table table-hover   table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0" >
                 <thead class="tableHeaderColor">
                     <tr>
                         <th>ZakazkaId</th>
@@ -121,48 +121,46 @@
 </div><!--//container-fluid-->
 @section Scripts
 {
-<!-- MH: 29.04.2022  jquery.dataTables.js musi byt prvy v poradi!!!-->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-<!-- MH musi tu byt: moment.min.js-->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-<!-- MH musi tu byt: datetime.js-->
-<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
+    <!-- MH: 29.04.2022  jquery.dataTables.js musi byt prvy v poradi!!!-->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <!-- pre createdRow-->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- MH musi tu byt: moment.min.js-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <!-- MH musi tu byt: datetime.js-->
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
 
-    @if(ViewBag.Role=="ADMIN") @*ma link Vymazat*@
+    @if(ViewBag.Role=="ADMIN") @*ma link Vymazat a stlpce Vytvoril, Zmenil, Zmenene*@
     {
-<script src="~/js/datatableZakazkyAdmin.js"></script>
+        <script src="~/js/datatableZakazkyAdmin.js"></script>
     }
     else if(ViewBag.Role=="VEDUCI" ) @*ma link Vymazat*@
     {
-<script src="~/js/datatableZakazkyVeduci.js"></script>
+        <script src="~/js/datatableZakazkyVeduci.js"></script>
     }
     else @*nema link Vymazat*@
     {
-<script src="~/js/datatableZakazkyReadOnly.js"></script>
+        <script src="~/js/datatableZakazkyReadOnly.js"></script>
     }
 
-<script>
+    <script type="text/javascript" >
+     //MH: po dlhom boji kde a kedy spustit tento script nakoniec nakoniec pomohol javascript CASOVAC
+    var casovac;
+    casovac = setTimeout("f1()", 500);
+    function f1()
+    {   
+        //clearTimeout(casovac);
+        //alert("f1-spustam MH script");
+        var rows = document.getElementById("datatableZakazky").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
-        function f1()
-        {
-            alert("Spustam script..");
-            var myTbody = document.getElementById("datatableZakazky").getElementsByTagName("tbody");
-              alert("Pocet body=" + myTbody.lengt);
-            var rows = document.getElementById("datatableZakazky").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-             alert("Pocet riadkov=" + rows.lengt);
-            // loops through each row
-            for (i = 0; i < rows.length; i++) {
-                 alert("for i=" + i);
-                 cells = rows[i].getElementsByTagName('td');
-                  var d= cells[6].innerHTML;
-                  alert(""for i=" + i +"; cells[6].innerHTML="+d);
-                if (cells[6].innerHTML == 'N')
-                {
-                    alert("cells[6].innerHTML=N");
-                    rows[i].className = "neukoncenaZakazka";
-                }
-           }
+        for (i = 0; i < rows.length; i++) {
+            cells = rows[i].getElementsByTagName('td');
+            if (cells[6].innerHTML == 'N') {
+                rows[i].style.background = "#21CE2A";//svetlo zelena
+            }
         }
-        f1();
-</script>
+         casovac = setTimeout("f1()", 500);
+    }
+    </script>
+
 }

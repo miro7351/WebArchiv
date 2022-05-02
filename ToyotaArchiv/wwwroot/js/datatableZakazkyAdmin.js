@@ -28,101 +28,102 @@ $(document).ready(function () {
                 });
             });
         },
+       
         "processing": true, // for show progress bar
         "serverSide": true, // for process server side
         "filter": true, // this is for disable filter (search box), ak je false nefunguju ani filtre nad stlpcami!!!!
         "orderMulti": false, // for disable multiple column at once
-        
+
         "ajax": {
             "url": "/ZakazkyJQ/LoadData",
             "type": "POST",
             "datatype": "json"
         },
         "columnDefs":
-            [   {
+            [{
                 "targets": [0],//ZakazkaId
                 "visible": false,
                 "searchable": false
-                },
-                {
+            },
+            {
                 "targets": [1],//Vytvorene
                 "visible": true,
-                    "searchable": false,
-                    render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY'),
-                },
-                {
-                    "targets": [2],//ZakazkaTg
-                    "render": function (data, type, row) {
-                        return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
-                    }
-                },
-                {
-                    "targets": [3],//ZakazkaTb
-                    "visible": true,
-                    "searchable": true
-                },
-                {
-                    "targets": [4],//VIN
-                    "visible": true,
-                    "searchable": true
-                },
-                {
-                    "targets": [5],//CWS
-                    "visible": true,
-                    "searchable": true
-                },
+                "searchable": false,
+                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY'),
+            },
+            {
+                "targets": [2],//ZakazkaTg
+                "render": function (data, type, row) {
+                    return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
+                }
+            },
+            {
+                "targets": [3],//ZakazkaTb
+                "visible": true,
+                "searchable": true
+            },
+            {
+                "targets": [4],//VIN
+                "visible": true,
+                "searchable": true
+            },
+            {
+                "targets": [5],//CWS
+                "visible": true,
+                "searchable": true
+            },
 
-                {
-                    "targets": [6],//CisloProtokolu
-                    "visible": true,
-                    "searchable": true
-                },
-                {
-                    "targets": [7],//Ukoncena
-                    "visible": true,
-                    "searchable": true,
-                  
-                    //render: function (data, type) {  //NEJDE
-                    //    if (type === 'display') {
-                    //        if (data == 'A') {
-                    //            let color = 'red';
-                    //        }
-                    //        return '<span style="color:' + color + '">' + data + '</span>';
-                    //    }
-                    //}
-                },
-           
-                {
-                    "targets": [8],/*Poznamka */
-                    "visible": false,
-                    "searchable": false
-             
-                },
-                {
-                    "targets": [9],/*Vytvoril */
-                    "visible": true,
-                    "searchable": false
+            {
+                "targets": [6],//CisloProtokolu
+                "visible": true,
+                "searchable": true
+            },
+            {
+                "targets": [7],//Ukoncena
+                "visible": true,
+                "searchable": true,
 
-                },
-                {
-                    "targets": [10],/*Zmenil */
-                    "visible": true,
-                    "searchable": false
+                //render: function (data, type) {  //NEJDE
+                //    if (type === 'display') {
+                //        if (data == 'A') {
+                //            let color = 'red';
+                //        }
+                //        return '<span style="color:' + color + '">' + data + '</span>';
+                //    }
+                //}
+            },
 
-                },
-                {
-                    "targets": [11],//Zmenene
-                    "visible": true,
-                    "searchable": false,
-                    render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:mm'),
-                },
-                
-                {
-                    "targets": [12],//Vymazat
-                    "render": function (data, type, row) {
-                        return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>';
-                    }
-                },
+            {
+                "targets": [8],/*Poznamka */
+                "visible": false,
+                "searchable": false
+
+            },
+            {
+                "targets": [9],/*Vytvoril */
+                "visible": true,
+                "searchable": false
+
+            },
+            {
+                "targets": [10],/*Zmenil */
+                "visible": true,
+                "searchable": false
+
+            },
+            {
+                "targets": [11],//Zmenene
+                "visible": true,
+                "searchable": false,
+                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:mm'),
+            },
+
+            {
+                "targets": [12],//Vymazat
+                "render": function (data, type, row) {
+                    return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>';
+                }
+            },
             ],
         "columns": [
             { "data": "zakazkaId", "name": "ZakazkaId", "autoWidth": true },
@@ -137,7 +138,7 @@ $(document).ready(function () {
             { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
 
             { "data": "vytvoril", "name": "Vytvoril", "autoWidth": true },
-           
+
             { "data": "zmenil", "name": "Zmenil", "autoWidth": true },
             { "data": "zmenene", "name": "Zmenene", "autoWidth": true },
 
@@ -145,9 +146,10 @@ $(document).ready(function () {
 
     });
 
-      //Filtre su v headeri tabulky
-    $('#datatableZakazky tfoot tr').appendTo('#datatableZakazky thead');
     
+    //Filtre su v headeri tabulky
+    $('#datatableZakazky tfoot tr').appendTo('#datatableZakazky thead');
+
 });
 
 
