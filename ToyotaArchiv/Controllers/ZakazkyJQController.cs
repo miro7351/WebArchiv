@@ -33,16 +33,16 @@ namespace ToyotaArchiv.Controllers
             //MH: TU SA NEMUSIA nacitat udaje, lebo po spusteni stranky sa spusti AJAX metoda na nacitanie udajov LoadData()
             //a ta si nacita zadany pocet zoznamov;
 
-            //List<Zakazka> zakazky = await _context.Zakazkas.ToListAsync();
-            //if(zakazky.Any())
-            //{
-            //    return View(zakazky);
-            //}
-            //else
-            //{
-            //    return NotFound();
-            //}
-            return View();
+            var zakazky = await _context.Zakazkas.Take(10).ToListAsync();
+            if (zakazky.Any())
+            {
+                return View(zakazky);
+            }
+            else
+            {
+                return NotFound();
+            }
+            //return View();
 
             //MH: 22.04.2022 ak neexistuju udaje, potom JQuery datatable vypise: "Nie sú k dispozícii žiadne data"
            

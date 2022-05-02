@@ -4,7 +4,20 @@ $(document).ready(function () {
     // Setup - add a text input to each footer cell
     $('#datatableZakazky tfoot th').each(function () {
         var title = $(this).text();
-        $(this).html('<input type="text" placeholder=" ' + title + '" />');
+        if (title == "VIN")
+            $(this).html('<input type="text" placeholder=" ' + title + '" style="width:180px" />');
+        else if (title == "") {
+            ;
+        }
+        else if (title == "Ukoncena") {
+            $(this).html('<input type="text" placeholder=" ' + "A/N" + '" style="width:50px" />');
+        }
+        else if (title == "CisloProtokolu") {
+            $(this).html('<input type="text" placeholder=" ' + "Číslo prot." + '" style="width:120px" />');
+        }
+        else {
+            $(this).html('<input type="text" placeholder=" ' + title + '" style="width:100px" />');
+        }
     });
 
 
@@ -14,6 +27,7 @@ $(document).ready(function () {
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.18/i18n/Slovak.json"
         },
+        
         initComplete: function () {
             // Apply the search
             this.api().columns().every(function () {
@@ -39,20 +53,37 @@ $(document).ready(function () {
             "type": "POST",
             "datatype": "json"
         },
+        "createdRow": function (row, data, index) {
+            //alert("created");//tu pridem MH-02.05.2022
+            //$('td', row).css("background-color", "#21CE2A");//OK vsetly riadky su svetlo zelene
+            //$(row).css("background-color", "#21CE2A");
+            //var rowDataLength = data.length;  //undefined
+            //alert("rowData.Length" + rowDataLength);
+            //var rowData = row.eq(6).innerHTML;//.data();
+            //var rowData = $(row.eq(6).innerHTML);//.data();
+            //alert("data[6]=" + rowData);//
+            //if (data[6] == "N") {
+            //    $('td', row).css("background-color", "#21CE2A");
+            //    //alert("data[6] = N");
+            //}
+        },
         "columnDefs":
             [{
                 "targets": [0],//ZakazkaId
                 "visible": false,
-                "searchable": false
+                "searchable": false,
+
             },
             {
                 "targets": [1],//Vytvorene
                 "visible": true,
                 "searchable": false,
+                "width": 200,
                 render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY'),
             },
             {
                 "targets": [2],//ZakazkaTg
+                "width": 100,
                 "render": function (data, type, row) {
                     return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
                 }
@@ -126,10 +157,10 @@ $(document).ready(function () {
             },
             ],
         "columns": [
-            { "data": "zakazkaId", "name": "ZakazkaId", "autoWidth": true },
-            { "data": "vytvorene", "name": "Vytvorene", "autoWidth": true },
-            { "data": "zakazkaTg", "name": "ZakazkaTg", "autoWidth": true },
-            { "data": "zakazkaTb", "name": "ZakazkaTb", "autoWidth": true },
+            { "data": "zakazkaId", "name": "ZakazkaId", "autoWidth": false },
+            { "data": "vytvorene", "name": "Vytvorene", "autoWidth": false },
+            { "data": "zakazkaTg", "name": "ZakazkaTg", "autoWidth": false },
+            { "data": "zakazkaTb", "name": "ZakazkaTb", "autoWidth": false },
             { "data": "vin", "name": "Vin", "autoWidth": true },
             { "data": "cws", "name": "Cws", "autoWidth": true },
             { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
@@ -149,6 +180,16 @@ $(document).ready(function () {
     
     //Filtre su v headeri tabulky
     $('#datatableZakazky tfoot tr').appendTo('#datatableZakazky thead');
+
+    // $('#datatableZakazky').DataTable({
+    //    scrollY: "600px",
+    //    scrollX: true,
+    //    scrollCollapse: true,
+    //    paging: false,
+    //    fixedColumns: {
+    //        heightMatch: 'none'
+    //    }
+    //});
 
 });
 
