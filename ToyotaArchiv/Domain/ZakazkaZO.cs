@@ -144,7 +144,7 @@ namespace ToyotaArchiv.Domain
         /// <summary>
         /// Udaj znamy po schvaleni garancnej opravy od importera;
         /// </summary>
-        [Display(Name = "Číslo prot.")]
+        [Display(Name = "Číslo protokolu")]
         [StringLength(16, MinimumLength = 0, ErrorMessage = "Pre údaj CisloProtokolu zadajte max. 16 znakov.")]//nemusi sa zadat, ale ak sa zada, potom to musi byt max. 16 znakov;
         public string? CisloProtokolu
         {

@@ -29,6 +29,12 @@
         border-bottom: 1px solid rgba(0,0,0,.3);
     }
 
+    table, table TD, table TH {
+        font-family: sans-serif;
+        font-size: 13pt;
+        color: black;
+        background-color: #BBDEFB;
+    }
 </style>
 <script type="text/javascript">
 
@@ -63,8 +69,8 @@
         <span class="text-danger">@Model?.ErrorMessage</span>
     </div>
     <div class="d-flex p-2 justify-content-center">
-        <a asp-action="Index" class="btn btn-sm btn-primary">Návrat</a>
-        <input type="button" style="margin-left:30px" value="Uložiť zmeny" class="btn btn-warning btn-sm" onclick="document.forms['formUpdate'].submit();" />
+        <a asp-action="Index" class="btn btn-primary">Návrat</a>
+        <input type="button" style="margin-left:30px" value="Uložiť zmeny" class="btn btn-warning" onclick="document.forms['formUpdate'].submit();" />
     </div>
 
     @* <hr />*@
@@ -82,7 +88,7 @@
                         @Html.HiddenFor(x => Model.ZakazkaTGdokument.NazovDokumentu)
                         @*ZakazkaTGdokument*@
                         <tr>
-                            <td width="150px">
+                            <td width="150px" align="right">
                                 @Html.DisplayNameFor(m=>m.ZakazkaTg)
                             </td>
                             <td width="250px">
@@ -98,7 +104,7 @@
                                 @Html.ActionLink(@Model?.ZakazkaTGdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
                                 new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina} )
                             </td>
-                            <td>
+                            <td align="right">
                                 @* Vymazat - button s ikonou *@
                                 @if (!string.IsNullOrEmpty(@Model?.ZakazkaTGdokument?.NazovSuboru))
                                 {
@@ -116,7 +122,7 @@
                             @Html.HiddenFor(x => Model.ZakazkaTBdokument.Skupina)
                             @Html.HiddenFor(x => Model.ZakazkaTBdokument.NazovSuboru)
                             @Html.HiddenFor(x => Model.ZakazkaTBdokument.NazovDokumentu)
-                            <td>@Html.DisplayNameFor(m=>m.ZakazkaTb)</td>
+                            <td align="right">@Html.DisplayNameFor(m=>m.ZakazkaTb)</td>
                             <td>
                                 @Html.TextBoxFor(m=>m.ZakazkaTb, new {@class="form-control"})
                             </td>
@@ -131,7 +137,7 @@
                                 new{ zakazkaTG=@Model?.ZakazkaTg?.Trim() ?? "", subor=@Model?.ZakazkaTBdokument?.NazovSuboru?.Trim() ?? "", skupina=@Model?.ZakazkaTBdokument?.Skupina ?? 0} )
                             </td>
                             @* Vymazat-button s ikonou*@
-                            <td>
+                            <td align="right">
                                 @if (!string.IsNullOrEmpty(@Model?.ZakazkaTBdokument?.NazovSuboru))
                                 {
                                     <a href="/ZakazkyJQ/DeleteDokument/?zakazkaTG=@Model?.ZakazkaTg?.Trim()&skupina=@Model?.ZakazkaTBdokument?.Skupina"
@@ -150,14 +156,14 @@
                             </tr>*@
                         <tr>
                             @*VIN*@
-                            <td>@Html.DisplayNameFor(m=>m.Vin)</td>
+                            <td align="right">@Html.DisplayNameFor(m=>m.Vin)</td>
                             <td>
                                 @Html.TextBoxFor(m=>m.Vin, new {@class="form-control"})
                             </td>
                             <span asp-validation-for="Vin" class="text-danger"></span>
 
                             @*CWS*@
-                            <td>@Html.DisplayNameFor(m=>m.Cws)</td>
+                            <td align="right">@Html.DisplayNameFor(m=>m.Cws)</td>
                             <td>
                                 @Html.TextBoxFor(m=>m.Cws, new {@class="form-control"})
                             </td>
@@ -168,7 +174,7 @@
                             <td>@Html.TextBoxFor(m=>m.Ukoncena, new {@class="form-control", @readonly="readonly"})</td>
                         </tr>
                         <tr>
-                            <td>@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
+                            <td align="right">@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
                             <td>
                                 @Html.TextBoxFor(m=>m.CisloProtokolu, new {@class="form-control"})
                             </td>
@@ -179,7 +185,7 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td>@Html.DisplayNameFor(m=>m.Poznamka)</td>
+                            <td align="right">@Html.DisplayNameFor(m=>m.Poznamka)</td>
                             <td colspan="5">
                                 @Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control"})
                             </td>
@@ -212,9 +218,6 @@
                                         @*Hidden su len polozky ktore sa needituju, ale ich treba!!!*@
                                         @Html.HiddenFor(x => Model.PovinneDokumenty[i].Skupina)
                                         @Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovSuboru)
-                                        @*@Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovDokumentu)*@
-                                        @*@Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovSuboru)*@
-                                        @*@Html.HiddenFor(x => Model.PovinneDokumenty[i].Poznamka)*@
                                         @* NazovDokumentu readonly*@
                                         <td>
                                             @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly"})
@@ -230,13 +233,14 @@
                                     new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.PovinneDokumenty[i].NazovSuboru?.Trim(), skupina=@Model?.PovinneDokumenty[i]?.Skupina} )
                                         </td>
                                         @* Vymazat-button s ikonou*@
-                                        <td>
+
+                                        <td align="right">
                                             @if (!string.IsNullOrEmpty(@Model?.PovinneDokumenty[i].NazovSuboru))
                                             {
                                                 @* @Html.ActionLink("Vymazať", "DeleteDokument", "ZakazkyJQ",
                                                     new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), skupina=@Model?.PovinneDokumenty[i]?.Skupina} )*@
                                                 <a href="/ZakazkyJQ/DeleteDokument/?zakazkaTG=@Model?.ZakazkaTg?.Trim()&skupina=@Model?.PovinneDokumenty[i]?.Skupina"
-                                                        class="btn-floating btn-sm btn-danger"><i class="fas fa-trash-alt fa-sm"></i></a>
+                                       class="btn-floating btn-sm btn-danger"><i class="fas fa-trash-alt fa-sm"></i></a>
                                             }
                                         </td>
                                         @* Poznamka*@
@@ -272,11 +276,8 @@
                                     <tr>
                                         @*len tie polozky su Hidden co sa needituju cez extBoxFor*@
                                         @Html.HiddenFor(x => Model.Prilohy[i].Skupina)
-                                       @Html.HiddenFor(x => Model.Prilohy[i].NazovSuboru)
-                                       
-                                       @*  @Html.HiddenFor(x => Model.Prilohy[i].NazovDokumentu)*@
-                                        @*@Html.HiddenFor(x => Model.Prilohy[i].Poznamka)*@
-                                        @*Nazov dokumentu, prednastaveny nazov: PrilohaXX*@
+                                        @Html.HiddenFor(x => Model.Prilohy[i].NazovSuboru)
+
                                         <td>
                                             @Html.TextBoxFor(x => Model.Prilohy[i].NazovDokumentu, new { @class="form-control"})
 
@@ -289,10 +290,10 @@
                                         @* Subor link*@
                                         <td>
                                             @Html.ActionLink(@Model?.Prilohy[i].NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
-                                                new{ zakazkaTG=@Model?.ZakazkaTg?.Trim() ?? "", subor=@Model?.Prilohy[i].NazovSuboru?.Trim() ?? "", skupina=@Model?.Prilohy[i]?.Skupina ?? 0} )
+                                    new{ zakazkaTG=@Model?.ZakazkaTg?.Trim() ?? "", subor=@Model?.Prilohy[i].NazovSuboru?.Trim() ?? "", skupina=@Model?.Prilohy[i]?.Skupina ?? 0} )
                                         </td>
                                         @* Vymazat-button s ikonou*@
-                                        <td>
+                                        <td align="right">
 
                                             @if (!string.IsNullOrEmpty(@Model?.Prilohy[i].NazovSuboru))
                                             {
@@ -312,9 +313,6 @@
                             </tbody>
                         </table>
                     }
-                    @*<div class="form-group">
-                        <input type="submit" value="Uložiť zmeny" class="btn btn-primary" />
-                        </div>*@
                 </div>
             </form>
 
@@ -322,9 +320,6 @@
     </div>
 </div>
 
-@*<div>
-    <a asp-action="Index">Návrat</a>
-    </div>*@
 
 @section Scripts {
     @{
