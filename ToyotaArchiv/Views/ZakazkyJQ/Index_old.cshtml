@@ -1,0 +1,105 @@
+﻿@model IEnumerable<PA.TOYOTA.DB.Zakazka>
+@using ToyotaArchiv.Infrastructure;
+@{
+    ViewData["Title"] = "Garančné opravy"; /*zobrazi sa v titule stranky*/ 
+}
+
+
+
+
+
+@*Here we are importing the stylesheet of Datatable (Bootstrap4) that we had installed earlier.*@
+<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+@*
+<th>Platna</th> 
+Visibility  <th>ZakazkaId</th>  je nastavena v scripte
+
+
+_Layout.cshtml
+<div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+20.04.2022 dal som    <div class="container-fluid">
+*@
+
+ <div class="d-flex p-0 justify-content-center">
+<h4>Zoznam garančných opráv</h4>
+
+</div>
+<hr/>
+<span>
+  @if(ViewBag.Role != "READONLY")
+  {
+     <a asp-action="NovaZakazka" style="margin-left:50px;">Nová garančná oprava</a>
+  }
+</span>
+
+@* pozri datatableZakazkyXX.js
+    Po kliku na link ZakazkaTG  sa ide na Details/?zakazkaTg
+    Pozri datatableZakazkyXX.js   ....return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
+
+    <div class="teal accent-1 "> 
+*@
+<div>  
+    <br />  
+    <div style="width:90%; margin:0 auto;">  
+        <table id="datatableZakazky" class="table table-hover   table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">  
+            <thead class="tableHeaderColor">  
+                <tr>  
+                    <th>ZakazkaId</th> 
+                    <th>Vytvorene</th>
+                    <th>ZakazkaTg</th>  
+                    <th>ZakazkaTb</th>
+                    <th>Vin</th> 
+                    <th>Cws</th>
+                    <th>CisloProtokolu</th> 
+                    <th>Ukoncena</th> 
+                    <th width="150px">Poznamka</th>
+                   
+                     @if( ViewBag.Role=="ADMIN")
+                     {
+                         <th>Vytvoril</th>
+                         <th>Zmenil</th>  
+                         <th>Zmenene</th>
+                     }
+                     @if( ViewBag.Role=="ADMIN"  || ViewBag.Role=="VEDUCI")  @*Stlpec pre link Delete*@
+                     {
+                         <th></th>
+                    }
+                </tr>  
+            </thead>  
+        </table>  
+    </div>  
+</div>
+
+
+@*
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/datetime-moment.js"></script>
+
+*@
+
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
+   
+    @if(ViewBag.Role=="ADMIN") @*ma link Vymazat*@
+    {
+       <script src="~/js/datatableZakazkyAdmin.js"></script>
+    }
+    else if(ViewBag.Role=="VEDUCI" ) @*ma link Vymazat*@
+    {
+        <script src="~/js/datatableZakazkyVeduci.js"></script>
+    }
+    else @*nema link Vymazat*@
+    {
+         <script src="~/js/datatableZakazkyReadOnly.js"></script>
+    }
+}
