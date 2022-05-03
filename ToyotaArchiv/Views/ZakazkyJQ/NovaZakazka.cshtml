@@ -199,7 +199,7 @@
                                     @Html.HiddenFor(x => Model.PovinneDokumenty[i].Skupina)@*Skupina sa needituje tak ju prenasam ako hidden element*@
                                     @*NazovDokumentu*@
                                     <td width="300px">
-                                        @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly"})
+                                        @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly", Style="background:transparent;border-collapse: collapse; border: none;"})
                                     </td>
 
                                     @*Poznamka*@

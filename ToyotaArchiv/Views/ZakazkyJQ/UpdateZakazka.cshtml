@@ -223,7 +223,7 @@
                                         @Html.HiddenFor(x => Model.PovinneDokumenty[i].NazovSuboru)
                                         @* NazovDokumentu readonly*@
                                         <td  width="300px">
-                                            @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly"})
+                                            @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly", Style="background:transparent;border-collapse: collapse; border: none;"})
                                         </td>
 
                                          @* Poznamka*@
