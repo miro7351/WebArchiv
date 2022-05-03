@@ -36,11 +36,11 @@
     }
 
     /* MH 02.05.2022 nejde to!*/
-    tfoot input {
+    /*tfoot input {
         width: 150px;
         padding: 3px;
         box-sizing: border-box;
-    }
+    }*/
 
 </style>
 
@@ -71,8 +71,13 @@
         <div class="teal accent-1 ">
     *@
     <div>
-        <br />
-        <div style="width:90%; margin:0 auto;">
+        <div>
+            @if(ViewBag.Role == "ADMIN")
+            {
+                @ViewBag.ConnString;
+            }
+        </div>
+        <div style="width:90%; "overflow-x:auto;">
             <table id="datatableZakazky" class="table table-hover   table-striped table-bordered dt-responsive nowrap" width="70%" cellspacing="0" >
                 <thead class="tableHeaderColor">
                     <tr>
@@ -170,7 +175,7 @@
             cells = rows[i].getElementsByTagName('td');
             if (cells[6].innerHTML == 'N') {
                 //rows[i].style.background = "#21CE2A";//svetlo zelena
-                rows[i].style.background = "#FF9E9E";//svetlo zelena
+                rows[i].style.background = "#FF9E9E";//odtien cervenej
             }
             if (cells[6].innerHTML == 'A') {
                 rows[i].style.background = "#21CE2A";//svetlo zelena

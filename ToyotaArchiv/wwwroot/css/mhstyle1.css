@@ -15,8 +15,8 @@
 
 /*farba hlavicky pre table*/
 .tableHeaderColor {
-  
-    background-color:#39C0ED;
+    /* background-color: #39C0ED;*/
+     background-color: white;
 }
 
 

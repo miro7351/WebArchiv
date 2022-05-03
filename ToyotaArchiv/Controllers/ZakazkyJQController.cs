@@ -21,14 +21,20 @@ namespace ToyotaArchiv.Controllers
         public ZakazkyJQController(ToyotaContext context, IZakazkaTransformService transformService)
         {
             _context = context;
-            _transformService = transformService;
+            _transformService = transformService;//konverzne funkcie ZakazkaView Model <-> Zakazka DB
         }
 
         // GET: ZakazkyJQ
         public async Task<IActionResult> Index()
         {
-            ViewBag.Login = MHsessionService.ReadLoginFromSession(HttpContext.Session);
+            string login;
+            ViewBag.Login = login = MHsessionService.ReadLoginFromSession(HttpContext.Session);
             ViewBag.Role = MHsessionService.ReadRoleFromSession(HttpContext.Session).ToString();
+
+            if( login.Contains("admin") )
+            {
+                ViewBag.ConnString = _context.ConnectionString;  
+            }
 
             //MH: TU SA NEMUSIA nacitat udaje, lebo po spusteni stranky sa spusti AJAX metoda na nacitanie udajov LoadData()
             //a ta si nacita zadany pocet zoznamov;

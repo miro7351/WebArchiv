@@ -28,13 +28,40 @@
 </head>
 
 @*
-
-pokazi menu
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
 class="container-fluid" roztahuje obsah div na celu sirku displeja
 class="container"  centruje obsah div na stred
+@Html.ActionLink("Odhlásiť", "Logout", "Accounts")
 *@
+
+<style>
+
+   /* #linkSpan.a {
+    color:ghostwhite;*/
+    a.odhlasenie:link
+    {
+         text-decoration: none;
+         color:white;
+    }
+
+     a.odhlasenie:visited
+    {
+         text-decoration: none;
+         color:white;
+    }
+    a.odhlasenie:hover
+    {
+         text-decoration: none;
+        /* background-color: yellow;*/
+        color:gray;
+    }
+     a.odhlasenie:active
+    {
+         text-decoration: none;
+        /* background-color: yellow;*/
+        color:white;
+    }
+}
+</style>
 
 @using ToyotaArchiv.Infrastructure
 @{
@@ -76,7 +103,7 @@ class="container"  centruje obsah div na stred
                         }
 
                     </ul>
-                    <span class="text-info"><b>@login&nbsp;|&nbsp;@rola&nbsp;&nbsp;@Html.ActionLink("Odhlásiť", "Logout", "Accounts")</b></span>
+                    <span id="linkSpan" class="text-white"><b>@login&nbsp;|&nbsp;@rola&nbsp;&nbsp;<a class="odhlasenie" href="/Accounts/Logout">Odhlásiť</a></b></span>
                 </div>
             </div>
         </nav>
