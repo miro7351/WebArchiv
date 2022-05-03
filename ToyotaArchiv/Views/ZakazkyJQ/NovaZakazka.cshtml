@@ -102,7 +102,7 @@
                             new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina})
                         </td>
                         @*Button delete subor*@
-                        <td class="text-center" align="right">
+                        <td  align="right">
                             <div class="fixed-action-btn ">
                                 <a class="btn-floating btn-sm red" onclick="vymazPolozku( '@Model?.ZakazkaTGdokument?.Skupina');"><i class="fas fa-trash-alt"></i></a>
                             </div>
