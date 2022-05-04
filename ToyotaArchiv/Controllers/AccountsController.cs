@@ -20,7 +20,68 @@ namespace ToyotaArchiv.Controllers
             _context = context;
         }
 
+       
+        /*LoadData() sa spusti pri otvoreni stranky Index2.cshtml, pozri datatableAccounts.js
+       
+         */
+        [HttpPost]
+        public IActionResult LoadData()
+        {
+            int skip;
+            int pageSize;//pocet zaznamov na stranke
+
+            try
+            {
+                var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
+                // Skiping number of Rows count
+                var start = Request.Form["start"].FirstOrDefault();
+                // Paging Length 10,20
+                var length = Request.Form["length"].FirstOrDefault();
+                // Sort Column Name
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                // Sort Column Direction ( asc ,desc)
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                // Search Value from (Search box)
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+
+                //Paging Size (10,20,50,100)
+                pageSize = length != null ? Convert.ToInt32(length) : 0;
+                skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+
+                // Getting all accounts
+                var accounts = (from account in _context.Accounts
+                               select account).OrderBy(a=>a.LoginId);
+
+
+                //Sorting
+                //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+                //{
+                //    accounts = accounts.OrderBy(sortColumn + " " + sortColumnDirection);
+                //}
+
+                //total number of rows count 
+                recordsTotal = accounts.Count();
+                //Paging 
+                var data = accounts.Skip(skip).Take(pageSize).ToList(); 
+              
+                //Returning Json Data
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }//LoadData
+
         public async Task<IActionResult> Index()
+        {
+            return View(await _context.Accounts.ToListAsync());
+        }
+
+        public async Task<IActionResult> Index2()
         {
             return View(await _context.Accounts.ToListAsync());
         }

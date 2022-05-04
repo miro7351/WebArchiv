@@ -78,26 +78,24 @@ namespace ToyotaArchiv.Controllers
                     if (dt != DateTime.MinValue)
                         logy = logy.Where(m => m.LogDate.Year == dt.Year && m.LogDate.Month == dt.Month && m.LogDate.Day == dt.Day);
                 }
-                else if (!string.IsNullOrEmpty(colTableNameSearchValue))
+                if (!string.IsNullOrEmpty(colTableNameSearchValue))
                 {
                     logy = logy.Where(m => m.TableName.Contains(colTableNameSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(colLogMessageSearchValue))
+                if (!string.IsNullOrEmpty(colLogMessageSearchValue))
                 {
                     logy = logy.Where(m => m.LogMessage.Contains(colLogMessageSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(colUserActionSearchValue))
+                if (!string.IsNullOrEmpty(colUserActionSearchValue))
                 {
                     logy = logy.Where(m => m.UserAction.Contains(colUserActionSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(colUserNameSearchValue))
+                if (!string.IsNullOrEmpty(colUserNameSearchValue))
                 {
                     logy = logy.Where(m => m.UserName.Contains(colUserNameSearchValue));
                 }
 
                 //------------------------
-
-
                 //Search podla  hodnoty v search boxe celkom vpravo hore nad tabulkou
                 if (!string.IsNullOrEmpty(searchValue))
                 {

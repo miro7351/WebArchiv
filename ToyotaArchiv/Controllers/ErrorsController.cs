@@ -30,8 +30,8 @@ namespace ToyotaArchiv.Controllers
          * draw : int
          * start: int
          * length:int
-         * serach[value]: string  To be applied to all columns which have searchable=true
-         */ 
+         * search[value]: string  To be applied to all columns which have searchable=true
+         */
 
 
         [HttpPost]
@@ -78,7 +78,7 @@ namespace ToyotaArchiv.Controllers
 
                 // Getting all Zakazka
                 var chyby = (from chyba in _context.Errors
-                               select chyba);
+                             select chyba);
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -94,25 +94,25 @@ namespace ToyotaArchiv.Controllers
                     if (dt != DateTime.MinValue)
                         chyby = chyby.Where(m => m.ErrorDate.Year == dt.Year && m.ErrorDate.Month == dt.Month && m.ErrorDate.Day == dt.Day);
                 }
-                else if (!string.IsNullOrEmpty(colErrorMsgSearchValue))
+                if (!string.IsNullOrEmpty(colErrorMsgSearchValue))
                 {
                     chyby = chyby.Where(m => m.ErrorMsg.Contains(colErrorMsgSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(colErrProcedureSearchValue))
+                if (!string.IsNullOrEmpty(colErrProcedureSearchValue))
                 {
 
                     chyby = chyby.Where(m => m.ErrorProcedure.Contains(colErrProcedureSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(colUserSearchValue))
+                if (!string.IsNullOrEmpty(colUserSearchValue))
                 {
 
                     chyby = chyby.Where(m => m.User.Contains(colErrorMsgSearchValue));
                 }
-                else if (colErrorNumber >0)
+                if (colErrorNumber > 0)
                 {
-                    chyby = chyby.Where(m => m.ErrorNumber== colErrorNumber);
+                    chyby = chyby.Where(m => m.ErrorNumber == colErrorNumber);
                 }
-                else if (colErrorLine > 0)
+                if (colErrorLine > 0)
                 {
                     chyby = chyby.Where(m => m.ErrorLine == colErrorLine);
                 }
@@ -121,10 +121,10 @@ namespace ToyotaArchiv.Controllers
                 //Search box sa zobrazuje, pozri datatableErrors.js
                 if (!string.IsNullOrEmpty(searchValue))
                 {
-                    chyby = chyby.Where(m => m.ErrorMsg.Contains( searchValue) || 
+                    chyby = chyby.Where(m => m.ErrorMsg.Contains(searchValue) ||
                                              m.ErrorProcedure.Contains(searchValue) ||
                                              m.ErrorProcedure.Contains(searchValue) ||
-                                             m.User.Contains(searchValue)  );
+                                             m.User.Contains(searchValue));
                 }
 
                 //total number of rows count 

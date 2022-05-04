@@ -106,6 +106,31 @@ div.content {
 
 
 
+/* styl pre link Odhlasit*/
+    
+a.odhlasenie:link {
+    text-decoration: none;
+    color: white;
+}
+
+a.odhlasenie:visited {
+    text-decoration: none;
+    color: white;
+}
+
+a.odhlasenie:hover {
+    text-decoration: none;
+    /* background-color: yellow;*/
+    color: gray;
+}
+
+a.odhlasenie:active {
+    text-decoration: none;
+    /* background-color: yellow;*/
+    color: white;
+}
+
+
 
 /*.form-group {
     text-align: Left;

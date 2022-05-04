@@ -33,35 +33,7 @@ class="container"  centruje obsah div na stred
 @Html.ActionLink("Odhlásiť", "Logout", "Accounts")
 *@
 
-<style>
 
-   /* #linkSpan.a {
-    color:ghostwhite;*/
-    a.odhlasenie:link
-    {
-         text-decoration: none;
-         color:white;
-    }
-
-     a.odhlasenie:visited
-    {
-         text-decoration: none;
-         color:white;
-    }
-    a.odhlasenie:hover
-    {
-         text-decoration: none;
-        /* background-color: yellow;*/
-        color:gray;
-    }
-     a.odhlasenie:active
-    {
-         text-decoration: none;
-        /* background-color: yellow;*/
-        color:white;
-    }
-}
-</style>
 
 @using ToyotaArchiv.Infrastructure
 @{
@@ -89,16 +61,25 @@ class="container"  centruje obsah div na stred
                           <a class="nav-link " asp-area="" asp-controller="ZakazkyJQ" asp-action="Index">Garančné opravy</a>
                         </li>
                        
-                        @if (rola=="ADMIN" || rola=="VEDUCI")   @*Len pre roly: ADMIN, VEDUCI*@
+                        @if (rola=="ADMIN")   @*Len pre rolu: ADMIN*@
                         {
                              <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-controller="Accounts" asp-action="Index">Účty</a>
+                                <a class="nav-link " asp-area="" asp-controller="Accounts" asp-action="Index2">Účty</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " asp-area="" asp-controller="Logs" asp-action="Index">Logy</a>
                             </li>
                              <li class="nav-item">
                                 <a class="nav-link " asp-area="" asp-controller="Errors" asp-action="Index">Chyby</a>
+                            </li>
+                        }
+                        else if ( rola=="VEDUCI")   @*Len pre rolu: u VEDUCI*@
+                        {
+                             <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Accounts" asp-action="Index2">Účty</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Logs" asp-action="Index">Logy</a>
                             </li>
                         }
 

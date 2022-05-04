@@ -8,6 +8,7 @@ using PA.TOYOTA.DB;
 using ToyotaArchiv.Infrastructure;
 using ToyotaArchiv.Domain;
 using System.Globalization;
+using System.Text;
 
 namespace ToyotaArchiv.Controllers
 {
@@ -58,11 +59,31 @@ namespace ToyotaArchiv.Controllers
             //HTTP ERROR 404
         }
 
-
-        //MH: funkcia sa spusti z klienta po otvoreni stranky, pomocou AJAXu
+        
+        /**/
+        /*LoadData() sa spusti pri otvoreni stranky Index.cshtml
+         * pri kliku na paginator
+         * Ak sa zadava udaj v Tab. Search boxe, potom sa spusti pri stlaceni klavesy;
+         * 
+         * Ak sa zadava filter na stlpcom, potom sa spsuti pri stlaceni Enter;
+         * 
+         */
         [HttpPost]
         public IActionResult LoadData()
         {
+            string colDatumSearchValue=default(string);
+            string colZakazkaTgSearchValue = default(string);
+            string colZakazkaTbSearchValue = default(string);
+            string colVinSearchValue = default(string);
+            string colCwsSearchValue = default(string);
+            string colCisloProtSearchValue=default(string);
+            string colUkoncenaSearchValue=default(string);
+            string colSPZSearchValue = default(string);
+            string colVlastnikSearchValue = default(string);
+
+            int skip;
+            int pageSize;//pocet zaznamov na stranke
+
             try
             {
                 var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
@@ -78,69 +99,71 @@ namespace ToyotaArchiv.Controllers
                 var searchValue = Request.Form["search[value]"].FirstOrDefault();
 
                 //Paging Size (10,20,50,100)
-                int pageSize = length != null ? Convert.ToInt32(length) : 0;
-                int skip = start != null ? Convert.ToInt32(start) : 0;
+                pageSize = length != null ? Convert.ToInt32(length) : 0;
+                skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
                 //aby fungoval filter musi byt:     "filter": true,  pozri datatableZakazky*.js  !!!!
-                var colDatumSearchValue = Request.Form["columns[1][search][value]"].FirstOrDefault() ?? string.Empty;
-                var colZakazkaTgSearchValue  = Request.Form["columns[2][search][value]"].FirstOrDefault() ?? string.Empty;
-                var colZakazkaTbSearchValue = Request.Form["columns[3][search][value]"].FirstOrDefault() ?? string.Empty;
-                var colVinSearchValue = Request.Form["columns[4][search][value]"].FirstOrDefault() ?? string.Empty;
+                colDatumSearchValue = Request.Form["columns[1][search][value]"].FirstOrDefault() ?? string.Empty;
+                colZakazkaTgSearchValue  = Request.Form["columns[2][search][value]"].FirstOrDefault() ?? string.Empty;
+                colZakazkaTbSearchValue = Request.Form["columns[3][search][value]"].FirstOrDefault() ?? string.Empty;
+                colVinSearchValue = Request.Form["columns[4][search][value]"].FirstOrDefault() ?? string.Empty;
 
-                var colCwsSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault() ?? string.Empty;
-                var colCisloProtSearchValue = Request.Form["columns[6][search][value]"].FirstOrDefault() ?? string.Empty;
-                var colUkoncenaSearchValue = Request.Form["columns[7][search][value]"].FirstOrDefault() ?? string.Empty;
-
+                colCwsSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault() ?? string.Empty;
+                colCisloProtSearchValue = Request.Form["columns[6][search][value]"].FirstOrDefault() ?? string.Empty;
+                colUkoncenaSearchValue = Request.Form["columns[7][search][value]"].FirstOrDefault() ?? string.Empty;
+                
                 // Getting all Zakazka
                 var zakazky = (from zakazka in _context.Zakazkas
                                select zakazka);
 
+               
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
                 {
                     zakazky = zakazky.OrderBy(sortColumn + " " + sortColumnDirection);
                 }
 
-                if (!string.IsNullOrEmpty(colDatumSearchValue))
+                if (!string.IsNullOrEmpty(colDatumSearchValue))//zadany datum v tvare dd.MM.yyyy do filtra nad stlpcom Datum
                 {
                     //zakazky = zakazky.Where(m => m.Vytvorene.Value.ToString("dd.MM.yyyy HH:mm").Contains(datumSearchValue));toto nejde!!
-                    
                        _ = DateTime.TryParse(colDatumSearchValue, new CultureInfo("sk-SK"), DateTimeStyles.None, out DateTime dt);
 
                     if(dt != DateTime.MinValue ) 
                          zakazky = zakazky.Where(m =>  m.Vytvorene.Value.Year==dt.Year && m.Vytvorene.Value.Month==dt.Month && m.Vytvorene.Value.Day == dt.Day);
                 }
              
-                else if (!string.IsNullOrEmpty(colZakazkaTgSearchValue))
+                if (!string.IsNullOrEmpty(colZakazkaTgSearchValue))
                 {
                     zakazky = zakazky.Where(m => m.ZakazkaTg.Contains(colZakazkaTgSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(colZakazkaTbSearchValue))
+                if (!string.IsNullOrEmpty(colZakazkaTbSearchValue))
                 {
                     zakazky = zakazky.Where(m => m.ZakazkaTb.Contains(colZakazkaTbSearchValue));
                 }
 
-                else if (!string.IsNullOrEmpty(colVinSearchValue))
+                if (!string.IsNullOrEmpty(colVinSearchValue))
                 {
                     zakazky = zakazky.Where(m => m.Vin.Contains(colVinSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(colCwsSearchValue))
+                if (!string.IsNullOrEmpty(colCwsSearchValue))
                 {
                     zakazky = zakazky.Where(m => m.Cws.Contains(colCwsSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(colCisloProtSearchValue))
+                if (!string.IsNullOrEmpty(colCisloProtSearchValue))
                 {
                     zakazky = zakazky.Where(m => m.CisloProtokolu.Contains(colCisloProtSearchValue));
                 }
-                else if (!string.IsNullOrEmpty(colUkoncenaSearchValue))
+                if (!string.IsNullOrEmpty(colUkoncenaSearchValue))
                 {
                     zakazky = zakazky.Where(m => m.Ukoncena.Contains(colUkoncenaSearchValue));
                 }
+                //EF Core: kazda vyber. podmienka  WHERE prida AND ... do vysledneho select stringu  :) :) SUPER!!!!
                 //--------------------
                 //Search podla search okna celkom hore napravo
                 if (!string.IsNullOrEmpty(searchValue))
                 {
+                    //Ak sa zadal do search okna datumovy string v tvare dd.MM.yyyy
                     bool dtReady = DateTime.TryParse(searchValue, new CultureInfo("sk-SK"), System.Globalization.DateTimeStyles.None, out DateTime dt);
 
                     if (dtReady && dt != DateTime.MinValue)
@@ -149,26 +172,35 @@ namespace ToyotaArchiv.Controllers
                     }
                     else
                     {
-                        //zakazky = zakazky.Where(m => m.ZakazkaTb == searchValue ||
-                        //                            m.ZakazkaTg == searchValue || 
-                        //                            m.Vin == searchValue || 
-                        //                            m.Cws == searchValue ||
-                        //                            m.CisloProtokolu == searchValue ||
-                        //                            m.Ukoncena == searchValue);
                         zakazky = zakazky.Where(m => m.ZakazkaTb.Contains(searchValue) ||
-                                                   m.ZakazkaTg.Contains(searchValue) ||
-                                                   m.Vin.Contains(searchValue) ||
-                                                   m.Cws.Contains(searchValue) ||
-                                                   m.CisloProtokolu.Contains(searchValue) ||
-                                                   m.Ukoncena.Contains(searchValue)
-                                                  );
+                                                    m.ZakazkaTg.Contains(searchValue) ||
+                                                    m.Vin.Contains(searchValue) ||
+                                                    m.Cws.Contains(searchValue) ||
+                                                    m.CisloProtokolu.Contains(searchValue) ||
+                                                    m.Ukoncena.Contains(searchValue)
+                                                   );
                     }
                 }
-
+                
+              
                 //total number of rows count 
-                recordsTotal = zakazky.Count();
+                recordsTotal = zakazky.Count();//Debug Console: SELECT COUNT(*)  FROM[Zakazka] AS[z]
                 //Paging 
-                var data = zakazky.Skip(skip).Take(pageSize).ToList();
+                var data = zakazky.Skip(skip).Take(pageSize).ToList(); //MH: az tu je vyber pagesize  zaznamov z databazy!!!
+                /*Debug Console:
+                 * SELECT [z].[ZakazkaTG], [z].[CisloProtokolu], [z].[CWS], [z].[Poznamka], [z].[Ukoncena], [z].[VIN], [z].[Vytvorene], [z].[Vytvoril], [z].[ZakazkaID], [z].[ZakazkaTB], [z].[Zmenene], [z].[Zmenil]
+                  FROM [Zakazka] AS [z]
+                  ORDER BY [z].[ZakazkaID]
+                  OFFSET @__p_0 ROWS FETCH NEXT @__p_0 ROWS ONLY
+
+                filter: CWS: CWS000, Ukoncena: A
+                  SELECT [z].[ZakazkaTG], [z].[CisloProtokolu], [z].[CWS], [z].[Poznamka], [z].[Ukoncena], [z].[VIN], [z].[Vytvorene], [z].[Vytvoril], [z].[ZakazkaID], [z].[ZakazkaTB], [z].[Zmenene], [z].[Zmenil]
+                      FROM [Zakazka] AS [z]
+                      WHERE ((@__colCwsSearchValue_0 LIKE N'') OR (CHARINDEX(@__colCwsSearchValue_0, [z].[CWS]) > 0)) AND ((@__colUkoncenaSearchValue_1 LIKE '') OR (CHARINDEX(@__colUkoncenaSearchValue_1, [z].[Ukoncena]) > 0))
+                      ORDER BY [z].[ZakazkaID]
+                      OFFSET @__p_2 ROWS FETCH NEXT @__p_3 ROWS ONLY
+                 * 
+                 */
                 //Returning Json Data
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
 
@@ -177,9 +209,8 @@ namespace ToyotaArchiv.Controllers
             {
                 throw;
             }
-
-        }
-
+        }//LoadData
+      
 
         //Details Tu sa pride po kliku na link ZakazkaTg,  v tab. Garancne opravy
         //Pozri datatableZakazkyAdmin.js, datatableZakazkyVeduci.js, datatableZakazkyReadOnly.js
