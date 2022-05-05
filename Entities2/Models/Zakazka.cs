@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace PA.TOYOTA.DB
 {
-
+    //MH: 05.05.2022
     public partial class Zakazka
     {
         public Zakazka()
@@ -13,55 +14,62 @@ namespace PA.TOYOTA.DB
         public int ZakazkaId { get; set; }
 
         [Required]
-
         [StringLength(8, ErrorMessage = "Zadajte údaj na 8 znakov")]
         [Display(Name = "Zák. TG")]
-        public string ZakazkaTg { get; set; } = null!;
+        public string ZakazkaTg { get; set; } = null!;  //nchar(12), not null
 
 
         [Display(Name = "Zák. TB")]
         [StringLength(8, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.8 znakov")]
-        public string? ZakazkaTb { get; set; }
+        public string? ZakazkaTb { get; set; }   //nchar(12), null
 
 
         [Display(Name = "Čís. prot.")]
         [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.16 znakov")]
-        public string? CisloProtokolu { get; set; }
+        public string? CisloProtokolu { get; set; }  //nchar(16), null
 
         [Display(Name = "CWS")]
         [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.16 znakov")]
-        public string? Cws { get; set; }
+        public string? Cws { get; set; }  //nchar(32), null
 
         [StringLength(17, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.17 znakov")]
         [Display(Name = "Vin")]
-        public string? Vin { get; set; }
+        public string? Vin { get; set; } //nchar(32), null
 
 
         [Display(Name = "Ukončená")]
-        public string? Ukoncena { get; set; } = null!;
-
+        public string? Ukoncena { get; set; } = null!;  //char(1) null
         [StringLength(128, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.128 znakov")]
         [Display(Name = "Poznámka")]
-        public string? Poznamka { get; set; }
+        public string? Poznamka { get; set; }  //nvarchar(128), null
 
         [StringLength(32, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.32 znakov")]
         [Display(Name = "Vytvoril")]
-        public string? Vytvoril { get; set; }
+        public string? Vytvoril { get; set; }//nvarchar(32), null  nastavuje sa v db table triggeri
 
         [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
-        [Display(Name = "Vytvorené")]
+        [Display(Name = "Vytvorené")]    //datetime2(0), null, nastavuje sa v db table triggeri
         public DateTime? Vytvorene { get; set; }
 
 
         [StringLength(32, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.32 znakov")]
         [Display(Name = "Zmenil")]
-        public string? Zmenil { get; set; }
+        public string? Zmenil { get; set; }  //nvarchar(32), null  nastavuje sa v db table triggeri
 
         [DataType(DataType.Date)] //Na web stranke sa zobrazi Date control: Den mesiac rok
         [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}", ApplyFormatInEditMode = true)]//Format pre vypis na stranke ak  sa pouzije @Html.DisplayFor(....), inac sa neformatuje!
         [Display(Name = "Zmenené")]
-        public DateTime? Zmenene { get; set; }
+        public DateTime? Zmenene { get; set; }  //datetime2(0), null, nastavuje sa v db table triggeri
+
+
+        [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.16 znakov")]
+        [Display(Name = "ŠPZ")]
+        public string? Spz { get; set; }  //nvarchar(16), null
+
+        [StringLength(64, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.64 znakov")]
+        [Display(Name = "Vlastník vozidla")]
+        public string? Vlastnik { get; set; } //nvarchar(32), null
 
         public virtual ICollection<Dokument> Dokuments { get; set; }
     }

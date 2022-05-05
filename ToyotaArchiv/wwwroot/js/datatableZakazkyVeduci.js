@@ -12,6 +12,9 @@ $(document).ready(function () {
         else if (title == "Ukoncena") {
             $(this).html('<input type="text" placeholder=" ' + "A/N" + '" style="width:50px" />');
         }
+        else if (title == "CWS") {
+            $(this).html('<input type="text" placeholder=" ' + "CWS" + '" style="width:120px" />');
+        }
         else if (title == "CisloProtokolu") {
             $(this).html('<input type="text" placeholder=" ' + "Číslo prot." + '" style="width:120px" />');
         }
@@ -101,17 +104,29 @@ $(document).ready(function () {
                 //        return '<span style="color:' + color + '">' + data + '</span>';
                 //    }
                 //}
-            },
+                },
+                {
+                    "targets": [8],/*SPZ */
+                    "visible": true,
+                    "searchable": false
+
+                },
+                {
+                    "targets": [9],/*Vlastnik */
+                    "visible": true,
+                    "searchable": false
+
+                },
 
             {
-                "targets": [8],/*Poznamka */
+                "targets": [10],/*Poznamka */
                 "visible": false,
                 "searchable": false
 
             },
            
             {
-                "targets": [9],//Vymazat
+                "targets": [11],//Vymazat
                 "render": function (data, type, row) {
                     return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>';
                 }
@@ -127,10 +142,9 @@ $(document).ready(function () {
             { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
 
             { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
+            { "data": "spz", "name": "SPZ", "autoWidth": true },
+            { "data": "vlastnik", "name": "Vlastnik", "autoWidth": true },
             { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
-
-           
-
         ]
 
     });

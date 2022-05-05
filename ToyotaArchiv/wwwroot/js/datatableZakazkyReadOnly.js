@@ -13,6 +13,9 @@ $(document).ready(function () {
         {
             $(this).html('<input type="text" placeholder=" ' + "A/N" + '" style="width:50px" />');
         }
+        else if (title == "CWS") {
+            $(this).html('<input type="text" placeholder=" ' + "CWS" + '" style="width:120px" />');
+        }
         else if (title == "CisloProtokolu") {
             $(this).html('<input type="text" placeholder=" ' + "Číslo prot." + '" style="width:120px" />');
         }
@@ -70,9 +73,21 @@ $(document).ready(function () {
                     return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
                 },
            
-        },
+            },
+            {
+                "targets": [8],/*SPZ */
+                "visible": true,
+                "searchable": false
+
+            },
+            {
+                "targets": [9],/*Vlastnik */
+                "visible": true,
+                "searchable": false
+
+            },
         {
-            "targets": [8],/*Poznamka */
+            "targets": [10],/*Poznamka */
             "visible": false,
             "searchable": false
 
@@ -89,7 +104,8 @@ $(document).ready(function () {
         { "data": "cws", "name": "Cws", "autoWidth": true },
         { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
         { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
-
+        { "data": "spz", "name": "SPZ", "autoWidth": true },
+        { "data": "vlastnik", "name": "Vlastnik", "autoWidth": true },
         { "data": "poznamka", "name": "Poznamka", "autoWidth": true },
         
     ]

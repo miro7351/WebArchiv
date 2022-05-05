@@ -165,6 +165,7 @@ namespace PA.TOYOTA.DB
 
 
 ========================================
+uzitocna linka:https://docs.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold
 21.04.2022
 PM> Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_DB;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force 
 
@@ -174,6 +175,40 @@ Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;"
 
 26.04.2022  pripojeny PA VPN
 PM> Scaffold-DbContext  "Server=INTRA-MSSQL;Database=TOYOTA_DB;persist security info=False; User ID=toyota_user;Password=toyota;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force 
+Build started...
+Build succeeded.
+
+
+-----------------------------
+05.05.2022  Dell MH: Toyota_T1 
+bola zmena v tab. Zakazka-pribudol stlpec SPZ a Vlastnik
+                  Account-pribudol stlpec DbLogin, DbPassword, Aktivny
+                  Ak som pozil -table Zakazka, Account do novo vytvoreneho ToyotaContext vlozil len tabulky: Zakazka, Account
+PM> Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force -table Zakazka, Account
+
+
+
+Build started...
+Build succeeded.
+The column 'dbo.Account.Aktivny' would normally be mapped to a non-nullable bool property, but it has a default constraint.
+Such a column is mapped to a nullable bool property to allow a difference between setting the property to false and invoking the default constraint. See https://go.microsoft.com/fwlink/?linkid=851278 for details.
+ PM> Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force
+
+ Ak uz mame existujuci ToyotaContext a chceme ho nanovo pregenerovat potom v starej verzii, ktoru chceme modifikovat MUSI BYT "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;"
+ ak je pouzity v Scaffold-DbContext!!!!!
+  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;");
+            }
+        }
+
+
+ ====================
+05.05.2022  pripojeny PA VPN bola zmena len tab. Zakazka-pribudol stlpec SPZ a Vlastnik
+PM> Scaffold-DbContext  "Server=INTRA-MSSQL;Database=TOYOTA_DB;persist security info=False; User ID=toyota_user;Password=toyota;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force -table Zakazka -table Account
 Build started...
 Build succeeded.
 

@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PA.TOYOTA.DB
 {
     public partial class ToyotaContext : DbContext
     {
-
         public string? ConnectionString { get; }
-
         public ToyotaContext()
         {
+            ConnectionString = Database.GetConnectionString();
         }
 
         public ToyotaContext(DbContextOptions<ToyotaContext> options)
             : base(options)
         {
-            ConnectionString = Database.GetConnectionString();
+            ConnectionString = Database.GetConnectionString();  
+
         }
 
         public virtual DbSet<Account> Accounts { get; set; } = null!;
@@ -25,8 +22,6 @@ namespace PA.TOYOTA.DB
         public virtual DbSet<DokumentDetail> DokumentDetails { get; set; } = null!;
         public virtual DbSet<Error> Errors { get; set; } = null!;
         public virtual DbSet<Log> Logs { get; set; } = null!;
-        public virtual DbSet<Role> Roles { get; set; } = null!;
-        public virtual DbSet<Table1> Table1s { get; set; } = null!;
         public virtual DbSet<Zakazka> Zakazkas { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -34,7 +29,7 @@ namespace PA.TOYOTA.DB
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=INTRA-MSSQL;Database=TOYOTA_DB;persist security info=False; User ID=toyota_user;Password=toyota;");
+                optionsBuilder.UseSqlServer("Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;");
             }
         }
 
@@ -47,6 +42,14 @@ namespace PA.TOYOTA.DB
                 entity.ToTable("Account");
 
                 entity.Property(e => e.LoginId).HasColumnName("LoginID");
+
+                entity.Property(e => e.Aktivny)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.DbLogin).HasMaxLength(16);
+
+                entity.Property(e => e.DbPassword).HasMaxLength(16);
 
                 entity.Property(e => e.LoginName)
                     .HasMaxLength(16)
@@ -158,56 +161,6 @@ namespace PA.TOYOTA.DB
                     .HasDefaultValueSql("(user_name())");
             });
 
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.ToTable("Role");
-
-                entity.Property(e => e.RoleId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("RoleID");
-
-                entity.Property(e => e.Aktivny)
-                    .HasMaxLength(1)
-                    .IsUnicode(false)
-                    .HasDefaultValueSql("('A')")
-                    .IsFixedLength();
-
-                entity.Property(e => e.Poznamka)
-                    .HasMaxLength(64)
-                    .HasDefaultValueSql("('')");
-
-                entity.Property(e => e.RoleName)
-                    .HasMaxLength(24)
-                    .IsFixedLength();
-
-                entity.Property(e => e.Vytvorene)
-                    .HasPrecision(0)
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.Vytvoril)
-                    .HasMaxLength(32)
-                    .HasDefaultValueSql("(user_name())");
-
-                entity.Property(e => e.Zmenene).HasPrecision(0);
-
-                entity.Property(e => e.Zmenil)
-                    .HasMaxLength(32)
-                    .HasDefaultValueSql("('')");
-            });
-
-            modelBuilder.Entity<Table1>(entity =>
-            {
-                entity.HasKey(e => e.Eeeeee);
-
-                entity.ToTable("Table_1");
-
-                entity.Property(e => e.Eeeeee).HasColumnName("eeeeee");
-
-                entity.Property(e => e.Dasdas)
-                    .HasColumnType("date")
-                    .HasColumnName("dasdas");
-            });
-
             modelBuilder.Entity<Zakazka>(entity =>
             {
                 entity.HasKey(e => e.ZakazkaTg);
@@ -230,6 +183,10 @@ namespace PA.TOYOTA.DB
 
                 entity.Property(e => e.Poznamka).HasMaxLength(128);
 
+                entity.Property(e => e.Spz)
+                    .HasMaxLength(16)
+                    .HasColumnName("SPZ");
+
                 entity.Property(e => e.Ukoncena)
                     .HasMaxLength(1)
                     .IsUnicode(false)
@@ -240,6 +197,8 @@ namespace PA.TOYOTA.DB
                     .HasMaxLength(17)
                     .HasColumnName("VIN")
                     .IsFixedLength();
+
+                entity.Property(e => e.Vlastnik).HasMaxLength(64);
 
                 entity.Property(e => e.Vytvorene).HasPrecision(0);
 

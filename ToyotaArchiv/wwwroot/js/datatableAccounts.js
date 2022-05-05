@@ -24,14 +24,24 @@
                 "visible": false,
                 "searchable": false
             },
-
+            {
+                "targets": [7],//link zmenit
+                "render": function (data, type, row) {
+                    return '<a  href="/Accounts/Details/' + $.trim(row['loginId']) + '">' + 'Zmeniť(' + $.trim(row['loginId']);  + ')</a>';
+                    
+                }
+            },
             
             ],
-        "columns": [
+        "columns": [ //poradie musi byt take ako su zoradene stlpce v Index.cshtml
             { "data": "loginId", "name": "LoginId", "autoWidth": true },
             { "data": "loginName", "name": "LoginName", "autoWidth": true },
             { "data": "loginPassword", "name": "LoginPassword", "autoWidth": true },
             { "data": "loginRola", "name": "LoginRola", "autoWidth": true },
+            { "data": "aktivny", "name": "Aktivny", "autoWidth": true },
+            { "data": "dblogin", "name": "DbLogin", "autoWidth": true },
+            { "data": "dbPassword", "name": "DbPassword", "autoWidth": true },
+           
         ]
 
     });

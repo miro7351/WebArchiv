@@ -163,6 +163,14 @@ namespace ToyotaArchiv.Domain
             set;
         }
 
+        [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.16 znakov")]
+        [Display(Name = "ŠPZ")]
+        public string? SPZ { get; set; }  //nvarchar(16), null
+
+        [StringLength(64, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.64 znakov")]
+        [Display(Name = "Vlastník vozidla")]
+        public string? Vlastnik { get; set; } //nvarchar(32), null
+
 
         /// <summary>
         /// Stav zakazky;

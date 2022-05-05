@@ -59,6 +59,8 @@ namespace ToyotaArchiv.Services
             zakazkaZO.Vin = zakazkaDB?.Vin?.Trim();
             zakazkaZO.Cws = zakazkaDB?.Cws?.Trim();
             zakazkaZO.CisloProtokolu = zakazkaDB?.CisloProtokolu?.Trim();
+            zakazkaZO.SPZ = zakazkaDB?.Spz?.Trim();
+            zakazkaZO.Vlastnik = zakazkaDB?.Vlastnik?.Trim();
             zakazkaZO.Vytvoril = zakazkaDB?.Vytvoril?.Trim();
             zakazkaZO.Vytvorene = zakazkaDB?.Vytvorene;    //DateTime
             zakazkaZO.Zmenil = zakazkaDB?.Zmenil?.Trim(); 
@@ -258,13 +260,15 @@ namespace ToyotaArchiv.Services
             }
             Zakazka newZakazkaDB = new Zakazka();
 
-            newZakazkaDB.ZakazkaTb = zakazkaZO.ZakazkaTb;
-            newZakazkaDB.ZakazkaTg = zakazkaZO.ZakazkaTg;
-            newZakazkaDB.Poznamka = zakazkaZO.Poznamka;
-            newZakazkaDB.Ukoncena = zakazkaZO.Ukoncena;
-            newZakazkaDB.Vin = zakazkaZO.Vin;
-            newZakazkaDB.Cws = zakazkaZO.Cws;
-            newZakazkaDB.CisloProtokolu = zakazkaZO.CisloProtokolu;
+            newZakazkaDB.ZakazkaTg = zakazkaZO.ZakazkaTg.Trim();
+            newZakazkaDB.ZakazkaTb = zakazkaZO?.ZakazkaTb?.Trim();
+            newZakazkaDB.Poznamka = zakazkaZO?.Poznamka?.Trim();
+            newZakazkaDB.Ukoncena = zakazkaZO?.Ukoncena;
+            newZakazkaDB.Vin = zakazkaZO?.Vin?.Trim();
+            newZakazkaDB.Cws = zakazkaZO?.Cws?.Trim();
+            newZakazkaDB.Spz = zakazkaZO?.SPZ?.Trim();
+            newZakazkaDB.Vlastnik = zakazkaZO?.Vlastnik?.Trim();
+            newZakazkaDB.CisloProtokolu = zakazkaZO?.CisloProtokolu?.Trim();
 
 
             //Vytvorenie instancie Dokument z instancie zakazkaZO.ZakazkaTGdokument a vlozenie do newZakazka.Dokuments;
@@ -383,376 +387,10 @@ namespace ToyotaArchiv.Services
             return newZakazkaDB;
         }//ConvertZakazkaZO_To_NewZakazka( ref ZakazkaZO zakazkaZO)
 
-        /*UPDATE instancie typu Zakazka
-         * Z  DB bola nacitana instancia typu Zakazka;
-         * Z nej som vytvoril instanciu typu ZakazkaZO (je to viewModel pre zobrazenie vo View )
-         * Instancia typu ZakazkaZO je zobrazena vo view a uzivatel mohol zmenit udaje...a stlacil "Ulozit zmeny".
-         * Teraz musim preniest zmeny z upravenej instancie typu ZakazkaZO do povodnej instancie typu Zakazka a volat _context.SaveChanges();
-         * 
-         * 
-         * Button "Clear" vymaze dokument pre danu skupinu a refresne stranku
-         * Ak ZakazkaZO dokument.NazovSuboru je zadany a DoFormFile =null, znamena ze sa subor NEZMENIL!!!
-         *                                   nie je zadany DoFormFile != null, pridany dokument !!!
-         * 
-         * 
-         * Pri editovani zakazkaZO sa mohli zmenit obsahy  dokumentov, mohol pribudnut dokument (pridal sa subor) do zakazkaZO, mohol sa odobrat dokument (vymazal sa subor) ;
-         */
-        /*
-        public void ConvertZakazkaZO_To_Zakazka(ref ZakazkaZO zakazkaZO, ref Zakazka zakazkaDB)  //ked sa robi UPDATE zaznamu z DB!!!!
-        {
-            if (zakazkaZO == null)
-            {
-                throw new ArgumentNullException($"Chyba-ConvertZakazkaZO_To_Zakazka: Neplatný údaj pre vstupnú zákazku!");
-            }
-            if(zakazkaDB == null)
-            {
-                throw new ArgumentNullException($"Chyba-ConvertZakazkaZO_To_Zakazka: Neplatný údaj pre výstupnú zákazku!");
-            }
-
-            //zakazkaDB.ZakazkaTg = myZakZO.ZakazkaTg;   //ZakazkaTg sa nemeni!!!
-            zakazkaDB.ZakazkaTb = zakazkaZO?.ZakazkaTb?.Trim();
-
-            zakazkaDB.Poznamka = zakazkaZO?.Poznamka?.Trim();
-            zakazkaDB.Ukoncena = zakazkaZO?.Ukoncena;
-            zakazkaDB.Vin = zakazkaZO?.Vin?.Trim();
-            zakazkaDB.Cws = zakazkaZO?.Cws?.Trim();
-            zakazkaDB.CisloProtokolu = zakazkaZO?.CisloProtokolu?.Trim();
-
-            #region == Dokumenty  pre Skupina=1 a Skupina=2 ===
-
-            Dokument? zakazkaTGdokumentDB = zakazkaDB.Dokuments.FirstOrDefault(d => d.Skupina == SkupinaZakazkaTGDokument);
-            if (zakazkaTGdokumentDB != null)//zakazkaDB mala uz vytvoreny zakazkaTGdokument, 
-            {
-                zakazkaTGdokumentDB.Poznamka = zakazkaZO?.ZakazkaTGdokument?.Poznamka?.Trim();
-                if(zakazkaZO?.ZakazkaTGdokument?.DokFormFile != null)  //nastala zmena obrazku
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        zakazkaTGdokumentDB.NazovSuboru = zakazkaZO?.ZakazkaTGdokument.NazovSuboru?.Trim();  //ZakazkaTGdokument.DokFormFile.FileName;
-                        zakazkaZO?.ZakazkaTGdokument.DokFormFile.CopyTo(ms);
-
-                        DokumentDetail? detailDB = zakazkaTGdokumentDB.DokumentDetails.FirstOrDefault(d => d.Skupina == SkupinaZakazkaTGDokument);
-                        if (detailDB != null && detailDB.DokumentContent != null)
-                        {
-                            detailDB.DokumentContent = ms.ToArray();
-                        }
-                    }
-                }
-            }
-            else//zakazkaDB ak bola uz ulozena nemusi mat este vytvoreny ZakazkaTGdokument!!  Dokument pre Skupina=1
-            {
-                //pre ZakazkaTGdokument sa nenastavuje poznamka
-                if (zakazkaZO?.ZakazkaTGdokument?.DokFormFile != null) //pre zakazkaZO bol zadany obrazok pre ZakazkaTGdokument;
-                {
-                    Dokument dokumentDB = new Dokument();
-                    dokumentDB.ZakazkaTg = zakazkaZO.ZakazkaTg;
-                    dokumentDB.NazovDokumentu = zakazkaZO?.ZakazkaTGdokument?.NazovDokumentu;
-                    dokumentDB.NazovSuboru = zakazkaZO?.ZakazkaTGdokument.NazovSuboru;
-                    dokumentDB.Skupina = SkupinaZakazkaTGDokument;
-  
-                    DokumentDetail detailDB = new DokumentDetail(); //pre dokument1 vytvorime DokumentDetail
-                    detailDB.Skupina = dokumentDB?.Skupina;
-
-                    using (var ms = new MemoryStream())
-                    {
-                        zakazkaZO?.ZakazkaTGdokument.DokFormFile.CopyTo(ms);
-                        detailDB.DokumentContent = ms.ToArray();
-                    }
-                    if (dokumentDB != null)
-                    {
-                        dokumentDB?.DokumentDetails.Add(detailDB);
-                        zakazkaDB.Dokuments.Add(dokumentDB);
-                    }
-                }
-            }
-
-            Dokument? zakazkaTBdokumentDB = zakazkaDB.Dokuments.FirstOrDefault(d => d.Skupina == SkupinaZakazkaTBDokument);
-            if (zakazkaTBdokumentDB != null)//zakazkaDB mala uz zakazkaTBdokument, musi mat DokumentDetail
-            {
-                //pre ZakazkaTBdokument sa nenastavuje poznamka
-                //zakazkaTBdokumentDB.Poznamka = zakazkaZO?.ZakazkaTBdokument?.Poznamka?.Trim();
-
-                if (zakazkaZO?.ZakazkaTBdokument?.DokFormFile != null)  //nastala zmena obrazku
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        zakazkaTBdokumentDB.NazovSuboru = zakazkaZO.ZakazkaTBdokument.NazovSuboru;
-                        zakazkaZO.ZakazkaTBdokument.DokFormFile.CopyTo(ms);
-
-                        DokumentDetail? detailDB = zakazkaTBdokumentDB.DokumentDetails.FirstOrDefault(d => d.Skupina == SkupinaZakazkaTBDokument);
-                        if (detailDB != null && detailDB.DokumentContent != null)
-                        {
-                            detailDB.DokumentContent = ms.ToArray();//nastala zmena dokumentu
-                        }
-                    }
-                }
-            }
-            else//zakazkaDB este nemala vytvoreny ZakazkaTBdokumentDB pre Skupina=2
-            {
-                if (zakazkaZO?.ZakazkaTBdokument?.DokFormFile != null) //pre myZakZO bol zadany obrazok pre ZakazkaTBdokument;
-                {
-                    Dokument dokumentDB = new Dokument();
-                    dokumentDB.ZakazkaTg = zakazkaZO.ZakazkaTg;
-                    dokumentDB.NazovDokumentu = zakazkaZO.ZakazkaTBdokument.NazovDokumentu;
-                    dokumentDB.NazovSuboru = zakazkaZO.ZakazkaTBdokument.NazovSuboru;
-                    dokumentDB.Skupina = SkupinaZakazkaTBDokument;
-
-                    DokumentDetail detailDB = new DokumentDetail(); //pre dokument1 vytvorime DokumentDetail
-                    detailDB.Skupina = dokumentDB?.Skupina;
-
-                    using (var ms = new MemoryStream())
-                    {
-                        zakazkaZO.ZakazkaTBdokument.DokFormFile.CopyTo(ms);
-                        detailDB.DokumentContent = ms.ToArray();
-                    }
-                    dokumentDB?.DokumentDetails.Add(detailDB);
-                    zakazkaDB.Dokuments.Add(dokumentDB);
-                }
-            }
-
-            #endregion == Dokumenty  pre Skupina=1 a Skupina=2 ===
-
-            #region == Povinne dokumenty ==
-
-            List<BaseItem>? povinneDokumentyZO = null;
-            List<Dokument>? povinneDokumentyDB = null;
-
-            bool existujuPovinneDokumentyZO = zakazkaZO?.PovinneDokumenty?.Any(d => !string.IsNullOrEmpty(d.NazovSuboru)) ?? false;
-            if ( existujuPovinneDokumentyZO  )
-                povinneDokumentyZO = zakazkaZO?.PovinneDokumenty?.Where(d => !string.IsNullOrEmpty(d.NazovSuboru)).ToList();
-
-            bool existujuPovinneDokumentyDB = zakazkaDB.Dokuments.Any(d => d.Skupina >= SkupinaPrvehoPovinnehoDokumentu && d.Skupina < SkupinaPrvejPrilohy);
-
-            if (existujuPovinneDokumentyDB)
-                povinneDokumentyDB = zakazkaDB.Dokuments.Where(d => d.Skupina >= SkupinaPrvehoPovinnehoDokumentu && d.Skupina < SkupinaPrvejPrilohy).ToList();
-
-            if (!existujuPovinneDokumentyDB && existujuPovinneDokumentyZO)//zakazkaDB este nemala vytvorene Povinne dokumenty
-            {
-                //vytvorim nove dokumenty z povinneDokumentyZO a vlozim ich do  zakazkaDB.Dokuments.
-                if (povinneDokumentyZO != null)
-                {
-                    foreach (BaseItem pdZO in povinneDokumentyZO)
-                    {
-                        Dokument dokumentDB = new Dokument();
-                        dokumentDB.ZakazkaTg = zakazkaZO.ZakazkaTg.Trim();
-                        dokumentDB.NazovDokumentu = pdZO.NazovDokumentu;
-                        dokumentDB.NazovSuboru = pdZO.NazovSuboru;
-                        dokumentDB.Skupina = pdZO.Skupina;
-                        dokumentDB.Poznamka = pdZO?.Poznamka?.Trim();
-
-                        DokumentDetail detailDB = new DokumentDetail();
-                        detailDB.Skupina = pdZO.Skupina;
-                        detailDB.DokumentContent = new byte[pdZO.FileContent.Length]; 
-                        pdZO.FileContent.CopyTo(detailDB.DokumentContent,0);
-                        
-                        dokumentDB.DokumentDetails.Add(detailDB);
-                        zakazkaDB.Dokuments.Add(dokumentDB);
-                    }
-                }
-            }
-            else if (existujuPovinneDokumentyDB && existujuPovinneDokumentyZO) //zakazkaDB uz ma nejake Povinne dokumenty; zakazkaZO ma vzdy 5 Povinnych Dokumentov, ale nemusia mat zadany NazovSuboru
-            {
-                for (short i = 0; i < povinneDokumentyZO.Count; i++)
-                {
-                    bool existujePDZO = zakazkaZO?.PovinneDokumenty?.Any(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvehoPovinnehoDokumentu + i) ?? false;
-                    bool existujePDDB = zakazkaDB.Dokuments.Any(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvehoPovinnehoDokumentu + i);
-
-
-                    if (existujePDDB && existujePDZO) //robi sa update-zmena povinneho dokumentu
-                    {
-                        Dokument? dokumentDB = zakazkaDB.Dokuments.FirstOrDefault(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvehoPovinnehoDokumentu + i);
-                        BaseItem? pdZO = zakazkaZO?.PovinneDokumenty?.FirstOrDefault(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvehoPovinnehoDokumentu + i);
-                        if (dokumentDB != null && pdZO != null) //robi sa update-zmena povinneho dokumentu
-                        {
-                            //dokumentDB.NazovDokumentu sa nemeni
-                            //dokumentDB.Skupina sa nemeni
-                            dokumentDB.Poznamka = pdZO?.Poznamka?.Trim();
-
-                            if (pdZO?.DokFormFile != null) //zmenil sa obrazok
-                            {
-                                dokumentDB.NazovSuboru = pdZO?.NazovSuboru;
-                                DokumentDetail detailDB = dokumentDB.DokumentDetails.FirstOrDefault(d => d.Skupina == dokumentDB.Skupina);
-                                if (detailDB != null)
-                                {
-                                    detailDB.DokumentContent = new byte[pdZO.FileContent.Length];
-                                    pdZO.FileContent.CopyTo(detailDB.DokumentContent, 0);
-                                }
-                            }
-                        }
-                    }
-                    //v zakazkaDB este nema vytvoreny Povinny dokument kde Skupina=SkupinaPrvehoPovinnehoDokumentu + i
-                    //zakazkaZO ma Povinny dokument kde Skupina=SkupinaPrvehoPovinnehoDokumentu + i
-                    //vytvorim novy dokument a pridam ho do zakazkaDB.Dokuments
-                    else if (!existujePDDB && existujePDZO)
-                    {
-                        BaseItem? pdZO = zakazkaZO?.PovinneDokumenty?.FirstOrDefault(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvehoPovinnehoDokumentu + i);
-
-                        if (pdZO != null)
-                        {
-                            Dokument dokumentDB = new Dokument();
-                            dokumentDB.ZakazkaTg = zakazkaZO.ZakazkaTg;
-                            dokumentDB.NazovDokumentu = pdZO.NazovDokumentu;
-                            dokumentDB.NazovSuboru = pdZO.NazovSuboru;
-                            dokumentDB.Skupina = pdZO.Skupina;
-                            dokumentDB.Poznamka = pdZO?.Poznamka?.Trim();
-
-                            DokumentDetail detailDB = new DokumentDetail();
-                            detailDB.Skupina = pdZO.Skupina;
-
-                            detailDB.DokumentContent = new byte[pdZO.FileContent.Length];
-                            pdZO.FileContent.CopyTo(detailDB.DokumentContent, 0);
-
-                            dokumentDB.DokumentDetails.Add(detailDB);
-                            zakazkaDB.Dokuments.Add(dokumentDB);
-                        }
-                    }
-                    else if (existujePDDB && !existujePDZO)
-                    {
-                        //TODO: treba vymazat z databazy povinny dokument???
-                        Dokument? dokumentDB = zakazkaDB.Dokuments.FirstOrDefault(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvehoPovinnehoDokumentu + i);
-                        if (dokumentDB != null)
-                            zakazkaDB.Dokuments.Remove(dokumentDB);
-                    }
-                }
-            }//if(!existujuPovinneDokumentyDB....)
-
-            //nastavenie priznaku: Zakazka Ukoncena
-            existujuPovinneDokumentyDB = zakazkaDB.Dokuments.Any(d => d.Skupina >= SkupinaPrvehoPovinnehoDokumentu && d.Skupina < SkupinaPrvejPrilohy);
-
-            if (existujuPovinneDokumentyDB)
-            {
-                int pd = zakazkaDB?.Dokuments?.Count(d => d.Skupina >= SkupinaPrvehoPovinnehoDokumentu && d.Skupina < SkupinaPrvejPrilohy) ?? 0;
-                if (zakazkaDB != null)
-                {
-                    if (pd == PocetPovinnych)
-                        zakazkaDB.Ukoncena = "A";
-                    else
-                        zakazkaDB.Ukoncena = "N";
-                }
-            }
-
-            #endregion == Povinne dokumenty ==
-
-            #region == Prilohy ==
-
-            List<BaseItem>? prilohyZO = null;
-            List<Dokument>? prilohyDB = null;
-
-            bool existujuPrilohyZO = zakazkaZO?.Prilohy?.Any(d => !string.IsNullOrEmpty(d.NazovSuboru)) ?? false;
-
-            if (existujuPrilohyZO) //ak existuje dokument pre prilohu, je nastavene pole pre obrazok
-                prilohyZO = zakazkaZO?.Prilohy?.Where(d => !string.IsNullOrEmpty(d.NazovSuboru)).ToList();
-
-            bool existujuPrilohyDB = zakazkaDB?.Dokuments.Any(d => d.Skupina >= SkupinaPrvejPrilohy) ?? false;
-
-            if (existujuPrilohyDB)
-                prilohyDB = zakazkaDB.Dokuments.Where(d => d.Skupina >= SkupinaPrvejPrilohy).ToList();
-
-            if (!existujuPrilohyDB && existujuPrilohyZO)//zakazkaDB este nemala vytvorene Prilohy
-            {
-                //vytvorim nove dokumenty pre zakazkaDB a pridam ich do  zakazkaDB.Dokuments.
-                if ( prilohyZO != null )
-                {
-                    foreach (BaseItem dokumentZO in prilohyZO)
-                    {
-                        Dokument dokumentDB = new Dokument();
-                        dokumentDB.ZakazkaTg = zakazkaZO.ZakazkaTg.Trim();
-                        dokumentDB.NazovDokumentu = dokumentZO.NazovDokumentu;
-                        dokumentDB.NazovSuboru = dokumentZO.NazovSuboru;
-                        dokumentDB.Skupina = dokumentZO.Skupina;
-                        dokumentDB.Poznamka = dokumentZO?.Poznamka?.Trim();
-
-                        DokumentDetail dokDetailDB = new DokumentDetail();
-                        dokDetailDB.Skupina = dokumentZO.Skupina;
-                        if (dokumentZO.FileContent != null)
-                        {
-                            dokDetailDB.DokumentContent = new byte[dokumentZO.FileContent.Length];
-                            dokumentZO.FileContent.CopyTo(dokDetailDB.DokumentContent, 0);
-
-                            dokumentDB.DokumentDetails.Add(dokDetailDB);
-                            zakazkaDB?.Dokuments.Add(dokumentDB);
-                        }
-                    }
-                }
-            }
-            else if (existujuPrilohyDB && existujuPrilohyZO)//zakazkaDB uz ma nejake Prilohy a zakazkaZO ma nejake prilohy;
-            {
-                //Co ak zakazkaZO ma viac priloh ako zakazkaDB, pridam ich do zakazkaDB.Dokuments!!
-
-                for (short i = 0; i < zakazkaZO.Prilohy.Count; i++)
-                {
-                    bool existujePRZO = zakazkaZO?.Prilohy?.Any(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvejPrilohy + i) ?? false;
-                    bool existujePRDB = zakazkaDB?.Dokuments.Any(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvejPrilohy + i) ?? false;
-                    if (existujePRDB && existujePRZO)  //ak sa zmenil NazovSuboru pre obrazok, potom do detailDB vlozim novy obrazok
-                    {
-                        Dokument? dokumentDB = zakazkaDB?.Dokuments.FirstOrDefault(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvejPrilohy + i);
-                        BaseItem? dokumentZO = zakazkaZO?.Prilohy?.FirstOrDefault(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvejPrilohy + i);
-
-                        if ((dokumentDB != null)  && (dokumentZO != null))
-                        {
-                            dokumentDB.NazovDokumentu = dokumentZO.NazovDokumentu;
-                            if (dokumentDB.NazovSuboru != dokumentZO.NazovSuboru)//zmenil sa subor pre obrazok
-                            {
-                                dokumentDB.NazovSuboru = dokumentZO.NazovSuboru; 
-                           
-                                dokumentDB.Poznamka = dokumentZO?.Poznamka?.Trim();
-                                DokumentDetail? detailDB = dokumentDB.DokumentDetails?.FirstOrDefault(d => d.Skupina == dokumentDB.Skupina);
-                                if (detailDB != null &&  dokumentZO.FileContent != null)
-                                {
-                                    detailDB.DokumentContent = new byte[dokumentZO.FileContent.Length];
-                                    dokumentZO.FileContent.CopyTo(detailDB.DokumentContent, 0);
-                                }
-                            }
-                        }
-                    }
-                    //v zakazkaDB este nema vytvoreny Povinny dokument kde Skupina=SkupinaPrvehoPovinnehoDokumentu + i
-                    //zakazkaZO ma Povinny dokument kde Skupina=SkupinaPrvehoPovinnehoDokumentu + i
-                    else if (!existujePRDB &&  existujePRZO) //vytvorim novy dokument a pridam ho do zakazkaDB.Dokuments
-                    {
-                        BaseItem? dokumentZO = zakazkaZO?.Prilohy?.FirstOrDefault(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvejPrilohy + i);
-
-                        if (dokumentZO != null)
-                        {
-                            Dokument dokumentDB = new Dokument();
-                            dokumentDB.ZakazkaTg = zakazkaZO.ZakazkaTg.Trim();
-                            dokumentDB.NazovDokumentu = dokumentZO.NazovDokumentu;
-                            dokumentDB.NazovSuboru = dokumentZO.NazovSuboru;
-                            dokumentDB.Skupina = dokumentZO.Skupina;
-                            dokumentDB.Poznamka = dokumentZO.Poznamka?.Trim();
-
-                            DokumentDetail dokDetailDB = new DokumentDetail();
-                            dokDetailDB.Skupina = dokumentZO.Skupina;
-                            if ( dokumentZO.FileContent != null)
-                            {
-                                dokDetailDB.DokumentContent = new byte[dokumentZO.FileContent.Length];
-                                dokumentZO.FileContent.CopyTo(dokDetailDB.DokumentContent, 0);
-                            }
-
-                            dokumentDB.DokumentDetails.Add(dokDetailDB);
-                            zakazkaDB?.Dokuments.Add(dokumentDB);
-                        }
-                    }
-                    //v zakazkaDB ma vytvorenu Prilohu kde Skupina=SkupinaPrvejPrilohy + i, ale zakazkaZO nema zadany subor pre Prilohu
-                    // v zakazkaZO.Prilohy bol vymazany subor kde  Skupina=SkupinaPrvejPrilohy + i
-                    else if (existujePRDB && !existujePRZO)
-                    {
-                        Dokument? dokumentDB = zakazkaDB?.Dokuments.FirstOrDefault(d => !string.IsNullOrEmpty(d.NazovSuboru) && d.Skupina == SkupinaPrvejPrilohy + i);
-                        if(dokumentDB != null)
-                            zakazkaDB?.Dokuments?.Remove(dokumentDB);
-                    }
-                }// for (short i = 0; i < zakazkaZO.Prilohy; i++)
-            }//if(!existujuPovinneDokumentyDB....)
-
-            #endregion == Prilohy ==
-
-        }//ConvertZakazkaZO_To_Zakazka(ZakazkaZO myZakZO, ref Zakazka zakazkaDB)
-    */
-
         /// <summary>
-        /// Vytvori instanciu ktora obsahuje vsetky vnorene udaje, ale udaje este nie su nastavene;
-        /// Povinne dokumenty obsahuju len NazovDokumentu a cislo skupiny;
-        /// Prilohy  obsahuju len NazovDokumentu  a cislo skupiny;
+        /// Vytvori prazdnu instanciu typu ZakazkaZO
         /// </summary>
+        /// <param name="pocetPriloh"></param>
         /// <returns></returns>
         public ZakazkaZO VytvorPrazdnuZakazkuZO(short pocetPriloh)
         {
@@ -768,7 +406,7 @@ namespace ToyotaArchiv.Services
                 for (short i = 0; i < PocetPovinnych; i++)
                 {
                     //zakazkaZO.PovinneDokumenty?.Add(new BaseItem() { Skupina = (short)(SkupinaPrvehoPovinnehoDokumentu + i), NazovDokumentu = NazvyPovinnychDokumentov[i], Poznamka = $"Poznamka ABCD{i + 1:000}" });
-                    zakazkaZO.PovinneDokumenty?.Add(new BaseItem() { Skupina = (short)(SkupinaPrvehoPovinnehoDokumentu + i), NazovDokumentu = NazvyPovinnychDokumentov[i] });
+                    zakazkaZO.PovinneDokumenty?.Add(new BaseItem() { Skupina = (short)(SkupinaPrvehoPovinnehoDokumentu + i), NazovDokumentu = NazvyPovinnychDokumentov[i], Poznamka = "*" });
                 }
                 return zakazkaZO.PovinneDokumenty?.Count ?? 0;
             }
@@ -778,7 +416,7 @@ namespace ToyotaArchiv.Services
                 for (short i = 0; i < pocetPriloh; i++)
                 {
                     //zakazkaZO.Prilohy?.Add(new BaseItem() { Skupina = (short)(SkupinaPrvejPrilohy + i), NazovDokumentu = $"Priloha{(SkupinaPrvejPrilohy + i + 1) % SkupinaPrvejPrilohy:00}", Poznamka = $"POZNAMKA Priloha ABCD{(i + 1):000}" });
-                    zakazkaZO.Prilohy?.Add(new BaseItem() { Skupina = (short)(SkupinaPrvejPrilohy + i), NazovDokumentu = $"Priloha{(SkupinaPrvejPrilohy + i + 1) % SkupinaPrvejPrilohy:00}", Poznamka = "***" });
+                    zakazkaZO.Prilohy?.Add(new BaseItem() { Skupina = (short)(SkupinaPrvejPrilohy + i), NazovDokumentu = $"Priloha{(SkupinaPrvejPrilohy + i + 1) % SkupinaPrvejPrilohy:00}", Poznamka = "*" });
                     //zakazkaZO.Prilohy?.Add(new BaseItem() { Skupina = (short)(SkupinaPrvejPrilohy + i), NazovDokumentu = $"Priloha{(SkupinaPrvejPrilohy + i + 1) % SkupinaPrvejPrilohy:00}" });
                 }
                 return zakazkaZO.Prilohy?.Count ?? 0;

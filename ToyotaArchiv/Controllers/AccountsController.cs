@@ -21,8 +21,8 @@ namespace ToyotaArchiv.Controllers
         }
 
        
-        /*LoadData() sa spusti pri otvoreni stranky Index2.cshtml, pozri datatableAccounts.js
-       
+        /*
+         * LoadData() sa spusti pri otvoreni stranky Index.cshtml, pozri datatableAccounts.js
          */
         [HttpPost]
         public IActionResult LoadData()
@@ -81,20 +81,57 @@ namespace ToyotaArchiv.Controllers
             return View(await _context.Accounts.ToListAsync());
         }
 
-        public async Task<IActionResult> Index2()
+        //Accounts: Index po kliku na link 'Zmenit'
+        public async Task<IActionResult> Details(int? id)
         {
-            return View(await _context.Accounts.ToListAsync());
+            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.LoginId == id.Value);
+
+            //if (account == null)
+            //{
+            //    return NotFound();
+            //}
+            return View(account);
         }
 
 
+        //Accounts: Index po kliku na link 'Novy ucet'
         public IActionResult Create()
         {
             return View();
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("LoginName,LoginPassword,LoginRola")] Account account)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(account);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(account);
+        //}
+
+
+        /*public bool? Aktivny { get; set; }
+         *  @Html.DisplayNameFor(m=>m.Aktivny)
+            @Html.CheckBoxFor(m=>m.Aktivny.Value)   stale vrati null
+
+          *    <label asp-for="Aktivny" class="control-label"></label>
+               <input asp-for="Aktivny" class="form-control"  type="checkbox"/>  vytvori textbox kde sa neda nic zadat
+         * 
+         * -------------------
+         * public bool Aktivny { get; set; }
+         * 
+         *  @Html.DisplayNameFor(m=>m.Aktivny)
+            @Html.CheckBoxFor(m=>m.Aktivny)   IsValid =true
+         */
+
+        //Create.cshtml po kliku na button 'Ulozit'
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LoginName,LoginPassword,LoginRola")] Account account)
+        public async Task<IActionResult> Create( Account account)  //MH 05.05.2022 zmena
         {
             if (ModelState.IsValid)
             {
@@ -113,8 +150,8 @@ namespace ToyotaArchiv.Controllers
                 return NotFound();
             }
 
-            var account = await _context.Accounts
-                .FirstOrDefaultAsync(m => m.LoginId == id);
+            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.LoginId == id);
+               
             if (account == null)
             {
                 return NotFound();
@@ -141,23 +178,6 @@ namespace ToyotaArchiv.Controllers
 
 
 
-
-
-
-        //public IActionResult Register()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public IActionResult Register(string username, string password1, string password2, string userrole)
-        //{
-        //    return View();
-        //}
-
-
-
-
         public IActionResult Login()
         {
             return View();
@@ -175,7 +195,8 @@ namespace ToyotaArchiv.Controllers
             bool isAuthenticated = false;
 
 
-            var user = _context.Accounts.Where(f => f.LoginName == username && f.LoginPassword == password).FirstOrDefault();
+            //var user = _context.Accounts.Where(f => f.LoginName == username && f.LoginPassword == password).FirstOrDefault();
+            var user = _context.Accounts.FirstOrDefault(f => f.LoginName == username && f.LoginPassword == password && f.Aktivny==true);
             if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "Invalid Email or Password");

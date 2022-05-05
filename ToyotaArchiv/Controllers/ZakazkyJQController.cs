@@ -40,16 +40,16 @@ namespace ToyotaArchiv.Controllers
             //MH: TU SA NEMUSIA nacitat udaje, lebo po spusteni stranky sa spusti AJAX metoda na nacitanie udajov LoadData()
             //a ta si nacita zadany pocet zoznamov;
 
-            var zakazky = await _context.Zakazkas.Take(10).ToListAsync();
-            if (zakazky.Any())
-            {
-                return View(zakazky);
-            }
-            else
-            {
-                return NotFound();
-            }
-            //return View();
+            //var zakazky = await _context.Zakazkas.Take(10).ToListAsync();
+            //if (zakazky.Any())
+            //{
+            //    return View(zakazky);
+            //}
+            //else
+            //{
+            //    return NotFound();
+            //}
+            return View();
 
             //MH: 22.04.2022 ak neexistuju udaje, potom JQuery datatable vypise: "Nie sú k dispozícii žiadne data"
            
@@ -81,7 +81,7 @@ namespace ToyotaArchiv.Controllers
             string colSPZSearchValue = default(string);
             string colVlastnikSearchValue = default(string);
 
-            int skip;
+            int skip;    //kolko zaznamov sa ma v db preskocit
             int pageSize;//pocet zaznamov na stranke
 
             try
@@ -112,6 +112,9 @@ namespace ToyotaArchiv.Controllers
                 colCwsSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault() ?? string.Empty;
                 colCisloProtSearchValue = Request.Form["columns[6][search][value]"].FirstOrDefault() ?? string.Empty;
                 colUkoncenaSearchValue = Request.Form["columns[7][search][value]"].FirstOrDefault() ?? string.Empty;
+
+                colSPZSearchValue = Request.Form["columns[8][search][value]"].FirstOrDefault() ?? string.Empty;
+                colVlastnikSearchValue = Request.Form["columns[9][search][value]"].FirstOrDefault() ?? string.Empty;
                 
                 // Getting all Zakazka
                 var zakazky = (from zakazka in _context.Zakazkas
@@ -157,6 +160,14 @@ namespace ToyotaArchiv.Controllers
                 if (!string.IsNullOrEmpty(colUkoncenaSearchValue))
                 {
                     zakazky = zakazky.Where(m => m.Ukoncena.Contains(colUkoncenaSearchValue));
+                }
+                if (!string.IsNullOrEmpty(colSPZSearchValue))
+                {
+                    zakazky = zakazky.Where(m => m.Spz.Contains(colSPZSearchValue));
+                }
+                if (!string.IsNullOrEmpty(colVlastnikSearchValue))
+                {
+                    zakazky = zakazky.Where(m => m.Vlastnik.Contains(colVlastnikSearchValue));
                 }
                 //EF Core: kazda vyber. podmienka  WHERE prida AND ... do vysledneho select stringu  :) :) SUPER!!!!
                 //--------------------

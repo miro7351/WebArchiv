@@ -89,7 +89,9 @@
                         <th>CWS</th>
                         <th>Číslo protokolu</th>
                         <th>Ukončená</th>
-                        <th>Poznamka</th>
+                        <th>ŠPZ</th>
+                        <th>Vlastník</th>
+                        <th>Poznámka</th>
 
                         @if (ViewBag.Role == "ADMIN")
                         {
@@ -97,9 +99,9 @@
                             <th>Zmenil</th>
                             <th>Zmenené</th>
                         }
-                        @if (ViewBag.Role == "ADMIN" || ViewBag.Role == "VEDUCI")  @*Stlpec pre link Delete*@
+                        @if (ViewBag.Role == "ADMIN" || ViewBag.Role == "VEDUCI")  
                         {
-                            <th></th>
+                            <th></th>@*Stlpec pre link Delete*@
                         }
                     </tr>
                 </thead>
@@ -116,7 +118,8 @@
                         <th>CWS</th>
                         <th>CisloProtokolu</th>
                         <th>Ukoncena</th>
-
+                        <th>SPZ</th>
+                        <th>Vlastnik</th>
                         <th>Poznamka</th>
                         @if (ViewBag.Role == "ADMIN")
                         {
@@ -124,9 +127,9 @@
                             <th>Zmenil</th>
                             <th>Zmenené</th>
                         }
-                        @if (ViewBag.Role == "ADMIN" || ViewBag.Role == "VEDUCI")  @*Stlpec pre link Delete*@
+                        @if (ViewBag.Role == "ADMIN" || ViewBag.Role == "VEDUCI") 
                         {
-                            <th></th>
+                            <th></th> @*Stlpec pre link Delete*@
                         }
                     </tr>
                 </tfoot>
@@ -148,15 +151,15 @@
     <!-- pre nastavenie sirky stlpca-->
      <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/4.0.2/js/dataTables.fixedColumns.min.js"></script>
 
-    @if(ViewBag.Role=="ADMIN") @*ma link Vymazat a stlpce Vytvoril, Zmenil, Zmenene*@
+    @if(ViewBag.Role=="ADMIN") @*udaje, link Vymazat a stlpce Vytvoril, Zmenil, Zmenene*@
     {
         <script src="~/js/datatableZakazkyAdmin.js"></script>
     }
-    else if(ViewBag.Role=="VEDUCI" ) @*ma link Vymazat*@
+    else if(ViewBag.Role=="VEDUCI" ) @*udaje a link Vymazat*@
     {
         <script src="~/js/datatableZakazkyVeduci.js"></script>
     }
-    else @*nema link Vymazat*@
+    else @*len udaje, nema link Vymazat*@
     {
         <script src="~/js/datatableZakazkyReadOnly.js"></script>
     }

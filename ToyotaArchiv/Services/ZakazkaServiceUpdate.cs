@@ -5,6 +5,7 @@ using ToyotaArchiv.Infrastructure;
 namespace ToyotaArchiv.Services
 {
     //MH: april 2022
+    //pozri aj ZakazkaService.cs
     internal partial class ZakazkaServiceWeb : IZakazkaTransformService
     {
 
@@ -50,6 +51,8 @@ namespace ToyotaArchiv.Services
             zakazkaDB.Vin = zakazkaZO?.Vin?.Trim();
             zakazkaDB.Cws = zakazkaZO?.Cws?.Trim();
             zakazkaDB.CisloProtokolu = zakazkaZO?.CisloProtokolu?.Trim();
+            zakazkaDB.Spz = zakazkaZO?.SPZ?.Trim();
+            zakazkaDB.Vlastnik = zakazkaZO?.Vlastnik?.Trim();
 
             #region == Dokumenty  pre Skupina=1 a Skupina=2 ===
 
@@ -211,8 +214,11 @@ namespace ToyotaArchiv.Services
                                 DokumentDetail detailDB = new DokumentDetail();
                                 detailDB.Skupina = pdZO?.Skupina;
 
-                                detailDB.DokumentContent = new byte[pdZO.FileContent.Length];
-                                pdZO.FileContent.CopyTo(detailDB.DokumentContent, 0);
+                                if (pdZO?.FileContent != null)
+                                {
+                                    detailDB.DokumentContent = new byte[pdZO.FileContent.Length];
+                                    pdZO.FileContent.CopyTo(detailDB.DokumentContent, 0);
+                                }
 
                                 dokumentDB.DokumentDetails.Add(detailDB);
                                 zakazkaDB.Dokuments.Add(dokumentDB);
@@ -234,8 +240,11 @@ namespace ToyotaArchiv.Services
                                     DokumentDetail? detailDB = dokumentDB.DokumentDetails.FirstOrDefault(d => d.Skupina == skZO);
                                     if (detailDB != null)
                                     {
-                                        detailDB.DokumentContent = new byte[pdZO.FileContent.Length];
-                                        pdZO.FileContent.CopyTo(detailDB.DokumentContent, 0);
+                                        if (pdZO?.FileContent != null)
+                                        {
+                                            detailDB.DokumentContent = new byte[pdZO.FileContent.Length];
+                                            pdZO.FileContent.CopyTo(detailDB.DokumentContent, 0);
+                                        }
                                     }
                                 }
                             }

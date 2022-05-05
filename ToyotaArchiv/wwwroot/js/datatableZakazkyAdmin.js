@@ -1,19 +1,25 @@
 ﻿
+
+//!!!! Pred spustenim musia byt nahrate prislusne *.js subory, podla manualu !!!!!!
 $(document).ready(function () {
 
     // Setup - add a text input to each footer cell
     $('#datatableZakazky tfoot th').each(function () {
         var title = $(this).text();
-        if (title == "VIN")
+        if (title == "VIN") {
             $(this).html('<input type="text" placeholder=" ' + title + '" style="width:180px" />');
-        else if (title == "") {
-            ;
-        }
+        } 
         else if (title == "Ukoncena") {
             $(this).html('<input type="text" placeholder=" ' + "A/N" + '" style="width:50px" />');
         }
+        else if (title == "CWS") {
+            $(this).html('<input type="text" placeholder=" ' + "CWS" + '" style="width:120px" />');
+        }
         else if (title == "CisloProtokolu") {
             $(this).html('<input type="text" placeholder=" ' + "Číslo prot." + '" style="width:120px" />');
+        }
+        else if (title == "") {
+            ;
         }
         else {
             $(this).html('<input type="text" placeholder=" ' + title + '" style="width:100px" />');
@@ -72,7 +78,6 @@ $(document).ready(function () {
                 "targets": [0],//ZakazkaId
                 "visible": false,
                 "searchable": false,
-
             },
             {
                 "targets": [1],//Vytvorene
@@ -123,34 +128,46 @@ $(document).ready(function () {
                 //    }
                 //}
             },
+            {
+                "targets": [8],/*SPZ */
+                "visible": true,
+                "searchable": false
+
+            },
+            {
+                "targets": [9],/*Vlastnik */
+                "visible": true,
+                "searchable": false
+
+            },
 
             {
-                "targets": [8],/*Poznamka */
+                "targets": [10],/*Poznamka */
                 "visible": false,
                 "searchable": false
 
             },
             {
-                "targets": [9],/*Vytvoril */
+                "targets": [11],/*Vytvoril */
                 "visible": true,
                 "searchable": false
 
             },
             {
-                "targets": [10],/*Zmenil */
+                "targets": [12],/*Zmenil */
                 "visible": true,
                 "searchable": false
 
             },
             {
-                "targets": [11],//Zmenene
+                "targets": [13],//Zmenene
                 "visible": true,
                 "searchable": false,
                 render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:mm'),
             },
 
             {
-                "targets": [12],//Vymazat
+                "targets": [14],//Vymazat
                 "render": function (data, type, row) {
                     return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>';
                 }
@@ -166,10 +183,12 @@ $(document).ready(function () {
             { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
 
             { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
+
+            { "data": "spz", "name": "SPZ", "autoWidth": true },
+            { "data": "vlastnik", "name": "Vlastnik", "autoWidth": true },
             { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
 
             { "data": "vytvoril", "name": "Vytvoril", "autoWidth": true },
-
             { "data": "zmenil", "name": "Zmenil", "autoWidth": true },
             { "data": "zmenene", "name": "Zmenene", "autoWidth": true },
 
