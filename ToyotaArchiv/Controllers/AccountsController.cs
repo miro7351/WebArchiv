@@ -178,8 +178,6 @@ namespace ToyotaArchiv.Controllers
                             return View(account);
                         }
                     }
-                    //MH 06.05.2022: Ak Aktivny = false, do db sa zapise Aktivny=1!!!!!! Default value v db je 1.
-                    //Ak Aktivny = false, do db sa zapise Aktivny=0!!!!!! Default value v db je 0.
                     _context.Add(account);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
