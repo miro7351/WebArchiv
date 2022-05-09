@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="DB\Model\" />
+    <Folder Include="M1\" />
   </ItemGroup>
 
 </Project>

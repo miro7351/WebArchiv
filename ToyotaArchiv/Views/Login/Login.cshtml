@@ -2,23 +2,24 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    
-
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
     ViewData["Title"] = "Login";
 }
-
+@*Login uzivatela do aplikacie;*@
 <div class="text-center">
   <div class="div-center" style="border:1.5px solid black">
     <div class="content">
-
+     
+        @*pre zobrazenie chybovej hlasky, ak je chybovy oznam zobrazeny, potom sa vymaze pri stlaceni klavesy;*@
+      <p id="error" class="text-danger" style="width:100%;"><b>@ViewBag.ErrorMessage</b></p>
       <h3>Prihlásenie</h3>
+      
       <hr style="height:2.5px;color:black;opacity:100%"  />
 
-        <form asp-action="Login" method="post">
+        <form asp-action="Login" method="post"  onkeypress="document.getElementById('error').innerHTML=''">
             <div class="form-group">
                 <label>Meno</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Meno"/> 
+                <input type="text" class="form-control" id="userLogin" name="userLogin" placeholder="Login"/> 
             </div>
             <div class="form-group">
                 <label>Heslo</label>
@@ -34,4 +35,3 @@
     </div>
   </div>
 </div>
-

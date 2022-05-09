@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PA.TOYOTA.DB
+﻿namespace PA.TOYOTA.DB
 {
     public partial class Dokument
     {

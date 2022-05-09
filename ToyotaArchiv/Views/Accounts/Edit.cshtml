@@ -1,0 +1,71 @@
+﻿@model PA.TOYOTA.DB.Account
+
+
+@{
+    ViewData["Title"] = "Účet edit";
+}
+
+<h6>Zmena nastavenia účtu:&nbsp;<b>@Model.LoginName</b></h6>
+<hr />
+<div style="height:20px;">
+    <p id="error" class="text-danger">@ViewBag.ErrorMessage</p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(x => Model.LoginId)
+            @Html.HiddenFor(x => Model.LoginName)
+
+            @*Password*@
+            <div class="form-inline">
+                <label asp-for="LoginPassword" class="control-label"></label>
+                <input asp-for="LoginPassword" class="form-control" style="margin-left:42px; margin-bottom:10px;" />
+                <span asp-validation-for="LoginPassword" class="text-danger"></span>
+            </div>
+            @*Rola*@
+            <div class="form-inline">
+                <label asp-for="LoginRola" class="control-label"></label>
+                <select name="LoginRola" id="LoginRola" class="form-control" style="margin-left:52px; margin-bottom:10px;" asp-for="@Model.LoginRola">
+                    <option value="">--Vyber rolu--</option>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="VEDUCI">VEDUCI</option>
+                    <option value="SERVISNY_TECHNIK">SERVISNY_TECHNIK</option>
+                    <option value="READONLY">READONLY</option>
+                </select>
+                <span asp-validation-for="LoginRola" class="text-danger"></span>
+            </div>
+
+            @*Aktivny*@
+            <div class="form-inline">
+                <label asp-for="Aktivny" class="control-label"></label>
+                <input asp-for="Aktivny"  type="checkbox"  checked="@Model.Aktivny" style="margin-left:30px; margin-bottom:10px;"/>
+                 <span asp-validation-for="Aktivny" class="text-danger"></span>
+                 @*@Html.DisplayNameFor(m=>m.Aktivny)
+                 @Html.CheckBoxFor(m=>m.Aktivny, new { @class = "style ='margin-left:30px; margin-bottom:10px;'"})
+                 @Html.ValidationMessageFor(m=>m.Aktivny)*@
+            </div>
+
+            @*DB login*@
+            <div class="form-inline">
+                <label asp-for="DbLogin" class="control-label"></label>
+                <input asp-for="DbLogin" class="form-control" style="margin-left:22px; margin-bottom:10px;" />
+                <span asp-validation-for="DbLogin" class="text-danger"></span>
+            </div>
+
+            @*DB Heslo*@
+            <div class="form-inline">
+                <label asp-for="DbPassword" class="control-label"></label>
+                <input asp-for="DbPassword" class="form-control" style="margin-left:20px; margin-bottom:10px;" />
+                <span asp-validation-for="DbPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Uložiť" class="btn-sm btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Návrat</a>
+</div>

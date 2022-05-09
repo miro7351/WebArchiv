@@ -1,7 +1,6 @@
 ﻿$(document).ready(function () {
 
-  
-
+    //po zobrazeni stranky
     $('#datatableAccounts').dataTable({
 
 
@@ -25,21 +24,33 @@
                 "searchable": false
             },
             {
-                "targets": [7],//link zmenit
+                "targets": [4],//Aktivny  true/false -> Ano/NIe
+                "visible": true,
+                "searchable": false,
+                "data":"Aktivny",
+                "render": function (Aktivny) {
+                    if (Aktivny)
+                        return "Áno";
+                    return "Nie";
+
+                }
+            },
+            {
+                "targets": [7],//link Zmenit
                 "render": function (data, type, row) {
-                    return '<a  href="/Accounts/Details/' + $.trim(row['loginId']) + '">' + 'Zmeniť(' + $.trim(row['loginId']);  + ')</a>';
+                    return '<a  href="/Accounts/Edit/' + $.trim(row['loginId']) + '">Zmeniť</a>';
                     
                 }
             },
             
             ],
-        "columns": [ //poradie musi byt take ako su zoradene stlpce v Index.cshtml
+        "columns": [ //poradie stlpcov musi byt take, ako su zoradene stlpce v Index.cshtml
             { "data": "loginId", "name": "LoginId", "autoWidth": true },
             { "data": "loginName", "name": "LoginName", "autoWidth": true },
             { "data": "loginPassword", "name": "LoginPassword", "autoWidth": true },
             { "data": "loginRola", "name": "LoginRola", "autoWidth": true },
             { "data": "aktivny", "name": "Aktivny", "autoWidth": true },
-            { "data": "dblogin", "name": "DbLogin", "autoWidth": true },
+            { "data": "dbLogin", "name": "DbLogin", "autoWidth": true },
             { "data": "dbPassword", "name": "DbPassword", "autoWidth": true },
            
         ]

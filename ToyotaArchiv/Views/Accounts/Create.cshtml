@@ -6,53 +6,63 @@
 
 <h4>Nový účet</h4>
 <hr />
+<div style="height:20px;">
+    <p id="error" class="text-danger">@ViewBag.ErrorMessage</p>
+</div>
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" onkeydown="clearError()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group" > @*Ucet*@
+            <div class="form-inline">
+                @*Ucet*@
                 <label asp-for="LoginName" class="control-label"></label>
-                <input asp-for="LoginName" class="form-control" />
+                <input asp-for="LoginName" class="form-control" style="margin-left:50px; margin-bottom:10px;" />
                 <span asp-validation-for="LoginName" class="text-danger"></span>
             </div>
-            <div class="form-group"> @*Heslo*@
+            <div class="form-inline">
+                @*Heslo*@
                 <label asp-for="LoginPassword" class="control-label"></label>
-                <input asp-for="LoginPassword" class="form-control" />
+                <input asp-for="LoginPassword" class="form-control"  style="margin-left:42px; margin-bottom:10px;"/>
                 <span asp-validation-for="LoginPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">@*Rola*@
-@*                <label asp-for="LoginRola" class="control-label"></label>
-                <input asp-for="LoginRola" class="form-control" />
-                <span asp-validation-for="LoginRola" class="text-danger"></span>*@
-              <select name="LoginRola" id="LoginRola" class="form-control">
-                  <option value="">--Vyber rolu--</option>
-                  <option value="ADMIN">ADMIN</option>
-                  <option value="VEDUCI">VEDUCI</option>
-                  <option value="SERVISNY_TECHNIK">SERVISNY_TECHNIK</option>
-                  <option value="READONLY">READONLY</option>
+            <div class="form-inline">
+                @*Rola*@
+                 <label asp-for="LoginRola" class="control-label"></label>
+                <select name="LoginRola" id="LoginRola" class="form-control"  style="margin-left:52px; margin-bottom:10px;">
+                    <option value="">--Vyber rolu--</option>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="VEDUCI">VEDUCI</option>
+                    <option value="SERVISNY_TECHNIK">SERVISNY_TECHNIK</option>
+                    <option value="READONLY">READONLY</option>
                 </select>
                 <span asp-validation-for="LoginRola" class="text-danger"></span>
             </div>
-            <div class="form-group"> @*Aktivny*@
-                @*    <label asp-for="Aktivny" class="control-label"></label>
-               <input asp-for="Aktivny" class="form-control"  type="checkbox"/>*@
-             @Html.DisplayNameFor(m=>m.Aktivny)
-                @Html.CheckBoxFor(m=>m.Aktivny)
-                <span asp-validation-for="Aktivny" class="text-danger"></span>
+            <div class="form-inline">
+                @*Aktivny*@
+                <label asp-for="Aktivny" class="control-label"></label>
+                <input asp-for="Aktivny"  type="checkbox"  style="margin-left:30px; margin-bottom:10px;"/>
+
+                @*Account.cs  MH: MUSI BYT  public bool Aktivny {get;set;}   !!!!!
+                    @Html.DisplayNameFor(m=>m.Aktivny)
+                    @Html.CheckBoxFor(m=>m.Aktivny)
+                    <span asp-validation-for="Aktivny" class="text-danger"></span>*@
             </div>
 
-            <div class="form-group"> @*DB login*@
+            <div class="form-inline">
+                @*DB login*@
                 <label asp-for="DbLogin" class="control-label"></label>
-                <input asp-for="DbLogin" class="form-control" />
+                <input asp-for="DbLogin" class="form-control" style="margin-left:22px; margin-bottom:10px;"/>
                 <span asp-validation-for="DbLogin" class="text-danger"></span>
             </div>
 
-            <div class="form-group"> @*DB Heslo*@
+            <div class="form-inline">
+                @*DB Heslo*@
                 <label asp-for="DbPassword" class="control-label"></label>
-                <input asp-for="DbPassword" class="form-control" />
+                <input asp-for="DbPassword" class="form-control" style="margin-left:20px; margin-bottom:10px;" />
                 <span asp-validation-for="DbPassword" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
                 <input type="submit" value="Uložiť" class="btn btn-primary" />
             </div>
@@ -65,5 +75,22 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+<script type="text/javascript">
+
+    /*vymaze chybovy oznam */
+    function clearError()
+    {
+
+         console.log("clearError vypis do console");
+        var html =  document.getElementById("error").innerHTML;
+        console.log("1clearError:" + html);
+        html= document.getElementById("error").innerHTML="";
+         console.log("2clearError:" + html);
+        // @ViewBag.ErrorMessage="";
+    }
+</script>
 }

@@ -10,13 +10,13 @@ namespace SessionHelper
 
     public static class SessionExtensionsMH
     {
-        public static void SetMH<T>(this ISession session, string key, T value)
+        public static void SessionWrite<T>(this ISession session, string key, T value)
         {
             session.Set(key, JsonSerializer.SerializeToUtf8Bytes(value));//Nuget Newtonsoft.Json
         }
 
 
-        public static T? GetMH<T>(this ISession session, string key)
+        public static T? SessionRead<T>(this ISession session, string key)
         {
             byte[] data;
             T? s1 = default(T);

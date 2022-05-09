@@ -1,10 +1,11 @@
-﻿#nullable disable
+﻿//#nullable disable
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PA.TOYOTA.DB;
+using SessionHelper;
 using ToyotaArchiv.Global;
 using ToyotaArchiv.Infrastructure;
 
@@ -14,13 +15,15 @@ namespace ToyotaArchiv.Controllers
     {
 
         private readonly ToyotaContext _context;
+        private readonly ISessionService _sessionService;
 
-        public AccountsController(ToyotaContext context)
+        public AccountsController(ToyotaContext context, ISessionService sessionService)
         {
             _context = context;
+            _sessionService = sessionService;   
         }
 
-       
+
         /*
          * LoadData() sa spusti pri otvoreni stranky Index.cshtml, pozri datatableAccounts.js
          */
@@ -52,20 +55,13 @@ namespace ToyotaArchiv.Controllers
 
                 // Getting all accounts
                 var accounts = (from account in _context.Accounts
-                               select account).OrderBy(a=>a.LoginId);
-
-
-                //Sorting
-                //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
-                //{
-                //    accounts = accounts.OrderBy(sortColumn + " " + sortColumnDirection);
-                //}
+                                select account).OrderBy(a => a.LoginId);
 
                 //total number of rows count 
                 recordsTotal = accounts.Count();
                 //Paging 
-                var data = accounts.Skip(skip).Take(pageSize).ToList(); 
-              
+                var data = accounts.Skip(skip).Take(pageSize).ToList();
+
                 //Returning Json Data
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
 
@@ -76,15 +72,19 @@ namespace ToyotaArchiv.Controllers
             }
         }//LoadData
 
+        //po otvoreni stranky z hl. menu: 'Ucty'
         public async Task<IActionResult> Index()
         {
+           ( ViewBag.Login, ViewBag.Role ) =  _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
             return View(await _context.Accounts.ToListAsync());
         }
 
-        //Accounts: Index po kliku na link 'Zmenit'
-        public async Task<IActionResult> Details(int? id)
+        //Accounts: Index - po kliku na link 'Zmenit' napr.  '<a  href="/Accounts/Edit/27">Zmenit</a>
+        [HttpGet]  //MH  link robi HtttpGet
+        public async Task<IActionResult> Edit(int? id)
         {
-            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.LoginId == id.Value);
+            (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
+            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.LoginId == id);
 
             //if (account == null)
             //{
@@ -97,21 +97,51 @@ namespace ToyotaArchiv.Controllers
         //Accounts: Index po kliku na link 'Novy ucet'
         public IActionResult Create()
         {
+            (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
             return View();
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("LoginName,LoginPassword,LoginRola")] Account account)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(account);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(account);
-        //}
+        // POST: Accounts/Edit  submit
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("LoginId,LoginName,LoginPassword,LoginRola,DbLogin,DbPassword,Aktivny")] Account account)
+        {
+            if (id != account.LoginId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(account);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    //string s = ex.Message;
+                    if (!AccountExists(account.LoginId))
+                    {
+                        ViewBag.ErrorMessage = $"Chyba: účet '{account.LoginName}' neexistuje.";
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = $"Nastala chyba pri zmene účtu '{account.LoginName}'.";
+                    }
+                }
+                catch
+                {
+                    ViewBag.ErrorMessage = $"Nastala chyba pri zmene účtu '{account.LoginName}'.";
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.ErrorMessage = $"Nastala chyba pri zmene účtu '{account.LoginName}'.";
+            return View(account);
+        }
 
 
         /*public bool? Aktivny { get; set; }
@@ -122,7 +152,7 @@ namespace ToyotaArchiv.Controllers
                <input asp-for="Aktivny" class="form-control"  type="checkbox"/>  vytvori textbox kde sa neda nic zadat
          * 
          * -------------------
-         * public bool Aktivny { get; set; }
+         * public bool Aktivny { get; set; } TOTO FUNGUJE OK!!!!
          * 
          *  @Html.DisplayNameFor(m=>m.Aktivny)
             @Html.CheckBoxFor(m=>m.Aktivny)   IsValid =true
@@ -131,27 +161,50 @@ namespace ToyotaArchiv.Controllers
         //Create.cshtml po kliku na button 'Ulozit'
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Account account)  //MH 05.05.2022 zmena
+        public async Task<IActionResult> Create(Account account)  //MH 05.05.2022 zmena
         {
             if (ModelState.IsValid)
             {
-                _context.Add(account);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    string? loginName = account.LoginName; //rola sa musi zadat, je to osetrene na klientovi 
+
+                    if (loginName != null)
+                    {
+                       var myAccount =  _context.Accounts.FirstOrDefault(m => m.LoginName == loginName);
+                        if(myAccount != null)//rolaDB uz existuje
+                        {
+                            ViewBag.ErrorMessage = $"Chyba: rola '{loginName}' už existuje, zadajte iný názov roly.";
+                            return View(account);
+                        }
+                    }
+                    //MH 06.05.2022: Ak Aktivny = false, do db sa zapise Aktivny=1!!!!!! Default value v db je 1.
+                    //Ak Aktivny = false, do db sa zapise Aktivny=0!!!!!! Default value v db je 0.
+                    _context.Add(account);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMessage ="Chyba: " + ex.Message;
+                    return View(account);
+                }
             }
+            ViewBag.ErrorMessage = "Chyba pri spracovaní údajov.";
             return View(account);
         }
 
 
         public async Task<IActionResult> Delete(int? id)
         {
+            (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
             if (id == null)
             {
                 return NotFound();
             }
 
             var account = await _context.Accounts.FirstOrDefaultAsync(m => m.LoginId == id);
-               
+
             if (account == null)
             {
                 return NotFound();
@@ -165,84 +218,20 @@ namespace ToyotaArchiv.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var account = await _context.Accounts.FindAsync(id);
-            _context.Accounts.Remove(account);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        //private bool AccountExists(short id)
-        //{
-        //    return _context.Accounts.Any(e => e.LoginId == id);
-        //}
-
-
-
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Login(string username, string password)
-        {
-            if (string.IsNullOrEmpty(username) && string.IsNullOrEmpty(password))
+            Account? account = await _context.Accounts.FindAsync(id);
+            if (account != null)
             {
-                return RedirectToAction("Login");
+                _context.Accounts.Remove(account);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-
-            ClaimsIdentity? identity = null;
-            bool isAuthenticated = false;
-
-
-            //var user = _context.Accounts.Where(f => f.LoginName == username && f.LoginPassword == password).FirstOrDefault();
-            var user = _context.Accounts.FirstOrDefault(f => f.LoginName == username && f.LoginPassword == password && f.Aktivny==true);
-            if (user == null)
-            {
-                ModelState.AddModelError(string.Empty, "Invalid Email or Password");
-                return View();
-            }
-
-            identity = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.LoginName),
-                    new Claim(ClaimTypes.Role, user.LoginRola)
-                }, CookieAuthenticationDefaults.AuthenticationScheme);
-            isAuthenticated = true;
-
-            MHsessionService.WriteLoginToSession(HttpContext.Session, user.LoginName);
-            MHsessionService.WriteRoleToSession(HttpContext.Session, user.LoginRola);
-            AppData.SetCurrentUser(login: user.LoginName, role: user.LoginRola);
-
-
-            //if (username == "admin" && password == "admin")
-            //{
-            //    identity = new ClaimsIdentity(new[]
-            //    {
-            //        new Claim(ClaimTypes.Name, username),
-            //        new Claim(ClaimTypes.Role, "Admin")
-            //    }, CookieAuthenticationDefaults.AuthenticationScheme);
-            //    isAuthenticated = true;
-
-            //}
-
-
-            if (isAuthenticated && identity != null)
-            {
-                var principal = new ClaimsPrincipal(identity);
-                var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                //return RedirectToAction("Index", "Home");
-                return RedirectToAction("Index", "ZakazkyJQ");
-            }
-
-            return View();
+            return RedirectToAction(nameof(Delete));
         }
 
-        public IActionResult Logout()
+        private bool AccountExists(int id)
         {
-            AppData.LogoutCurrentUser();
-            return View(nameof(Login));
+            return _context.Accounts.Any(e => e.LoginId == id);
         }
+
     }
 }

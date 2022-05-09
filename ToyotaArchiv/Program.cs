@@ -62,7 +62,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 //MH: registracia IZakazkaTransformService Funkcie pre transformaciu Instacie typu ZakazkaZO <-> Zakazka
 builder.Services.AddSingleton<IZakazkaTransformService, ZakazkaServiceWeb>();
-
+builder.Services.AddSingleton<ISessionService,MHsessionService>();  
 
 
 //The AddDatabaseDeveloperPageExceptionFilter provides helpful error information in the development environment.
@@ -114,8 +114,13 @@ app.UseAuthorization();
 
 //app.Run();
 
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Accounts}/{action=Login}/{id?}");
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Accounts}/{action=Login}/{id?}");
+    pattern: "{controller=Login}/{action=Login}/{id?}");
+
 
 app.Run();

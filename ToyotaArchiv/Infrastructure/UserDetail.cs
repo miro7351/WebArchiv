@@ -2,57 +2,77 @@
 namespace ToyotaArchiv.Infrastructure
 {
     //MH: april 2022
-    /*pouzitie: AppData obsahuje static instanciu UserDetail  CurrentUserDetail, do nej sa nastavi login a rola a moze sa pouzivat v ramci celej aplikacie
-    zapis: v AccountsController
-           ....
-           AppData.SetCurrentUser(login: user.LoginName, role: user.LoginRola)
-   
-    
-    citanie: v kode nejakom controleri *Controller: string login = AppData.CurrentUserDetail.UserLogin
-   
-    na nejakej stranke  *.cshtml: 
-   
-    @using using ToyotaArchiv.Infrastructure;
-   
-     @{
-        string currentRole = ToyotaArchiv.Global.AppData.CurrentUserDetail.UserRole;
-        string login = ToyotaArchiv.Global.AppData.CurrentUserDetail.UserLogin;
-    }
+    /*
+     * Po prihlaseni uzivatela nastavit do session
+     * 
+     * UserDetail userDetail = new UserDetail( myLogin, myRole, myDbLogin, myDbPassword);
+       SessionWrite(ToyotaArchiv.Global.SessionUser, userDetail)
 
-    napr. _Layout.cshtml
-                       @if (currentRole=="ADMIN" || currentRole=="VEDUCI")  @*Len pre roly: ADMIN, VEDUCI*@
-                        {
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="Index">Účty</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Logs" asp-action="Index">Logy</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Errors" asp-action="Index">Chyby</a>
-                            </li>
-                        }
-    Pri odhlaseni:
-     Global.AppData.LogoutCurrentUser();
+       pre pouzitie v *Controller napr. metoda Index()
+
+      ViewBag.User = HttpContext.Session.SessionRead<UzivatelDetail>(ToyotaArchiv.Global.SessionUser);
+      
+    
+      UzivatelDetail user = HttpContext.Session.SessionRead<UzivatelDetail>(ToyotaArchiv.Global.SessionUser);
+      ViewBag.UzivatelLogin = user.UzivatelLogin;
+
+    Index.cshtml
+    @using  ToyotaArchiv.Infrastructure;
+
+    var user = ViewBag.User as UzivatelDetail;
+    string userLogin = ViewBag.UzivatelLogin;
 
     */
     public class UserDetail
     {
-
         public UserDetail()
         {
             UserLogin = string.Empty;
             UserRole  = "READONLY";
+            UserPassword = string.Empty;    
         }
 
         public UserDetail(string login, string rola)
         {
             UserLogin = login;
             UserRole = rola;
+            UserPassword = string.Empty;
         }
 
+        public UserDetail(string login, string rola, string dbLogin, string dbPassword)
+        {
+            UserLogin = login;
+            UserRole = rola;
+            UserPassword = string.Empty;
+            DbLogin = dbLogin;  
+            DbPassword = dbPassword;
+        }
+
+        /// <summary>
+        /// Login uzivatela  (Account.LoginName)   do aplikacie;
+        /// </summary>
         public string UserLogin { get; set; }
+
+        /// <summary>
+        /// Heslo uzivatela  (Account.LoginPassword)   do aplikacie;
+        /// </summary>
+        public string UserPassword { get; set; }
+
+
+        /// <summary>
+        /// Rola uzivatela  (Account.LoginRola)   do aplikacie, nacitana z db tab. Account
+        /// </summary>
         public string UserRole { get; set; }
+
+        /// <summary>
+        /// Login do databazy
+        /// </summary>
+        public string? DbLogin { get; set; }
+
+        /// <summary>
+        /// Password do databazy
+        /// </summary>
+        public string? DbPassword { get; set; }
     }
 
     /*

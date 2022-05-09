@@ -5,21 +5,24 @@ $(document).ready(function () {
     $('#datatableZakazky tfoot th').each(function () {
         var title = $(this).text();
         if (title == "VIN")
-            $(this).html('<input type="text" placeholder=" ' + title + '" style="width:180px" />');
+            $(this).html('<input id="VIN" type="text" class="filter1" placeholder=" ' + title + '" style="width:180px" />');
         else if (title == "") {
-            ;
+            ; /*$(this).html('<input type="Button"   value="Vymazať""  onclick="ClearFilter()"/>');*/
         }
         else if (title == "Ukoncena") {
-            $(this).html('<input type="text" placeholder=" ' + "A/N" + '" style="width:50px" />');
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + "A/N" + '" style="width:50px" />');
         }
         else if (title == "CWS") {
-            $(this).html('<input type="text" placeholder=" ' + "CWS" + '" style="width:120px" />');
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + "CWS" + '" style="width:120px" />');
         }
         else if (title == "CisloProtokolu") {
-            $(this).html('<input type="text" placeholder=" ' + "Číslo prot." + '" style="width:120px" />');
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + "Číslo prot." + '" style="width:120px" />');
+        }
+        else if (title == "spz") {
+            $(this).html('<input id="SPZ"  type="text" class="filter1" placeholder=" ' + "SPZ" + '" style="width:120px" />');
         }
         else {
-            $(this).html('<input type="text" placeholder=" ' + title + '" style="width:100px" />');
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + title + '" style="width:100px" />');
         }
     });
 

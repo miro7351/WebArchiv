@@ -35,10 +35,9 @@ class="container"  centruje obsah div na stred
 
 
 
-@using ToyotaArchiv.Infrastructure
 @{
-    string rola  = ToyotaArchiv.Global.AppData.CurrentUserDetail.UserRole;
-    string login = ToyotaArchiv.Global.AppData.CurrentUserDetail.UserLogin;
+    string rola  = ViewBag.Role;
+    string login = ViewBag.Login;
 }
 <body>
 
@@ -84,7 +83,7 @@ class="container"  centruje obsah div na stred
                         }
 
                     </ul>
-                    <span id="linkSpan" class="text-white"><b>@login&nbsp;|&nbsp;@rola&nbsp;&nbsp;<a class="odhlasenie" href="/Accounts/Logout">Odhlásiť</a></b></span>
+                    <span id="linkSpan" class="text-white"><b>@login&nbsp;|&nbsp;@rola&nbsp;&nbsp;<a class="odhlasenie" href="/Login/Logout">Odhlásiť</a></b></span>
                 </div>
             </div>
         </nav>

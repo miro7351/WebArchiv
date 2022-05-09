@@ -1,37 +1,50 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PA.TOYOTA.DB
 {
     public partial class Account
     {
         public int LoginId { get; set; }
-        [Required( ErrorMessage="Údaj je povinný")]
-        [StringLength(16, ErrorMessage = "Zadajte údaj na max. 16 znakov")]
+
+        [Required(ErrorMessage ="Musíte zadať názov účtu.")]
+        [StringLength(16, ErrorMessage ="Maximálny počet znakov je 16.")]
         [Display(Name = "Účet")]
-        public string LoginName { get; set; } = null!; //varchar(16), not null
+        public string LoginName { get; set; } = null!;  //napr.admin user1, technik, technik2
+        //lepsie by to bolo AccountName - nazov uzivatelskeho uctu;
 
-        [Required(ErrorMessage = "Údaj je povinný")]
-        [StringLength(16, ErrorMessage = "Zadajte údaj na max. 16 znakov")]
-        public string LoginPassword { get; set; } = null!;//varchar(16), not null
+        [Required(ErrorMessage = "Musíte zadať heslo.")]
+        [StringLength(16, ErrorMessage = "Maximálny počet znakov je 16.")]
+        [Display(Name = "Heslo")]
+        public string LoginPassword { get; set; } = null!;
 
-        [Required(ErrorMessage = "Údaj je povinný")]
-        [StringLength(16, ErrorMessage = "Vyberte údaj")]
-        public string LoginRola { get; set; } = null!; //varchar(16), not null
+        [Required(ErrorMessage = "Musíte vybrať rolu užívateľa.")]
+        [Display(Name = "Rola")]
+        public string LoginRola { get; set; } = null!;
 
-        [StringLength(16, ErrorMessage = "Zadajte údaj na max. 16 znakov")]
+
+        /// <summary>
+        /// Login do databazy ak kazdy uzivatel bude mat svoj db login
+        /// </summary>
+        [StringLength(16, ErrorMessage = "Maximálny počet znakov je 16.")]
         [Display(Name = "DB login")]
-        public string? DbLogin { get; set; }//nvarchar(16),  null
+        public string? DbLogin { get; set; }
 
-        [StringLength(16, ErrorMessage = "Zadajte údaj na max. 16 znakov")]
-        [Display(Name = "DB heslo")]
+        /// <summary>
+        ///  Heslo do databazy ak kazdy uzivatel bude mat svoj db login
+        /// </summary>
+        [StringLength(16, ErrorMessage = "Maximálny počet znakov je 16.")]
+        [Display(Name = "Db heslo")]
         public string? DbPassword { get; set; }
 
-        [Required(ErrorMessage = "Údaj je povinný")]
-        [Display(Name = "Aktívny")]   //bit, not null; default=1
-        public bool Aktivny { get; set; }
-        // @Html.CheckBoxFor(m=>m.Aktivny.Value) bude tam checkbox!!
-        //bool? Aktivny nefunguje!!  (ModelState.IsValid) je false!!
-        //bool Aktivny nefunguje!!  (ModelState.IsValid) je true!!
+        /// <summary>
+        /// Priznak urcuje ci dany  ucet je platny-aktivny;
+        /// Zaznamy z tab. Account sa nemazu, len sa nastavuje Aktivny=false, ak sa chce zabranit
+        /// pouzivat dany ucet;
+        /// </summary>
+        [Display(Name = "Aktívny")]
+        public bool Aktivny { get; set; }  //na stranke sa zobrazi checkbox
+        //MH: VS tu nastavi bool? Aktivny, hoci v db je not null!!
+        //bool? Aktivny nefunguje pre checkBox
+        //MUSI TO BYT bool Aktivny, checkbox je OK!!!!
     }
 }

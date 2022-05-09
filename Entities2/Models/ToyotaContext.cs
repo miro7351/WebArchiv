@@ -4,18 +4,17 @@ namespace PA.TOYOTA.DB
 {
     public partial class ToyotaContext : DbContext
     {
-        public string? ConnectionString { get; }
-        public ToyotaContext()
-        {
-            ConnectionString = Database.GetConnectionString();
-        }
 
-        public ToyotaContext(DbContextOptions<ToyotaContext> options)
-            : base(options)
-        {
-            ConnectionString = Database.GetConnectionString();  
+        //public ToyotaContext()
+        //{
+        //    ConnectionString = Database.GetConnectionString();
+        //}
 
-        }
+        //public ToyotaContext(DbContextOptions<ToyotaContext> options)
+        //    : base(options)
+        //{
+        //    ConnectionString=Database.GetConnectionString();    
+        //}
 
         public virtual DbSet<Account> Accounts { get; set; } = null!;
         public virtual DbSet<Dokument> Dokuments { get; set; } = null!;
@@ -37,23 +36,26 @@ namespace PA.TOYOTA.DB
         {
             modelBuilder.Entity<Account>(entity =>
             {
-                entity.HasKey(e => e.LoginId);
+                entity.HasKey(e => e.LoginName);
 
                 entity.ToTable("Account");
 
-                entity.Property(e => e.LoginId).HasColumnName("LoginID");
+                entity.Property(e => e.LoginName)
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Aktivny)
                     .IsRequired()
-                    .HasDefaultValueSql("((1))");
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.DbLogin).HasMaxLength(16);
 
                 entity.Property(e => e.DbPassword).HasMaxLength(16);
 
-                entity.Property(e => e.LoginName)
-                    .HasMaxLength(16)
-                    .IsUnicode(false);
+                entity.Property(e => e.LoginId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("LoginID")
+                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);//MH: 06.05.2022 pridane
 
                 entity.Property(e => e.LoginPassword)
                     .HasMaxLength(16)

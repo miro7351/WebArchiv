@@ -1,49 +1,80 @@
-﻿using ToyotaArchiv.Global;
+﻿using SessionHelper;
+using ToyotaArchiv.Global;
 
 namespace ToyotaArchiv.Infrastructure
 {
-    public class MHsessionService
+    //MH: april 2022
+    //Metody pre zjednoduseny zapis a citanie zo session
+    public class MHsessionService : ISessionService 
     {
-        //Metody pre zjednoduseny zapi a citanie zo session
-        public static void WriteLoginToSession(ISession session, string login)
+        public  void WriteUserToSession(ISession session, UserDetail userDetail)
+        {
+            session.SessionWrite(AppData.SessionUser, userDetail);  
+        }
+
+        public  UserDetail?  ReadUserFromSession(ISession session )
+        {
+            UserDetail? user = session.SessionRead<UserDetail>(AppData.SessionUser);
+            return user;    
+        }
+
+
+        public  void WriteLoginToSession(ISession session, string login)
         {
             session.SetString(AppData.SessionLogin, login);
         }
 
-        public static string ReadLoginFromSession(ISession session)
+        public  string ReadLoginFromSession(ISession session)
         {
-            string? login = session.GetString(AppData.SessionLogin);
-            return login ?? string.Empty;
+            UserDetail? user = ReadUserFromSession(session);
+
+            return user?.UserLogin ?? string.Empty; 
         }
 
-        public static void WriteRoleToSession(ISession session, string role)
+        public string ReadRoleFromSession(ISession session)
         {
-            session.SetString(AppData.SessionRole, role);
+            UserDetail? user = ReadUserFromSession(session);
+
+            return user?.UserRole ?? string.Empty;
         }
 
-        public static void WriteRoleToSession(ISession session, USER_ROLE role)
+        public (string? userLogin, string? userRole) ReadUserLoginAndRoleFromSession(ISession session)
         {
-            session.SetString(AppData.SessionRole, role.ToString());
-        }
-
-        public static USER_ROLE ReadRoleFromSession(ISession session)
-        {
-            string? role = session.GetString(AppData.SessionRole);
-            if (role == null)
+            UserDetail? user = ReadUserFromSession(session);
+            if (user != null)
             {
-                return USER_ROLE.READONLY;
+                return (user.UserLogin, user.UserRole);
             }
-            else
-            {
-                if( !string.IsNullOrEmpty(role) )
-                {
-                    return (USER_ROLE)Enum.Parse(typeof(USER_ROLE),  role); 
-                }
-                else
-                {
-                    return USER_ROLE.READONLY;
-                }
-            }
+            return (null, null);    
         }
+
+
+        //public static void WriteRoleToSession(ISession session, USER_ROLE role)
+        //{
+        //    session.SetString(AppData.SessionRole, role.ToString());
+        //}
+
+
+
+
+        //public static USER_ROLE ReadRoleFromSession(ISession session)
+        //{
+        //    string? role = session.GetString(AppData.SessionRole);
+        //    if (role == null)
+        //    {
+        //        return USER_ROLE.READONLY;
+        //    }
+        //    else
+        //    {
+        //        if( !string.IsNullOrEmpty(role) )
+        //        {
+        //            return (USER_ROLE)Enum.Parse(typeof(USER_ROLE),  role); 
+        //        }
+        //        else
+        //        {
+        //            return USER_ROLE.READONLY;
+        //        }
+        //    }
+        //}
     }
 }

@@ -7,22 +7,22 @@ $(document).ready(function () {
     $('#datatableZakazky tfoot th').each(function () {
         var title = $(this).text();
         if (title == "VIN") {
-            $(this).html('<input type="text" placeholder=" ' + title + '" style="width:180px" />');
+            $(this).html('<input type="text"  class="filter1" placeholder=" ' + title + '" style="width:180px" />');
         } 
         else if (title == "Ukoncena") {
-            $(this).html('<input type="text" placeholder=" ' + "A/N" + '" style="width:50px" />');
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + "A/N" + '" style="width:50px" />');
         }
         else if (title == "CWS") {
-            $(this).html('<input type="text" placeholder=" ' + "CWS" + '" style="width:120px" />');
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + "CWS" + '" style="width:120px" />');
         }
         else if (title == "CisloProtokolu") {
-            $(this).html('<input type="text" placeholder=" ' + "Číslo prot." + '" style="width:120px" />');
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + "Číslo prot." + '" style="width:120px" />');
         }
-        else if (title == "") {
-            ;
+        else if (title == "") {//stlpec pre link 'Vymazat' bude tu button na vymazanie udajov z fitrov
+            ; /*$(this).html('<input type="Button"   value="Vymazať""  onclick="ClearFilter()"/>');*/
         }
         else {
-            $(this).html('<input type="text" placeholder=" ' + title + '" style="width:100px" />');
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + title + '" style="width:100px" />');
         }
     });
 
