@@ -24,25 +24,14 @@
 
 @*<h4>Nový účet</h4>*@
 
-@*     <div class= "container">
+     <div class= "container">
         <h3 class="text-left d-inline mr-4">Nový účet</h3>
           <a asp-action="Index">Návrat</a>
-       <span class="d-inline ml-4 mt-2">
-            @if (ViewBag.Role != "READONLY")
-            {
-                <a asp-action="Create">Nový účet</a>
-            }
-             <div class="div-center" style="zoom: 80%; background:yellow;" >
-      <div style="height:20px; width:100%; background:green;">
-         <p id="error" class="text-danger">@ViewBag.ErrorMessage</p>
-       </div>
-        </span>*@
     </div>
 
 <hr />
 
-  @*<div class="mx-auto" style="background:yellow;" >*@
-      
+     
 
 
     <div class="row" >
@@ -83,7 +72,7 @@
                 @*Account.cs  MH: MUSI BYT  public bool Aktivny {get;set;}   !!!!!
                     @Html.DisplayNameFor(m=>m.Aktivny)
                     @Html.CheckBoxFor(m=>m.Aktivny)
-                    <span asp-validation-for="Aktivny" class="text-danger"></span>
+                    <span asp-validation-for="Aktivny" class="text-danger"></span>*@
             </div>
 
             <div class="form-inline">
@@ -106,8 +95,7 @@
         </form>
     </div>
 </div>
-@*</div>
-*@
+
 
 
 @section Scripts {
