@@ -24,6 +24,12 @@
                 "searchable": false
             },
             {
+                "targets": [2],//LoginID
+                "visible": false,
+                "searchable": false
+            },
+
+            {
                 "targets": [4],//Aktivny  true/false -> Ano/NIe
                 "visible": true,
                 "searchable": false,
