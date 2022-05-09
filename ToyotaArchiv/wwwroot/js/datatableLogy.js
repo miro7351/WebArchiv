@@ -32,7 +32,7 @@
         "filter": true, // this is for disable filter (search box)
         "orderMulti": false, // for disable multiple column at once
         "ajax": {
-            "url": "/Logs/LoadData",
+            "url": "../Logs/LoadData",
             "type": "POST",
             "datatype": "json"
         },

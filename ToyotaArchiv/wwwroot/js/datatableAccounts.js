@@ -13,7 +13,7 @@
         "filter": false, // this is for disable filter (search box)
         "orderMulti": false, // for disable multiple column at once
         "ajax": {
-            "url": "/Accounts/LoadData",
+            "url": "../Accounts/LoadData",
             "type": "POST",
             "datatype": "json"
         },

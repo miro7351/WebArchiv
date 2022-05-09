@@ -61,7 +61,7 @@
 @*ZakazkyJQ:NovaZakazka.cshtml*@
 <div class="container">
     <div class="form-inline">
-        <h5>Nová zákazka pre garančnú opravu</h5>
+        <h3 class="text-left d-inline mr-4">Nová zákazka pre garančnú opravu</h3>
         <span class="text-danger">@Model?.ErrorMessage</span>
     </div>
     <div class="d-flex p-2 justify-content-center">
@@ -72,7 +72,7 @@
 
     </div>
     @* <hr />*@
-    <div class="row">
+    <div class="row" style="zoom: 80%">
         @*<div class="col-md-12">*@
         <form name="formCreate" asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

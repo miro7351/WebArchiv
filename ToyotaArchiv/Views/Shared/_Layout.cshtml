@@ -33,6 +33,17 @@ class="container"  centruje obsah div na stred
 @Html.ActionLink("Odhlásiť", "Logout", "Accounts")
 *@
 
+    <style>
+        #footer {
+            position: fixed;
+            padding: 10px 10px 0px 10px;
+            bottom: 0;
+            width: 100%;
+            /* Height of the footer*/ 
+            height: 40px;
+            background: grey;
+        }
+    </style>
 
 
 @{
@@ -42,7 +53,10 @@ class="container"  centruje obsah div na stred
 <body>
 
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm py-0 navbar-dark bg-dark box-shadow mb-1 shadow-sm ">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm py-2 navbar-dark bg-dark box-shadow mb-1 shadow-sm ">
+            
+         
+
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="ZakazkyJQ" asp-action="Index">
                     <img src="~/images/logo_toyota.png" height="50" align="left" alt="" class="d-inline-block ali gn-middle mr-2"> 
@@ -83,14 +97,24 @@ class="container"  centruje obsah div na stred
                         }
 
                     </ul>
-                    <span id="linkSpan" class="text-white"><b>@login&nbsp;|&nbsp;@rola&nbsp;&nbsp;<a class="odhlasenie" href="/Login/Logout">Odhlásiť</a></b></span>
+
+                    <span id="linkSpan" class="text-white right"><b>@login&nbsp;|&nbsp;@rola&nbsp;&nbsp;<a class="odhlasenie" href="/Login/Logout">Odhlásiť</a></b></span>
+ 
                 </div>
+
             </div>
+
+                                                             
+                  
+                    
+
+         
+
         </nav>
     </header>
 
 
-  <div class="container">   @* MH zmena 20.04.2022   container-fluid  roztahuje na celu sirku displeja *@
+  <div class="container-fluid">   @* MH zmena 20.04.2022   container-fluid  roztahuje na celu sirku displeja *@
        <main role="main" class="pb-2">
             @RenderBody()
         </main>
@@ -108,6 +132,15 @@ class="container"  centruje obsah div na stred
         </div>
     </footer>*@
     <!--MH: musi to byt tu jquery.min.js-->
+
+@*   <footer class="footer text-muted bg-dark py-4">
+        <div class="container">
+            &copy; 2022 - Archív garancných opráv 
+        </div>
+    </footer>*@
+
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

@@ -11,7 +11,7 @@ $('#datatableDocuments').dataTable({
     "filter": true, // this is for disable filter (search box)
     "orderMulti": false, // for disable multiple column at once
     "ajax": {
-        "url": "/Dokuments/LoadData",
+        "url": "../Dokuments/LoadData",
         "type": "POST",
         "datatype": "json"
     },
