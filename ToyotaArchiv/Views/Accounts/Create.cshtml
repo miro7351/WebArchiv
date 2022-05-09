@@ -24,21 +24,76 @@
 
 @*<h4>Nový účet</h4>*@
 
-     <div class= "container">
+@*     <div class= "container">
         <h3 class="text-left d-inline mr-4">Nový účet</h3>
           <a asp-action="Index">Návrat</a>
+       <span class="d-inline ml-4 mt-2">
+            @if (ViewBag.Role != "READONLY")
+            {
+                <a asp-action="Create">Nový účet</a>
+            }
+        </span>
+    </div>*@
+
+@*<hr />
+<div style="height:20px;">
+    <p id="error" class="text-danger">@ViewBag.ErrorMessage</p>
+</div>*@
+
+<div class="container-fluid" style="width:95%">
+    <div class="form-inline">
+        <h3 class="text-left d-inline mr-4">Nový účet</h3>
+        <span class="text-danger">@ViewBag.ErrorMessage</span>
     </div>
+    <div class="d-flex p-2 justify-content-center">
+        @* <a asp-action="Index" class="btn  btn-primary" style="margin-right:50px;">Návrat</a>
+            <input type="submit" value="Uložiť" class="btn  btn-warning" onclick="document.forms['formCreate'].submit();" />*@
+        <a asp-action="Index" class="btn  btn-light" style="margin-right:50px;">Návrat</a>
+        <input type="submit" value="Uložiť" class="btn  btn-light" onclick="document.forms['formCreate'].submit();" />
 
-<hr />
+    </div>
+    @* <hr />*@
+    <div class="row" style="zoom: 80%">
+        @*<div class="col-md-12">*@
+        <form name="formCreate" asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-     
+            @*<div style="width:90%; margin:0 auto;">*@
+            <div class="col-md-12">
+                @* Udaje o zakazke; style="border-collapse: collapse; border: none;"*@
+                <table width="300" cellspacing="5" cellpadding="10" align="center">
+                    <tr>
+                        <td width="100px"> <label asp-for="LoginName" class="control-label"></label></td>
+                        <td width="250px"> <input asp-for="LoginName" class="form-control"  /></td>
+                        <span asp-validation-for="LoginName" class="text-danger"></span>
+                    </tr>
+                        <td width="100px"><label asp-for="LoginPassword" class="control-label"></label></td>
+                        <td width="250px"><input asp-for="LoginPassword" class="form-control"  /></td>
+                        <span asp-validation-for="LoginPassword" class="text-danger"></span>
+                    <tr>
+                        <td width="100px"> <label asp-for="LoginRola" class="control-label"></label></td>
+                        <td width="250px"> <select name="LoginRola" id="LoginRola" class="form-control" >
+                            <option value="">--Vyber rolu--</option>
+                            <option value="VEDUCI">VEDUCI</option>
+                            <option value="SERVISNY_TECHNIK">SERVISNY_TECHNIK</option>
+                            <option value="READONLY">READONLY</option>
+                        </select></td>
+                        <span asp-validation-for="LoginRola" class="text-danger"></span>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
 
 
-    <div class="row" >
-    <div class="col-md-4 mx-auto">
-        <div style="height:20px;">
-         <p id="error" class="text-danger">@ViewBag.ErrorMessage</p>
-       </div>
+
+
+
+
+@*  <div class="div-center" style="zoom: 80%" >
+    <div class="container">
+    <div class="col-md-4">
         <form asp-action="Create" onkeydown="clearError()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-inline">
@@ -72,7 +127,7 @@
                 @*Account.cs  MH: MUSI BYT  public bool Aktivny {get;set;}   !!!!!
                     @Html.DisplayNameFor(m=>m.Aktivny)
                     @Html.CheckBoxFor(m=>m.Aktivny)
-                    <span asp-validation-for="Aktivny" class="text-danger"></span>*@
+                    <span asp-validation-for="Aktivny" class="text-danger"></span>
             </div>
 
             <div class="form-inline">
@@ -95,6 +150,7 @@
         </form>
     </div>
 </div>
+</div>*@
 
 
 
