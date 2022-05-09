@@ -38,7 +38,7 @@
             {
                 "targets": [7],//link Zmenit
                 "render": function (data, type, row) {
-                    return '<a  href="/Accounts/Edit/' + $.trim(row['loginId']) + '">Zmeniť</a>';
+                    return '<a  href="../Accounts/Edit/' + $.trim(row['loginId']) + '">Zmeniť</a>';
                     
                 }
             },

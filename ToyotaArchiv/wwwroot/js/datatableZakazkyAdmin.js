@@ -90,7 +90,7 @@ $(document).ready(function () {
                 "targets": [2],//ZakazkaTg
                 "width": 100,
                 "render": function (data, type, row) {
-                    return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
+                    return '<a  href="../ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
                 }
             },
             {
@@ -169,7 +169,7 @@ $(document).ready(function () {
             {
                 "targets": [14],//Vymazat
                 "render": function (data, type, row) {
-                    return '<a href="/ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>';
+                    return '<a href="../ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>';
                 }
             },
             ],

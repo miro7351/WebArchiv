@@ -70,7 +70,7 @@ $(document).ready(function () {
         {
             "targets": [2], //ZakazkaTg
                 "render": function (data, type, row) {
-                    return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
+                    return '<a  href="../ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
                 },
            
             },

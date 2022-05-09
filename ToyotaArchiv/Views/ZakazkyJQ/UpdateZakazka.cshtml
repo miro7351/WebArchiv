@@ -50,9 +50,9 @@
     https://docs.microsoft.com/en-us/answers/questions/567773/change-34choose-file34-and-34no-file-chosen34-text.html
 *@
 
-<div class="container">
+<div class="container-fluid"  style="width:95%">
     <div class="form-inline">
-        <h6>Úprava zákazky pre garančnú opravu: @Model.ZakazkaTg</h6>
+        <h3 class="text-left d-inline mr-4">Úprava zákazky pre garančnú opravu: @Model.ZakazkaTg</h3>
         <span class="text-danger">@Model?.ErrorMessage</span>
     </div>
     <div class="d-flex p-2 justify-content-center">
@@ -67,7 +67,7 @@
 
     *@
 
-    <div class="row">
+    <div class="row" style="zoom: 80%">
         <div class="col-md-12">
             <form name="formUpdate" asp-action="UpdateZakazka" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
