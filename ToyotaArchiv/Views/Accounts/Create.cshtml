@@ -56,20 +56,21 @@
     <div class="row" style="zoom: 80%">
         @*<div class="col-md-12">*@
         <form name="formCreate" asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
 
             @*<div style="width:90%; margin:0 auto;">*@
             <div class="col-md-12">
+                @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
                 @* Udaje o zakazke; style="border-collapse: collapse; border: none;"*@
-                <table width="300" cellspacing="5" cellpadding="10" align="center">
+                <table width="500" cellspacing="5" cellpadding="10" align="center">
                     <tr>
                         <td width="100px"> <label asp-for="LoginName" class="control-label"></label></td>
                         <td width="250px"> <input asp-for="LoginName" class="form-control"  /></td>
-                        <span asp-validation-for="LoginName" class="text-danger"></span>
+                        <td width="150px"> <span asp-validation-for="LoginName" class="text-danger"></span></td>
                     </tr>
                         <td width="100px"><label asp-for="LoginPassword" class="control-label"></label></td>
-                        <td width="250px"><input asp-for="LoginPassword" class="form-control"  /></td>
-                        <span asp-validation-for="LoginPassword" class="text-danger"></span>
+                        <td width="250px"><input asp-for="LoginPassword" class="form-control" type="password" /></td>
+                        <td width="250px"><span asp-validation-for="LoginPassword" class="text-danger"></span></td>
                     <tr>
                         <td width="100px"> <label asp-for="LoginRola" class="control-label"></label></td>
                         <td width="250px"> <select name="LoginRola" id="LoginRola" class="form-control" >
@@ -78,7 +79,7 @@
                             <option value="SERVISNY_TECHNIK">SERVISNY_TECHNIK</option>
                             <option value="READONLY">READONLY</option>
                         </select></td>
-                        <span asp-validation-for="LoginRola" class="text-danger"></span>
+                         <td width="150px"><span asp-validation-for="LoginRola" class="text-danger"></span></td>
                     </tr>
                 </table>
             </div>

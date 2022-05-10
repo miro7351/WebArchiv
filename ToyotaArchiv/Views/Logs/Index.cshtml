@@ -4,13 +4,16 @@
     ViewData["Title"] = "Logy";
 }
 
-<h3>Logovacie záznamy</h3>
+@*<h3>Logovacie záznamy</h3>*@
 @*<p>Logovacie záznamy: Index;   Rola:@ViewBag.Role; Login: @ViewBag.Login</p>*@
 
 @*Logovacie zaznamy obsahuju popisy CRUD operacii v db tab. Zakazka, Rola*@
 
 @*Here we are importing the stylesheet of Datatable (Bootstrap4) that we had installed earlier.
 <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />*@
+
+
+
 
 <style>
 table, table TD, table TH {
@@ -19,9 +22,19 @@ table, table TD, table TH {
         color: black;
     }
 </style>
+
+   <div class= "container-fluid" style="width:95%" >
+        <h3 class="text-left d-inline mr-4">Logovacie záznamy</h3>
+        <span class="d-inline ml-4 mt-2">
+
+        </span>
+    </div>
+
+
+
 <div class="container">  
     <br />  
-    <div style="width:90%; margin:0 auto;">  
+    <div class="container-fluid"  style="width:95%; overflow-x:auto;zoom: 80%" >  
         <table id="datatableLogy" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">  
             <thead class="tableHeaderColor">  
                 <tr>  
