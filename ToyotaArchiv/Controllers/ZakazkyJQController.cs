@@ -79,9 +79,10 @@ namespace ToyotaArchiv.Controllers
             string colVinSearchValue = default(string);
             string colCwsSearchValue = default(string);
             string colCisloProtSearchValue=default(string);
+            string colCisloDieluSearchValue = default(string);
             string colUkoncenaSearchValue=default(string);
             string colSPZSearchValue = default(string);
-            string colVlastnikSearchValue = default(string);
+            string colMajitelSearchValue = default(string);
 
             int skip;    //kolko zaznamov sa ma v db preskocit
             int pageSize;//pocet zaznamov na stranke
@@ -113,10 +114,11 @@ namespace ToyotaArchiv.Controllers
 
                 colCwsSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault() ?? string.Empty;
                 colCisloProtSearchValue = Request.Form["columns[6][search][value]"].FirstOrDefault() ?? string.Empty;
-                colUkoncenaSearchValue = Request.Form["columns[7][search][value]"].FirstOrDefault() ?? string.Empty;
+                colCisloDieluSearchValue = Request.Form["columns[7][search][value]"].FirstOrDefault() ?? string.Empty;
+                colUkoncenaSearchValue = Request.Form["columns[8][search][value]"].FirstOrDefault() ?? string.Empty;
 
-                colSPZSearchValue = Request.Form["columns[8][search][value]"].FirstOrDefault() ?? string.Empty;
-                colVlastnikSearchValue = Request.Form["columns[9][search][value]"].FirstOrDefault() ?? string.Empty;
+                colSPZSearchValue = Request.Form["columns[9][search][value]"].FirstOrDefault() ?? string.Empty;
+                colMajitelSearchValue = Request.Form["columns[10][search][value]"].FirstOrDefault() ?? string.Empty;
                 
                 // Getting all Zakazka
                 var zakazky = (from zakazka in _context.Zakazkas
@@ -159,6 +161,10 @@ namespace ToyotaArchiv.Controllers
                 {
                     zakazky = zakazky.Where(m => m.CisloProtokolu.Contains(colCisloProtSearchValue));
                 }
+                if (!string.IsNullOrEmpty(colCisloDieluSearchValue))
+                {
+                    zakazky = zakazky.Where(m => m.CisloDielu.Contains(colCisloDieluSearchValue));
+                }
                 if (!string.IsNullOrEmpty(colUkoncenaSearchValue))
                 {
                     zakazky = zakazky.Where(m => m.Ukoncena.Contains(colUkoncenaSearchValue));
@@ -167,9 +173,9 @@ namespace ToyotaArchiv.Controllers
                 {
                     zakazky = zakazky.Where(m => m.Spz.Contains(colSPZSearchValue));
                 }
-                if (!string.IsNullOrEmpty(colVlastnikSearchValue))
+                if (!string.IsNullOrEmpty(colMajitelSearchValue))
                 {
-                    zakazky = zakazky.Where(m => m.Vlastnik.Contains(colVlastnikSearchValue));
+                    zakazky = zakazky.Where(m => m.Majitel.Contains(colMajitelSearchValue));
                 }
                 //EF Core: kazda vyber. podmienka  WHERE prida AND ... do vysledneho select stringu  :) :) SUPER!!!!
                 //--------------------

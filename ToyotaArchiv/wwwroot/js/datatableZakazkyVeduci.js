@@ -6,11 +6,8 @@ $(document).ready(function () {
         var title = $(this).text();
         if (title == "VIN")
             $(this).html('<input id="VIN" type="text" class="filter1" placeholder=" ' + title + '" style="width:180px" />');
-        else if (title == "") {
-            ; /*$(this).html('<input type="Button"   value="Vymazať""  onclick="ClearFilter()"/>');*/
-        }
         else if (title == "Ukoncena") {
-            $(this).html('<input type="text" class="filter1" placeholder=" ' + "A/N" + '" style="width:50px" />');
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + "A/N" + '" style="width:70px" />');
         }
         else if (title == "CWS") {
             $(this).html('<input type="text" class="filter1" placeholder=" ' + "CWS" + '" style="width:120px" />');
@@ -18,11 +15,15 @@ $(document).ready(function () {
         else if (title == "CisloProtokolu") {
             $(this).html('<input type="text" class="filter1" placeholder=" ' + "Číslo prot." + '" style="width:120px" />');
         }
-        else if (title == "spz") {
-            $(this).html('<input id="SPZ"  type="text" class="filter1" placeholder=" ' + "SPZ" + '" style="width:120px" />');
+        else if (title == "Majitel") {
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + "Majiteľ" + '" style="width:250px;" />');
+        }
+        else if (title == "") {//stlpec pre link 'Vymazat' bude tu button na vymazanie udajov z fitrov
+            ; /*$(this).html('<input type="Button"   value="Vymazať""  onclick="ClearFilter()"/>');*/
         }
         else {
-            $(this).html('<input type="text" class="filter1" placeholder=" ' + title + '" style="width:100px" />');
+            //console.log("title:" + title);
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + title + '" style="width:120px" />');
         }
     });
 
@@ -96,7 +97,12 @@ $(document).ready(function () {
                 "searchable": true
             },
             {
-                "targets": [7],//Ukoncena
+                "targets": [7],//CisloDielu
+                "visible": true,
+                "searchable": true
+            },
+            {
+                "targets": [8],//Ukoncena
                 "visible": true,
                 "searchable": true,
                 //render: function (data, type) {  //NEJDE
@@ -107,29 +113,29 @@ $(document).ready(function () {
                 //        return '<span style="color:' + color + '">' + data + '</span>';
                 //    }
                 //}
-                },
-                {
-                    "targets": [8],/*SPZ */
-                    "visible": true,
-                    "searchable": false
+            },
+            {
+                "targets": [9],/*SPZ */
+                "visible": true,
+                "searchable": false
 
-                },
-                {
-                    "targets": [9],/*Vlastnik */
-                    "visible": true,
-                    "searchable": false
+            },
+            {
+                "targets": [10],/*Majitel */
+                "visible": true,
+                "searchable": false
 
-                },
+            },
 
             {
-                "targets": [10],/*Poznamka */
+                "targets": [11],/*Poznamka */
                 "visible": false,
                 "searchable": false
 
             },
-           
+
             {
-                "targets": [11],//Vymazat
+                "targets": [12],//Vymazat
                 "render": function (data, type, row) {
                     return '<a href="../ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>';
                 }
@@ -140,13 +146,15 @@ $(document).ready(function () {
             { "data": "vytvorene", "name": "Vytvorene", "autoWidth": true },
             { "data": "zakazkaTg", "name": "ZakazkaTg", "autoWidth": true },
             { "data": "zakazkaTb", "name": "ZakazkaTb", "autoWidth": true },
+
             { "data": "vin", "name": "Vin", "autoWidth": true },
             { "data": "cws", "name": "Cws", "autoWidth": true },
             { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
+            { "data": "cisloDielu", "name": "CisloDielu", "autoWidth": true },
 
             { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
             { "data": "spz", "name": "SPZ", "autoWidth": true },
-            { "data": "vlastnik", "name": "Vlastnik", "autoWidth": true },
+            { "data": "majitel", "name": "Majitel", "autoWidth": true },
             { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
         ]
 

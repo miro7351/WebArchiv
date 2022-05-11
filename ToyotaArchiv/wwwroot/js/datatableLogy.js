@@ -60,4 +60,6 @@
         ]
 
     });
+    //Filtre su v headeri tabulky
+    $('#datatableLogy tfoot tr').appendTo('#datatableLogy thead');
 });

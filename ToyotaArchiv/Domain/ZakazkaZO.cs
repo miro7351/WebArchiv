@@ -163,13 +163,25 @@ namespace ToyotaArchiv.Domain
             set;
         }
 
+
+        /// <summary>
+        /// Cislo dielu, 14 znakov v db som dal 16 znakov
+        /// </summary>
+        [StringLength(16, MinimumLength = 0, ErrorMessage = "Pre údaj 'Číslo dielu' zadajte max. 16 znakov.")]//nemusi sa zadat
+        [Display(Name = "Číslo dielu")]
+        public string? CisloDielu { get;  set; }//nvarchar(16), null
+
+
+
+
         [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.16 znakov")]
         [Display(Name = "ŠPZ")]
         public string? SPZ { get; set; }  //nvarchar(16), null
 
+
         [StringLength(64, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.64 znakov")]
-        [Display(Name = "Vlastník vozidla")]
-        public string? Vlastnik { get; set; } //nvarchar(32), null
+        [Display(Name = "Maliteľ")]
+        public string? Majitel { get; set; } //nvarchar(32), null
 
 
         /// <summary>

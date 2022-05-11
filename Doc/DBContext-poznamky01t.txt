@@ -206,9 +206,17 @@ Such a column is mapped to a nullable bool property to allow a difference betwee
         }
 
 
- ====================
+ =====================
 05.05.2022  pripojeny PA VPN bola zmena len tab. Zakazka-pribudol stlpec SPZ a Vlastnik
 PM> Scaffold-DbContext  "Server=INTRA-MSSQL;Database=TOYOTA_DB;persist security info=False; User ID=toyota_user;Password=toyota;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force -table Zakazka -table Account
+Build started...
+Build succeeded.
+ToyotaContext.cs obsahoval len entity Zakazka, Account
+
+
+11.05.2022  zmena len tab. Zakazka-pribudol stlpec CisloDielu, a zmena nazvu stlpca Vlasnik->Majitel; Account vyradenie stlpca LoginID
+Aktivny projekt: Entities2
+PM> Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force 
 Build started...
 Build succeeded.
 

@@ -4,7 +4,7 @@ namespace PA.TOYOTA.DB
 {
     public partial class Account
     {
-        public int LoginId { get; set; }
+        //public int LoginId { get; set; }
 
         [Required(ErrorMessage ="Musíte zadať názov účtu.")]
         [StringLength(16, ErrorMessage ="Maximálny počet znakov je 16.")]

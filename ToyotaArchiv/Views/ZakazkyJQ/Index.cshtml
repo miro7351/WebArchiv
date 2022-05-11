@@ -48,7 +48,7 @@
 
     <div class= "container-fluid" style="width:95%" >
         <h3 class="text-left d-inline mr-4">Zoznam garančných opráv</h3>
-        <span class="d-inline ml-4 mt-2">
+        <span class="d-inline ml-4 mt-1">
             @if (ViewBag.Role != "READONLY")
             {
                 <a asp-action="NovaZakazka">Nová garančná oprava</a>
@@ -57,43 +57,36 @@
     </div>
 
 
-    <hr style="width:0%">
-    @*<hr/>
-        <span>
-        @if(ViewBag.Role != "READONLY")
-        {
-        <a asp-action="NovaZakazka" style="margin-left:50px;">Nová garančná oprava</a>
-        }
-        </span>*@
+   @* <hr style="width:0%">*@
+   
 
     @* pozri datatableZakazkyXX.js
         Po kliku na link ZakazkaTG  sa ide na Details/?zakazkaTg
         Pozri datatableZakazkyXX.js   ....return '<a  href="/ZakazkyJQ/Details/?zakazkaTg=' + $.trim(row['zakazkaTg']) + '">' + data + '</a>';
-
-        <div class="teal accent-1 ">
     *@
     
     <div class="container-fluid  text-center">
-        <div>
-@*            @if(ViewBag.Role == "ADMIN")
+    @*    <div>
+            @if(ViewBag.Role == "ADMIN")
             {
                 @ViewBag.ConnString;
-            }*@
-        </div>
-        <div class="container-fluid"  style="width:95%; overflow-x:auto;zoom: 80%"  >
+            }
+        </div>*@
+        <div class="container-fluid mt-1"  style="width:95%; overflow-x:auto;zoom: 80%;"  >
             <table id="datatableZakazky" class="table table-hover   table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0" >
                 <thead class="tableHeaderColor">
                     <tr>
                         <th>ZakazkaId</th>
                         <th>Dátum</th>
-                        <th>Zakazka Tg</th>
-                        <th>Zakazka Tb</th>
+                        <th>Zakazka TG</th>
+                        <th>Zakazka TB</th>
                         <th>VIN</th>
                         <th>CWS</th>
                         <th>Číslo protokolu</th>
+                        <th>Číslo dielu</th>
                         <th>Ukončená</th>
                         <th>ŠPZ</th>
-                        <th>Vlastník</th>
+                        <th>Majiteľ</th>
                         <th>Poznámka</th>
 
                         @if (ViewBag.Role == "ADMIN")
@@ -120,9 +113,10 @@
                         <th>VIN</th>
                         <th>CWS</th>
                         <th>CisloProtokolu</th>
+                        <th>Číslo dielu</th>
                         <th>Ukoncena</th>
                         <th>SPZ</th>
-                        <th>Vlastnik</th>
+                        <th>Majiteľ</th>
                         <th>Poznamka</th>
                         @if (ViewBag.Role == "ADMIN")
                         {

@@ -1,20 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace PA.TOYOTA.DB
 {
     public partial class ToyotaContext : DbContext
     {
-
-        //public ToyotaContext()
-        //{
-        //    ConnectionString = Database.GetConnectionString();
-        //}
-
-        //public ToyotaContext(DbContextOptions<ToyotaContext> options)
-        //    : base(options)
-        //{
-        //    ConnectionString=Database.GetConnectionString();    
-        //}
+       
 
         public virtual DbSet<Account> Accounts { get; set; } = null!;
         public virtual DbSet<Dokument> Dokuments { get; set; } = null!;
@@ -44,18 +37,9 @@ namespace PA.TOYOTA.DB
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Aktivny)
-                    .IsRequired()
-                    .HasDefaultValueSql("((0))");
-
                 entity.Property(e => e.DbLogin).HasMaxLength(16);
 
                 entity.Property(e => e.DbPassword).HasMaxLength(16);
-
-                entity.Property(e => e.LoginId)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("LoginID")
-                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);//MH: 06.05.2022 pridane
 
                 entity.Property(e => e.LoginPassword)
                     .HasMaxLength(16)
@@ -174,6 +158,8 @@ namespace PA.TOYOTA.DB
                     .HasColumnName("ZakazkaTG")
                     .IsFixedLength();
 
+                entity.Property(e => e.CisloDielu).HasMaxLength(16);
+
                 entity.Property(e => e.CisloProtokolu)
                     .HasMaxLength(16)
                     .IsFixedLength();
@@ -182,6 +168,8 @@ namespace PA.TOYOTA.DB
                     .HasMaxLength(32)
                     .HasColumnName("CWS")
                     .IsFixedLength();
+
+                entity.Property(e => e.Majitel).HasMaxLength(64);
 
                 entity.Property(e => e.Poznamka).HasMaxLength(128);
 
@@ -199,8 +187,6 @@ namespace PA.TOYOTA.DB
                     .HasMaxLength(17)
                     .HasColumnName("VIN")
                     .IsFixedLength();
-
-                entity.Property(e => e.Vlastnik).HasMaxLength(64);
 
                 entity.Property(e => e.Vytvorene).HasPrecision(0);
 

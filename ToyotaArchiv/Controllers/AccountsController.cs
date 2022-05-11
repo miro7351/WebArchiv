@@ -55,7 +55,7 @@ namespace ToyotaArchiv.Controllers
 
                 // Getting all accounts
                 var accounts = (from account in _context.Accounts
-                                select account).OrderBy(a => a.LoginId);
+                                select account).OrderBy(a => a.LoginName);
 
                 //total number of rows count 
                 recordsTotal = accounts.Count();
@@ -79,12 +79,27 @@ namespace ToyotaArchiv.Controllers
             return View(await _context.Accounts.ToListAsync());
         }
 
+        /*
         //Accounts: Index - po kliku na link 'Zmenit' napr.  '<a  href="/Accounts/Edit/27">Zmenit</a>
         [HttpGet]  //MH  link robi HtttpGet
         public async Task<IActionResult> Edit(int? id)
         {
             (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
             var account = await _context.Accounts.FirstOrDefaultAsync(m => m.LoginId == id);
+
+            //if (account == null)
+            //{
+            //    return NotFound();
+            //}
+            return View(account);
+        }
+        */
+
+        //po kliku na link 'Zmenit' '<a  href="../Accounts/Edit/?loginName=' + $.trim(row['loginName']) + '">Zmeniť</a>';
+        public async Task<IActionResult> Edit(string loginName)
+        {
+            (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
+            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.LoginName == loginName);
 
             //if (account == null)
             //{
@@ -108,10 +123,10 @@ namespace ToyotaArchiv.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("LoginId,LoginName,LoginPassword,LoginRola,DbLogin,DbPassword,Aktivny")] Account account)
         {
-            if (id != account.LoginId)
-            {
-                return NotFound();
-            }
+            //if (id != account.LoginId)
+            //{
+            //    return NotFound();
+            //}
 
             if (ModelState.IsValid)
             {
@@ -123,7 +138,8 @@ namespace ToyotaArchiv.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     //string s = ex.Message;
-                    if (!AccountExists(account.LoginId))
+                    //if (!AccountExists(account.LoginId))
+                    if (!AccountExists(account.LoginName))
                     {
                         ViewBag.ErrorMessage = $"Chyba: účet '{account.LoginName}' neexistuje.";
                     }
@@ -193,15 +209,15 @@ namespace ToyotaArchiv.Controllers
         }
 
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string loginName)
         {
             (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
-            if (id == null)
+            if (loginName == null)
             {
                 return NotFound();
             }
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.LoginId == id);
+            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.LoginName == loginName);
 
             if (account == null)
             {
@@ -214,9 +230,9 @@ namespace ToyotaArchiv.Controllers
         // POST: Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string loginName)
         {
-            Account? account = await _context.Accounts.FindAsync(id);
+            Account? account = await _context.Accounts.FirstOrDefaultAsync( m => m.LoginName == loginName);
             if (account != null)
             {
                 _context.Accounts.Remove(account);
@@ -226,9 +242,50 @@ namespace ToyotaArchiv.Controllers
             return RedirectToAction(nameof(Delete));
         }
 
-        private bool AccountExists(int id)
+        /*
+                public async Task<IActionResult> Delete(int? id)
+                {
+                    (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var account = await _context.Accounts.FirstOrDefaultAsync(m => m.LoginId == id);
+
+                    if (account == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(account);
+                }
+
+                // POST: Roles/Delete/5
+                [HttpPost, ActionName("Delete")]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> DeleteConfirmed(int id)
+                {
+                    Account? account = await _context.Accounts.FindAsync(id);
+                    if (account != null)
+                    {
+                        _context.Accounts.Remove(account);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    return RedirectToAction(nameof(Delete));
+                }
+                */
+
+
+        //private bool AccountExists(int id)
+        //{
+        //    return _context.Accounts.Any(e => e.LoginId == id);
+        //}
+
+        private bool AccountExists(string loginName)
         {
-            return _context.Accounts.Any(e => e.LoginId == id);
+            return _context.Accounts.Any(e => e.LoginName == loginName);
         }
 
     }

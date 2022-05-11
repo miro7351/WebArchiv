@@ -32,8 +32,8 @@ namespace ToyotaArchiv.Services
         static short SkupinaPrvehoPovinnehoDokumentu => 20;
         static short SkupinaPrvejPrilohy => 100;
         static short PocetPovinnych => 5;//Pocet sa nemeni v programe
-        static short PocetPriloh => 5;   //Pocet sa moze zvascovat, len na zaciatku sa vytvori 5 priloh
-        static short PocetPriloh1 => 1;  //Pocet sa moze zvascovat, len na zaciatku sa vytvori 1 priloha
+        static short PocetPriloh => 5;   //Pocet sa moze zvascovat, len na zaciatku sa vytvori 5 priloh;
+        static short PocetPriloh1 => 1;  //Pocet sa moze zvascovat, len na zaciatku sa vytvori 1 priloha;
 
         /// <summary>
         /// Typ instancie Zakazka (z databazy) skonveruje do vytvorenej instancie typu ZakazkaZO (pre zobrazenie pre uzivatela);
@@ -59,8 +59,9 @@ namespace ToyotaArchiv.Services
             zakazkaZO.Vin = zakazkaDB?.Vin?.Trim();
             zakazkaZO.Cws = zakazkaDB?.Cws?.Trim();
             zakazkaZO.CisloProtokolu = zakazkaDB?.CisloProtokolu?.Trim();
+            zakazkaZO.CisloDielu = zakazkaDB?.CisloDielu?.Trim();
             zakazkaZO.SPZ = zakazkaDB?.Spz?.Trim();
-            zakazkaZO.Vlastnik = zakazkaDB?.Vlastnik?.Trim();
+            zakazkaZO.Majitel = zakazkaDB?.Majitel?.Trim();
             zakazkaZO.Vytvoril = zakazkaDB?.Vytvoril?.Trim();
             zakazkaZO.Vytvorene = zakazkaDB?.Vytvorene;    //DateTime
             zakazkaZO.Zmenil = zakazkaDB?.Zmenil?.Trim(); 
@@ -267,8 +268,9 @@ namespace ToyotaArchiv.Services
             newZakazkaDB.Vin = zakazkaZO?.Vin?.Trim();
             newZakazkaDB.Cws = zakazkaZO?.Cws?.Trim();
             newZakazkaDB.Spz = zakazkaZO?.SPZ?.Trim();
-            newZakazkaDB.Vlastnik = zakazkaZO?.Vlastnik?.Trim();
+            newZakazkaDB.Majitel = zakazkaZO?.Majitel?.Trim();
             newZakazkaDB.CisloProtokolu = zakazkaZO?.CisloProtokolu?.Trim();
+            newZakazkaDB.CisloDielu = zakazkaZO?.CisloDielu?.Trim();
 
 
             //Vytvorenie instancie Dokument z instancie zakazkaZO.ZakazkaTGdokument a vlozenie do newZakazka.Dokuments;

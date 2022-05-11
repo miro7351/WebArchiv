@@ -51,8 +51,9 @@ namespace ToyotaArchiv.Services
             zakazkaDB.Vin = zakazkaZO?.Vin?.Trim();
             zakazkaDB.Cws = zakazkaZO?.Cws?.Trim();
             zakazkaDB.CisloProtokolu = zakazkaZO?.CisloProtokolu?.Trim();
+            zakazkaDB.CisloDielu = zakazkaZO?.CisloDielu?.Trim();
             zakazkaDB.Spz = zakazkaZO?.SPZ?.Trim();
-            zakazkaDB.Vlastnik = zakazkaZO?.Vlastnik?.Trim();
+            zakazkaDB.Majitel = zakazkaZO?.Majitel?.Trim();
 
             #region == Dokumenty  pre Skupina=1 a Skupina=2 ===
 

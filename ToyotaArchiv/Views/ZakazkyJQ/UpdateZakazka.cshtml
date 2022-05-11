@@ -8,19 +8,19 @@
 @*ZakazkyJQ:UpdateZakazka*@
 
 <style>
-    /* table, th,td {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }*/
+    /*table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }*/
 
 
-    table, table TD, table TH {
-        font-family: sans-serif;
-        font-size: 13pt;
-        color: black;
-        /* background-color: #BBDEFB;*/
-        background-color: white;
-    }
+        table, table TD, table TH {
+            font-family: sans-serif;
+            font-size: 13pt;
+            color: black;
+            /* background-color: #BBDEFB;*/
+            background-color: white;
+        }
 </style>
 
 <script type="text/javascript">
@@ -50,7 +50,7 @@
     https://docs.microsoft.com/en-us/answers/questions/567773/change-34choose-file34-and-34no-file-chosen34-text.html
 *@
 
-<div class="container-fluid"  style="width:95%">
+<div class="container-fluid" style="width:95%">
     <div class="form-inline">
         <h3 class="text-left d-inline mr-4">Úprava zákazky pre garančnú opravu: @Model.ZakazkaTg</h3>
         <span class="text-danger">@Model?.ErrorMessage</span>
@@ -92,12 +92,12 @@
                             <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
 
                             @*Vyber suboru pre zakazkaTG*@
-                            <td width="350px">
+                            <td width="450px">
                                 <input asp-for="@Model.ZakazkaTGdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
                             </td>
 
                             @* Subor link*@
-                            <td width="350px" colspan="2">
+                            <td width="450px" colspan="2">
                                 @Html.ActionLink(@Model?.ZakazkaTGdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
                                 new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina} )
                             </td>
@@ -173,16 +173,16 @@
                             <span asp-validation-for="SPZ" class="text-danger"></span>
 
 
-                            @*Vlastnik*@
+                            @*Majitel*@
                             <td colspan="2">
-                                <table width="90%">
+                                <table width="100%">
                                     <tr>
-                                        <td align="left" width="70px">@Html.DisplayNameFor(m=>m.Vlastnik)</td>
-                                        <td>@Html.TextBoxFor(m=>m.Vlastnik, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                        <td align="left" width="70px">@Html.DisplayNameFor(m=>m.Majitel)</td>
+                                        <td>@Html.TextBoxFor(m=>m.Majitel, new {@class="form-control", @style="margin-left:10px;"})</td>
                                     </tr>
                                 </table>
                             </td>
-                            <span asp-validation-for="Vlastnik" class="text-danger"></span>
+                            <span asp-validation-for="Majitel" class="text-danger"></span>
                             <td></td>
                             <td></td>
                         </tr>
@@ -190,17 +190,19 @@
 
 
                         <tr>
+                            @*CisloProtokolu*@
                             <td align="right">@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
                             <td>
                                 @Html.TextBoxFor(m=>m.CisloProtokolu, new {@class="form-control"})
                             </td>
                             <span asp-validation-for="CisloProtokolu" class="text-danger"></span>
-                            @*Ukoncena*@
+
                             <td colspan="2">
+                                @*CisloDielu*@
                                 <table>
                                     <tr>
-                                        <td align="left">@Html.DisplayNameFor(m=>m.Ukoncena)</td>
-                                        <td width="50px">@Html.TextBoxFor(m=>m.Ukoncena, new {@class="form-control", @readonly="readonly", @style="margin-left:10px;"})</td>
+                                        <td align="left">@Html.DisplayNameFor(m=>m.CisloDielu)</td>
+                                        <td>@Html.TextBoxFor(m=>m.CisloDielu, new {@class="form-control", @style="margin-left:10px;"})</td>
                                     </tr>
                                 </table>
                             </td>
@@ -208,9 +210,21 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td align="right">@Html.DisplayNameFor(m=>m.Poznamka)</td>
-                            <td colspan="5">
-                                @Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control"})
+                            <td align="right">@Html.DisplayNameFor(m=>m.Ukoncena)</td>
+                            <td align="left">@Html.TextBoxFor(m=>m.Ukoncena, new {@class="form-control", @readonly="readonly", @style="margin-left:3px; width:70px;"})</td>
+
+                            <td colspan="4">
+                                @*Poznamka*@
+                                <table width="100%">
+                                    <tr>
+                                        <td align="left" width="8%">
+                                            @Html.DisplayNameFor(m=>m.Poznamka)
+                                        </td>
+                                        <td >
+                                            @Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control"})
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                             <span asp-validation-for="Poznamka" class="text-danger"></span>
                         </tr>

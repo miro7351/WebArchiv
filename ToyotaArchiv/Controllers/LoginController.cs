@@ -96,8 +96,9 @@ namespace ToyotaArchiv.Controllers
 
         public IActionResult Logout()
         {
-            UserDetail user = new UserDetail();
-            _sessionService.WriteUserToSession(HttpContext.Session, user);
+           // UserDetail user = new UserDetail();
+            HttpContext.Session.Clear();
+            //_sessionService.WriteUserToSession(HttpContext.Session, user);
             return View(nameof(Login));
         }
 

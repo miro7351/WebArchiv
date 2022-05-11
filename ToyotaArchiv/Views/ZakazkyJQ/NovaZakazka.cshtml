@@ -168,29 +168,36 @@
                         <span asp-validation-for="SPZ" class="text-danger"></span>
 
                         
-                        @*Vlastnik*@
+                        @*Majitel*@
                         <td colspan="2">
                             <table width="90%">
                                 <tr>
-                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.Vlastnik)</td>
-                                    <td >@Html.TextBoxFor(m=>m.Vlastnik, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.Majitel)</td>
+                                    <td >@Html.TextBoxFor(m=>m.Majitel, new {@class="form-control", @style="margin-left:10px;"})</td>
                                 </tr>
                             </table>
                         </td>
-                        <span asp-validation-for="Vlastnik" class="text-danger"></span>
+                        <span asp-validation-for="Majitel" class="text-danger"></span>
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr>@*CisloProtokolu*@
                         <td align="right">@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
                         <td>@Html.TextBoxFor(m=>m.CisloProtokolu, new {@class="form-control"})</td>
                         <span asp-validation-for="CisloProtokolu" class="text-danger"></span>
-                        <td></td>
-                        <td></td>
+                        <td colspan="2">@*CisloDielu*@
+                            <table>
+                                <tr>
+                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.CisloDielu)</td>
+                                    <td >@Html.TextBoxFor(m=>m.CisloDielu, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <span asp-validation-for="CisloDielu" class="text-danger"></span>
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr>@*Poznamka*@
                         <td align="right">@Html.DisplayNameFor(m=>m.Poznamka)</td>
                         <td colspan="5">@Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control"})</td>
                         <span asp-validation-for="Poznamka" class="text-danger"></span>

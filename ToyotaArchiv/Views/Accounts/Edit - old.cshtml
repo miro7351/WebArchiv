@@ -14,7 +14,7 @@
     <div class="col-md-4">
         <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @Html.HiddenFor(x => Model.LoginId)
+           @* @Html.HiddenFor(x => Model.LoginId)*@
             @Html.HiddenFor(x => Model.LoginName)
 
             @*Password*@

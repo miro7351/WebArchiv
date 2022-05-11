@@ -19,23 +19,18 @@
         },
         "columnDefs":
             [{
-                "targets": [0],//LoginName
-                "visible": true,
-                "searchable": true
-            },
-            {
-                "targets": [1],//LoginPassword
+                "targets": [0],//LoginID
                 "visible": false,
                 "searchable": false
             },
             {
-                "targets": [2],//LoginRola
-                "visible": true,
-                "searchable": true
+                "targets": [2],//LoginID
+                "visible": false,
+                "searchable": false
             },
 
             {
-                "targets": [3],//Aktivny  true/false -> Ano/NIe
+                "targets": [4],//Aktivny  true/false -> Ano/NIe
                 "visible": true,
                 "searchable": false,
                 "data": "Aktivny",
@@ -47,26 +42,26 @@
                 }
             },
             {
-                "targets": [4],//Db login
+                "targets": [5],//Db login
                 "visible": false,
                 "searchable": false
             },
             {
-                "targets": [5],//Db heslo
+                "targets": [6],//Db heslo
                 "visible": false,
                 "searchable": false
             },
             {
-                "targets": [6],//link Zmenit
+                "targets": [7],//link Zmenit
                 "render": function (data, type, row) {
-                    return '<a  href="../Accounts/Edit/?loginName=' + $.trim(row['loginName']) + '">Zmeniť</a>';
+                    return '<a  href="../Accounts/Edit/' + $.trim(row['loginId']) + '">Zmeniť</a>';
 
                 }
             },
 
             ],
         "columns": [ //poradie stlpcov musi byt take, ako su zoradene stlpce v Index.cshtml
-           
+            { "data": "loginId", "name": "LoginId", "autoWidth": true },
             { "data": "loginName", "name": "LoginName", "autoWidth": true },
             { "data": "loginPassword", "name": "LoginPassword", "autoWidth": true },
             { "data": "loginRola", "name": "LoginRola", "autoWidth": true },

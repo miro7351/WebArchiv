@@ -30,22 +30,14 @@
         <span class="text-danger">@ViewBag.ErrorMessage</span>
     </div>
     <div class="d-flex p-2 justify-content-center">
-        @* <a asp-action="Index" class="btn  btn-primary" style="margin-right:50px;">Návrat</a>
-            <input type="submit" value="Uložiť" class="btn  btn-warning" onclick="document.forms['formCreate'].submit();" />*@
         <a asp-action="Index" class="btn  btn-light" style="margin-right:50px;">Návrat</a>
         <input type="submit" value="Uložiť" class="btn  btn-light" onclick="document.forms['formCreate'].submit();" />
-     
     </div>
-    @* <hr />*@
+  
     <div class="row" style="zoom: 80%">
-        @*<div class="col-md-12">*@
-        <form name="formCreate" asp-action="Edit" enctype="multipart/form-data">
-            @Html.HiddenFor(x => Model.LoginId)
-
-            @*<div style="width:90%; margin:0 auto;">*@
+        <form name="formCreate" asp-action="Edit">
+          @*  @Html.HiddenFor(x => Model.LoginId)*@
             <div class="col-md-12">
-                @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-                @* Udaje o zakazke; style="border-collapse: collapse; border: none;"*@
                 <table width="500" cellspacing="5" cellpadding="10" align="center">
                     <tr>
                         <td width="100px"> <label asp-for="LoginName" class="control-label"></label></td>
@@ -57,7 +49,8 @@
                         <td width="150px"><span asp-validation-for="LoginPassword" class="text-danger"></span></td>
                     <tr>
                         <td width="100px"> <label asp-for="LoginRola" class="control-label"></label></td>
-                        <td width="250px"> <select name="LoginRola" id="LoginRola" class="form-control" asp-for="@Model.LoginRola" >
+                        <td width="250px">
+                            <select name="LoginRola" id="LoginRola" class="form-control" asp-for="@Model.LoginRola" >
                             <option value="">--Vyber rolu--</option>
                             <option value="VEDUCI">VEDUCI</option>
                             <option value="SERVISNY_TECHNIK">SERVISNY_TECHNIK</option>
@@ -65,76 +58,16 @@
                         </select></td>
                          <td width="150px"><span asp-validation-for="LoginRola" class="text-danger"></span></td>
                     </tr>
+                    <tr>
+                        <td>@*public bool Aktivny { get; set; }  nesmie byt bool? Aktivny*@
+                            <label asp-for="Aktivny" class="control-label"></label>
+                        </td>
+                        <td>
+                            <input asp-for="Aktivny"  type="checkbox"  checked="@Model.Aktivny" />
+                        </td>
+                    </tr>
                 </table>
             </div>
         </form>
     </div>
 </div>
-
-
-
-
-
-
-
-@*
-
-<h6>Zmena nastavenia účtu:&nbsp;<b>@Model.LoginName</b></h6>
-<hr />
-<div style="height:20px;">
-    <p id="error" class="text-danger">@ViewBag.ErrorMessage</p>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @Html.HiddenFor(x => Model.LoginId)
-            @Html.HiddenFor(x => Model.LoginName)
-
-            <div class="form-inline">
-                <label asp-for="LoginPassword" class="control-label"></label>
-                <input asp-for="LoginPassword" class="form-control" style="margin-left:42px; margin-bottom:10px;" />
-                <span asp-validation-for="LoginPassword" class="text-danger"></span>
-            </div>
-         
-            <div class="form-inline">
-                <label asp-for="LoginRola" class="control-label"></label>
-                <select name="LoginRola" id="LoginRola" class="form-control" style="margin-left:52px; margin-bottom:10px;" asp-for="@Model.LoginRola">
-                    <option value="">--Vyber rolu--</option>
-                    <option value="VEDUCI">VEDUCI</option>
-                    <option value="SERVISNY_TECHNIK">SERVISNY_TECHNIK</option>
-                    <option value="READONLY">READONLY</option>
-                </select>
-                <span asp-validation-for="LoginRola" class="text-danger"></span>
-            </div>
-
-           
-            <div class="form-inline">
-                <label asp-for="Aktivny" class="control-label"></label>
-                <input asp-for="Aktivny"  type="checkbox"  checked="@Model.Aktivny" style="margin-left:30px; margin-bottom:10px;"/>
-                 <span asp-validation-for="Aktivny" class="text-danger"></span>
-
-            </div>
-
-            <div class="form-inline">
-                <label asp-for="DbLogin" class="control-label"></label>
-                <input asp-for="DbLogin" class="form-control" style="margin-left:22px; margin-bottom:10px;" />
-                <span asp-validation-for="DbLogin" class="text-danger"></span>
-            </div>
-
-            <div class="form-inline">
-                <label asp-for="DbPassword" class="control-label"></label>
-                <input asp-for="DbPassword" class="form-control" style="margin-left:20px; margin-bottom:10px;" />
-                <span asp-validation-for="DbPassword" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Uložiť" class="btn-sm btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-<div>
-    <a asp-action="Index">Návrat</a>
-</div>
-*@

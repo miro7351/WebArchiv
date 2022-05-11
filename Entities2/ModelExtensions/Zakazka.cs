@@ -4,6 +4,9 @@
 namespace PA.TOYOTA.DB
 {
     //MH: 05.05.2022
+  /*
+   * Entity som presunul z adresara Entities2\Model  do Entities\MOdelExtensions
+   */ 
     public partial class Zakazka
     {
         public Zakazka()
@@ -36,9 +39,19 @@ namespace PA.TOYOTA.DB
         [Display(Name = "Vin")]
         public string? Vin { get; set; } //nchar(32), null
 
+        [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.16 znakov")]
+        [Display(Name = "Číslo dielu")]
+        public string? CisloDielu { get; set; } //nvarchar(16), null
+
 
         [Display(Name = "Ukončená")]
         public string? Ukoncena { get; set; } = null!;  //char(1) null
+
+        [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.16 znakov")]   //nvarchar(16), null
+        [Display(Name = "Majiteľ")]
+        public string? Majitel { get; set; }
+
+
         [StringLength(128, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.128 znakov")]
         [Display(Name = "Poznámka")]
         public string? Poznamka { get; set; }  //nvarchar(128), null
@@ -67,9 +80,7 @@ namespace PA.TOYOTA.DB
         [Display(Name = "ŠPZ")]
         public string? Spz { get; set; }  //nvarchar(16), null
 
-        [StringLength(64, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.64 znakov")]
-        [Display(Name = "Vlastník vozidla")]
-        public string? Vlastnik { get; set; } //nvarchar(32), null
+       
 
         public virtual ICollection<Dokument> Dokuments { get; set; }
     }

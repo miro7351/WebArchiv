@@ -1,4 +1,4 @@
-namespace ToyotaArchiv.Models
+﻿namespace ToyotaArchiv.Models
 {
     public class ErrorViewModel
     {
