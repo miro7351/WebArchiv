@@ -1,102 +1,215 @@
-﻿@model PA.TOYOTA.DB.Zakazka
+﻿@model ToyotaArchiv.Domain.ZakazkaZO
 
 @{
     ViewData["Title"] = "Vymazanie zákazky";
 }
 @*MH: april 2022 ZakazkayJQ: Delete/zakazkaID *@
 
-<div class="container px-4" >
-   <h3>Naozaj vymazať záznam o garančnej oprave?</h3>
-    <div class="form-inline">
-      <span class="text-primary mr-1" style="font-size: 90%; text-align:center">Garančná oprava:</span>
-      <span class="text-danger ml-1" style="font-size: 100%; text-align:center"><b> @Model.ZakazkaTg</b></span>
-      </div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ZakazkaTg)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ZakazkaTg)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ZakazkaTb)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ZakazkaTb)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CisloProtokolu)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CisloProtokolu)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cws)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cws)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vin)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vin)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Spz)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Spz)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Majitel)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Majitel)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ukoncena)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ukoncena)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vytvoril)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vytvoril)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vytvorene)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vytvorene)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Zmenil)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Zmenil)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Zmenene)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Zmenene)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Poznamka)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Poznamka)
-        </dd>
-       
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ZakazkaTg" />
-        <input type="submit" value="Vymazať" class="btn btn-sm btn-danger" /> |
-        <a asp-action="Index">Návrat</a>
-    </form>
+<style>
+    /*  table, th,td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }*/
+
+
+    /*.detailTable1, .detailTable1 TD, .detailTable1 TH */
+    table, table TD, table TH {
+        font-family: sans-serif;
+        font-size: 13pt;
+        color: black;
+        /* background-color:#BBDEFB;*/
+        background-color: white;
+    }
+</style>
+
+<div class="container">
+    <div class="d-flex p-2 justify-content-center">
+        <h3>Naozaj vymazať záznam o garančnej oprave: @Model.ZakazkaTg?</h3>
+        
+         <form asp-action="Delete">
+            <input type="hidden" asp-for="ZakazkaTg" />
+            <input   type="submit" value="Vymazať" class="btn btn-danger mx-4" />
+        </form>
+        <a asp-action="Index" class="btn btn-light ml-4">Návrat</a>
+    </div>
+
+    <div class="row" style="zoom: 80%">
+        <div class="col-md-12">
+
+            <div style="width:90%; margin:0 auto;">
+                @* Udaje o zakazke*@
+                <table class="detailTable1" width="100%" cellspacing="0" cellpadding="0">
+
+                    @*ZakazkaTGdokument*@
+                    <tr>
+                        @*NAZOV POLOZKY*@
+                        <td width="150px" align="right">
+                            @Html.DisplayNameFor(m=>m.ZakazkaTg)
+                        </td>
+                        @*HODNOTA POLOZKY*@
+                        <td width="220px">
+                            @Html.TextBoxFor(m=>m.ZakazkaTg, new {@class="form-control", @readonly="readonly", @style="background:transparent;border-collapse: collapse; border: none;"} )
+                        </td>
+
+                        @* Subor link*@
+                        <td width="450px" colspan="2">
+                            @Html.ActionLink(@Model?.ZakazkaTGdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
+                            new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina} )
+                        </td>
+                    </tr>
+                    @*ZakazkaTBdokument*@
+                    <tr>
+                        @*NAZOV POLOZKY*@
+                        <td align="right">@Html.DisplayNameFor(m=>m.ZakazkaTb)</td>
+                        @*HODNOTA POLOZKY*@
+                        <td>
+                            @Html.TextBoxFor(m=>m.ZakazkaTb, new {@class="form-control",  @readonly="readonly",style="background:transparent;border-collapse: collapse; border: none;"})
+                        </td>
+
+                        @* Subor link*@
+                        <td colspan="2">
+                            @Html.ActionLink(@Model?.ZakazkaTBdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
+                            new{ zakazkaTG=@Model?.ZakazkaTg?.Trim() ?? "", subor=@Model?.ZakazkaTBdokument?.NazovSuboru?.Trim() ?? "", skupina=@Model?.ZakazkaTBdokument?.Skupina ?? 0} )
+                        </td>
+                    </tr>
+
+                    <tr>
+                        @*VIN*@
+                        <td align="right">@Html.DisplayNameFor(m=>m.Vin)</td>
+                        <td>
+                            @Html.TextBoxFor(m=>m.Vin, new {@class="form-control",  @readonly="readonly", @style="background:transparent;border-collapse: collapse; border: none;"})
+                        </td>
+
+                        @*CWS*@
+                        <td colspan="2">
+                            <table>
+                                <tr>
+                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.Cws)</td>
+                                    <td>@Html.TextBoxFor(m=>m.Cws, new {@class="form-control",  @readonly="readonly", @style="margin-left:10px; background:transparent;border-collapse: collapse; border: none;"})</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        @*SPZ*@
+                        <td align="right">@Html.DisplayNameFor(m=>m.SPZ)</td>
+                        <td>@Html.TextBoxFor(m=>m.SPZ, new {@class="form-control",  @readonly="readonly", @style="background:transparent;border-collapse: collapse; border: none;"})</td>
+                        @*Majitel*@
+                        <td colspan="2">
+                            <table width="100%">
+                                <tr>
+                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.Majitel)</td>
+                                    <td>@Html.TextBoxFor(m=>m.Majitel, new {@class="form-control",  @readonly="readonly", @style="margin-left:10px; background:transparent;border-collapse: collapse; border: none;"})</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        @*CisloProtokolu*@
+                        <td align="right">@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
+                        <td>
+                            @Html.TextBoxFor(m=>m.CisloProtokolu, new {@class="form-control",  @readonly="readonly", @style="background:transparent;border-collapse: collapse; border: none;"})
+                        </td>
+
+                        <td colspan="2">
+                            @*CisloDielu*@
+                            <table>
+                                <tr>
+                                    <td align="left">@Html.DisplayNameFor(m=>m.CisloDielu)</td>
+                                    <td>@Html.TextBoxFor(m=>m.CisloDielu, new {@class="form-control",  @readonly="readonly", @style="margin-left:10px; background:transparent;border-collapse: collapse; border: none;"})</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        @*Ukoncena*@
+                        <td align="right">@Html.DisplayNameFor(m=>m.Ukoncena)</td>
+                        @if (Model?.Ukoncena == "A")
+                        {
+                            <td align="left">@Html.TextBoxFor(m=>m.Ukoncena, new {@class="form-control", @readonly="readonly", @style="margin-left:3px; width:50px; background-color:#21CE2A;"})</td>
+                        }
+                        else
+                        {
+                            <td align="left">@Html.TextBoxFor(m=>m.Ukoncena, new {@class="form-control", @readonly="readonly", @style="margin-left:3px; width:50px;"})</td>
+                        }
+                        <td colspan="2">
+                            @*Poznamka*@
+                            <table width="100%">
+                                <tr>
+                                    <td align="left" width="8%">
+                                        @Html.DisplayNameFor(m=>m.Poznamka)
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control", @readonly="readonly", @style="background:transparent;border-collapse: collapse; border: none;"})
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <hr />
+                @if (Model?.PovinneDokumenty != null)
+                {
+                    <table style="border-collapse: collapse; border: none;" id="datatablePD" width="100%" cellspacing="5" cellpadding="10">
+                        <tbody>
+                            @for (int i = 0; i < Model.PovinneDokumenty.Count; i++)
+                            {
+                                <tr>
+                                    @*NazovDokumentu*@
+                                    <td width="300px">
+                                        @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly", @style="background:transparent;border-collapse: collapse; border: none;"})
+                                    </td>
+
+                                    @* Poznamka*@
+                                    <td width="400px">
+                                        @Html.TextBoxFor(x => Model.PovinneDokumenty[i].Poznamka, new {@class="form-control", @readonly="readonly", @style="background:transparent;border-collapse: collapse; border: none;"})
+                                    </td>
+
+                                    @* Subor link*@
+                                    <td width="500px">
+                                        @Html.ActionLink(@Model?.PovinneDokumenty[i].NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
+                                new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.PovinneDokumenty[i].NazovSuboru?.Trim(), skupina=@Model?.PovinneDokumenty[i]?.Skupina} )
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                }
+                <hr />
+                <div class="d-flex py-1 justify-content-center">
+                    <span>Prílohy</span>
+                </div>
+                @if (Model?.Prilohy != null)
+                {
+                    <table style="border-collapse: collapse; border: none;" id="datatablePrilohy" width="100%" cellspacing="5" cellpadding="10">
+                        <tbody>
+                            @for (int i = 0; i < Model.Prilohy.Count; i++)
+                            {
+                                <tr>
+                                    @*NazovDokumentu*@
+                                    <td width="300px">
+                                        @Html.TextBoxFor(x => Model.Prilohy[i].NazovDokumentu, new { @class="form-control", @readonly="readonly", @style="background:transparent;border-collapse: collapse; border: none;"})
+                                    </td>
+                                    @*Poznamka*@
+                                    <td width="400px">
+                                        @Html.TextBoxFor(x => Model.Prilohy[i].Poznamka, new { @class="form-control",@readonly="readonly", @style="background:transparent;border-collapse: collapse; border: none;"})
+                                    </td>
+                                    @* Subor link*@
+                                    <td width="500px">
+                                        @Html.ActionLink(@Model?.Prilohy[i].NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
+                                new{ zakazkaTG=@Model?.ZakazkaTg?.Trim() ?? "", subor=@Model?.Prilohy[i].NazovSuboru?.Trim() ?? "", skupina=@Model?.Prilohy[i]?.Skupina ?? 0} )
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
 </div>
+
+

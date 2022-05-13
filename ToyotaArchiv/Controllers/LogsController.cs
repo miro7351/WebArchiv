@@ -108,7 +108,7 @@ namespace ToyotaArchiv.Controllers
                 //total number of rows count 
                 recordsTotal = logy.Count();
                 //Paging 
-                var data = logy.Skip(skip).Take(pageSize).ToList();
+                var data = logy.OrderByDescending(l=>l.LogId).Skip(skip).Take(pageSize).ToList();
                 //Returning Json Data
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
 

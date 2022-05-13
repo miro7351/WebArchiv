@@ -107,17 +107,17 @@
                     <tr>
                         <th>ZakazkaId</th>
                         <th>Vytvorene</th>
-                        <th>ZakazkaTg</th>
-                        <th>ZakazkaTb</th>
+                        <th>ZakazkaTG</th>
+                        <th>ZakazkaTB</th>
 
                         <th>VIN</th>
                         <th>CWS</th>
-                        <th>CisloProtokolu</th>
+                        <th>Číslo protokolu</th>
                         <th>Číslo dielu</th>
-                        <th>Ukoncena</th>
-                        <th>SPZ</th>
+                        <th>Ukončená</th>
+                        <th>ŠPZ</th>
                         <th>Majiteľ</th>
-                        <th>Poznamka</th>
+                        <th>Poznámka</th>
                         @if (ViewBag.Role == "ADMIN")
                         {
                             <th>Vytvoril</th>
@@ -132,28 +132,12 @@
                 </tfoot>
             </table>
         </div>
-    
-
 </div><!--//container-fluid-->
-
-
-
 
 
 @section Scripts
 {
-    <!-- MH: 29.04.2022  jquery.dataTables.js musi byt prvy v poradi!!!-->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-    <!-- pre createdRow-->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <!-- MH musi tu byt: moment.min.js-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-    <!-- MH musi tu byt: datetime.js-->
-    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
-    <!-- pre nastavenie sirky stlpca-->
-     <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/4.0.2/js/dataTables.fixedColumns.min.js"></script>
-
-    @if(ViewBag.Role=="ADMIN") @*udaje, link Vymazat a stlpce Vytvoril, Zmenil, Zmenene*@
+     @if(ViewBag.Role=="ADMIN") @*udaje, link Vymazat a stlpce Vytvoril, Zmenil, Zmenene*@
     {
         <script src="~/js/datatableZakazkyAdmin.js"></script>
     }
@@ -166,34 +150,28 @@
         <script src="~/js/datatableZakazkyReadOnly.js"></script>
     }
 
+    <!-- MH: 29.04.2022  jquery.dataTables.js musi byt prvy v poradi!!!-->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <!-- pre createdRow-->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- MH musi tu byt: moment.min.js-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <!-- MH musi tu byt: datetime.js-->
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
+    <!-- pre nastavenie sirky stlpca-->
+     <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/4.0.2/js/dataTables.fixedColumns.min.js"></script>
+
+   
+
     <script type="text/javascript" >
 
-        function ClearFilter()
+        function ClearFilter() /*spustal som to pomocou Buttonu,pokus o vymazani udajov z filtra */
         {
            // alert("function:Clear fiter");
-           $(".filter1").val('');
+           $(".filter1").val('');//vymaze obsah filtrov, ale to nepomoze, Datatable si filtre riadi vnutorne;
            $('#datatableZakazky').dataTable({  "oSearch": {"sSearch": $('#spz').val('') }});
            jQuery.event.trigger({ type: 'keydown', which: 13 });//simulacia enter keypress (code 13)
         }
-
-     //MH: po dlhom boji kde a kedy spustit tento script nakoniec nakoniec pomohol javascript CASOVAC
-    var casovac;
-    casovac = setTimeout("f1()", 500);
-    function f1()
-    {   
-        //clearTimeout(casovac);
-        //alert("f1-spustam MH script");
-        var rows = document.getElementById("datatableZakazky").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-
-        for (i = 0; i < rows.length; i++) {
-            cells = rows[i].getElementsByTagName('td');
-            if (cells[6].innerHTML == 'A') {
-                rows[i].style.background = "#21CE2A";//svetlo zelena
-            }
-        }
-         casovac = setTimeout("f1()", 500);
-    }
-
+   
     </script>
-
 }

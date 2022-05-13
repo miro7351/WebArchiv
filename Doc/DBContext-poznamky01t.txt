@@ -220,5 +220,9 @@ PM> Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=Tr
 Build started...
 Build succeeded.
 
+=============================
+Poznamka
+Apply Add-Migration command to the xxxDBContext and it generates the code that we can use to update the database with
+.. Update-Database command. 
 
 

@@ -16,6 +16,11 @@ $(document).ready(function () {
 
     $('#datatableErrors').DataTable({
 
+        "dom": '<"top"if>rt<"bottom"lp><"clear">', //OK
+        "lengthMenu": [[25, 10, 30, 50, -1], [25, 10, 30, 50, "Všetky"]],
+        //"lengthMenu": [25],  //OK je tam len jedna moznost na vyber
+        "search": { return: true }, //Search box nad tabulkou  hlada az po stlaceni Enter
+
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.18/i18n/Slovak.json"
         },

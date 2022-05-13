@@ -133,7 +133,7 @@ namespace ToyotaArchiv.Controllers
                 //total number of rows count 
                 recordsTotal = chyby.Count();
                 //Paging 
-                var data = chyby.Skip(skip).Take(pageSize).ToList();
+                var data = chyby.OrderByDescending(e=>e.ErrorLogId).Skip(skip).Take(pageSize).ToList();
                 //Returning Json Data
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
 

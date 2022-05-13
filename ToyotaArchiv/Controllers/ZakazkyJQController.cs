@@ -122,7 +122,7 @@ namespace ToyotaArchiv.Controllers
                 
                 // Getting all Zakazka
                 var zakazky = (from zakazka in _context.Zakazkas
-                               select zakazka);
+                                select zakazka);
 
                
                 //Sorting
@@ -196,8 +196,12 @@ namespace ToyotaArchiv.Controllers
                                                     m.Vin.Contains(searchValue) ||
                                                     m.Cws.Contains(searchValue) ||
                                                     m.CisloProtokolu.Contains(searchValue) ||
-                                                    m.Ukoncena.Contains(searchValue)
-                                                   );
+                                                    m.CisloDielu.Contains(searchValue) ||
+                                                    m.Ukoncena.Contains(searchValue) ||
+                                                    m.Spz.Contains(searchValue) ||
+                                                    m.Majitel.Contains(searchValue) 
+                                                    );
+                                                   
                     }
                 }
                 
@@ -205,7 +209,7 @@ namespace ToyotaArchiv.Controllers
                 //total number of rows count 
                 recordsTotal = zakazky.Count();//Debug Console: SELECT COUNT(*)  FROM[Zakazka] AS[z]
                 //Paging 
-                var data = zakazky.Skip(skip).Take(pageSize).ToList(); //MH: az tu je vyber pagesize  zaznamov z databazy!!!
+                var data = zakazky.OrderByDescending(z=>z.ZakazkaId).Skip(skip).Take(pageSize).ToList(); //MH: az tu je vyber pagesize  zaznamov z databazy!!!
                 /*Debug Console:
                  * SELECT [z].[ZakazkaTG], [z].[CisloProtokolu], [z].[CWS], [z].[Poznamka], [z].[Ukoncena], [z].[VIN], [z].[Vytvorene], [z].[Vytvoril], [z].[ZakazkaID], [z].[ZakazkaTB], [z].[Zmenene], [z].[Zmenil]
                   FROM [Zakazka] AS [z]
@@ -455,7 +459,7 @@ namespace ToyotaArchiv.Controllers
             {
                 return NotFound();
             }
-
+            /*
             var zakazka = await _context.Zakazkas.FirstOrDefaultAsync(m => m.ZakazkaId == ID);
 
             if (zakazka == null)
@@ -463,6 +467,21 @@ namespace ToyotaArchiv.Controllers
                 return NotFound();
             }
             return View(zakazka);//zobrazi sa Delete view
+            */
+            //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
+            Zakazka zakazkaDB = await _context.Zakazkas
+                .Where(m => m.ZakazkaId == ID)
+               .Include(z => z.Dokuments)
+               .ThenInclude(d => d.DokumentDetails)
+               .OrderByDescending(z => z.Vytvorene)
+               .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
+
+            if (zakazkaDB == null)
+                return RedirectToAction(nameof(Index));
+
+            //ZakazkaZO je ViewModel pre instanciu  typu Zakazka
+            ZakazkaZO zakazkaZO = _transformService.ConvertZakazka_To_ZakazkaZO(ref zakazkaDB);
+            return View(zakazkaZO);//zobrazi sa Delete view
         }
 
         // POST: ZakazkyJQ/Delete/ZakTB1001

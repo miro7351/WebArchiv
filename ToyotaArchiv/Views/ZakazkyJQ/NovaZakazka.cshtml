@@ -65,8 +65,6 @@
         <span class="text-danger">@Model?.ErrorMessage</span>
     </div>
     <div class="d-flex p-2 justify-content-center">
-        @* <a asp-action="Index" class="btn  btn-primary" style="margin-right:50px;">Návrat</a>
-            <input type="submit" value="Uložiť" class="btn  btn-warning" onclick="document.forms['formCreate'].submit();" />*@
         <a asp-action="Index" class="btn  btn-light" style="margin-right:50px;">Návrat</a>
         <input type="submit" value="Uložiť" class="btn  btn-light" onclick="document.forms['formCreate'].submit();" />
 
@@ -78,9 +76,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="vybrataSkupina" id="vybrataSkupina" value="0" />
 
-            @*<div style="width:90%; margin:0 auto;">*@
+          
             <div class="col-md-12">
-                @* Udaje o zakazke; style="border-collapse: collapse; border: none;"*@
+                @* Udaje o zakazke*@
                 <table width="100%" cellspacing="5" cellpadding="10">
                     <tr>
                         @Html.HiddenFor(x => Model.ZakazkaTGdokument.Skupina)
@@ -115,7 +113,8 @@
                         @Html.HiddenFor(x => Model.ZakazkaTBdokument.Skupina)
                         @Html.HiddenFor(x => Model.ZakazkaTBdokument.NazovSuboru)
                         @Html.HiddenFor(x => Model.ZakazkaTBdokument.NazovDokumentu)
-
+                       
+                        @*ZakazkaTb*@
                         <td align="right">@Html.DisplayNameFor(m=>m.ZakazkaTb)</td>
                         <td>@Html.TextBoxFor(m=>m.ZakazkaTb, new {@class="form-control"})</td>
                         <span asp-validation-for="ZakazkaTb" class="text-danger"></span>
@@ -135,7 +134,6 @@
                                 <a class="btn-floating btn-sm red" onclick="vymazPolozku( '@Model?.ZakazkaTBdokument?.Skupina');"><i class="fas fa-trash-alt"></i></a>
                             </div>
                         </td>
-
                     </tr>
 
                     <tr>
@@ -167,7 +165,6 @@
                         <td>@Html.TextBoxFor(m=>m.SPZ, new {@class="form-control"})</td>
                         <span asp-validation-for="SPZ" class="text-danger"></span>
 
-                        
                         @*Majitel*@
                         <td colspan="2">
                             <table width="90%">
@@ -227,7 +224,7 @@
                                     @Html.HiddenFor(x => Model.PovinneDokumenty[i].Skupina)@*Skupina sa needituje tak ju prenasam ako hidden element*@
                                     @*NazovDokumentu*@
                                     <td width="300px">
-                                        @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly", Style="background:transparent;border-collapse: collapse; border: none;"})
+                                        @Html.TextBoxFor(x => Model.PovinneDokumenty[i].NazovDokumentu, new { @class="form-control", @readonly="readonly", style="background:transparent;border-collapse: collapse; border: none;" })
                                     </td>
 
                                     @*Poznamka*@
@@ -253,7 +250,6 @@
                                             <a class="btn-floating btn-sm red" onclick="vymazPolozku( '@Model.PovinneDokumenty[i].Skupina');"><i class="fas fa-trash-alt"></i></a>
                                         </div>
                                     </td>
-
                                 </tr>
                             }
                         </tbody>
@@ -272,9 +268,7 @@
                 @if (Model?.Prilohy != null)
                 {
                     <table id="datatablePrilohy" width="100%" cellspacing="5" cellpadding="10">
-
                         <tbody>
-
                             @for (int i = 0; i < Model.Prilohy.Count; i++)
                             {
                                 <tr>
@@ -308,23 +302,15 @@
                                             <a class="btn-floating btn-sm red" onclick="vymazPolozku( '@Model.Prilohy[i].Skupina');"><i class="fas fa-trash-alt"></i></a>
                                         </div>
                                     </td>
-
                                 </tr>
                             }
                         </tbody>
                     </table>
                 }
-                @* <div class="form-group">
-                    <input type="submit" value="Uložiť" class="btn btn-sm  btn-primary" />
-                    </div>*@
             </div>
         </form>
     </div>
 </div>
-
-@*<div>
-    <a asp-action="Index">Návrat</a>
-    </div>*@
 
 @section Scripts {
     @{

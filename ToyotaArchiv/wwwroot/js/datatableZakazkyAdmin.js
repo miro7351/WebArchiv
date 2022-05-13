@@ -3,24 +3,24 @@
 //!!!! Pred spustenim musia byt nahrate prislusne *.js subory, podla manualu !!!!!!
 $(document).ready(function () {
 
-    // Setup - add a text input to each footer cell
+    // Setup - add a text input to each footer cell; title je nazov stlpca z <tfoot> <tr> <td>...
     $('#datatableZakazky tfoot th').each(function () {
         var title = $(this).text();
         //console.log("title:" + title);
         if (title == "VIN") {
             $(this).html('<input type="text"  class="filter1" placeholder=" ' + title + '" style="width:180px" />');
         }
-        else if (title == "Ukoncena") {
+        else if (title == "Ukončená") {
             $(this).html('<input type="text" class="filter1" placeholder=" ' + "A/N" + '" style="width:70px" />');
         }
         else if (title == "CWS") {
             $(this).html('<input type="text" class="filter1" placeholder=" ' + "CWS" + '" style="width:120px" />');
         }
-        else if (title == "CisloProtokolu") {
+        else if (title == "Ćíslo protokolu") {
             $(this).html('<input type="text" class="filter1" placeholder=" ' + "Číslo prot." + '" style="width:120px" />');
         }
-        else if (title == "Majitel") {
-            $(this).html('<input type="text" class="filter1" placeholder=" ' + "Majiteľ" + '" style="width:250px" />');
+        else if (title == "Majiteľ") {
+            $(this).html('<input type="text" class="filter1" placeholder=" ' + title + '" style="width:250px" />');
         }
         else if (title == "") {//stlpec pre link 'Vymazat' bude tu button na vymazanie udajov z fitrov
             ; /*$(this).html('<input type="Button"   value="Vymazať""  onclick="ClearFilter()"/>');*/
@@ -34,39 +34,21 @@ $(document).ready(function () {
 
     $('#datatableZakazky').dataTable({
 
+        //"dom": '<"top"i>rt<"bottom"flp><"clear">', //OK
+        "dom": '<"top"if>rt<"bottom"lp><"clear">', //OK
+        "lengthMenu": [[25, 10, 30, 50, -1], [25, 10, 30, 50, "Všetky"]], 
+        //"lengthMenu": [25],  //OK je tam len jedna moznost na vyber
+        "search": { return: true }, //Search box nad tabulkou  hlada az po stlaceni Enter
+        //"fixedColumns": true,  //Freezes the left most column to the side of the table
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.18/i18n/Slovak.json"
         },
-        "createdRow": function (row, data, index) {
-            console.log("createdRow");//tu pridem MH-02.05.2022
-            console.log("createdRow row['Ukoncena']:" +row['Ukoncena']);
-            console.log("createdRow $(row)['Ukoncena']:" + $(row)['Ukoncena']);//createdRow row['ukoncena']:undefined
-            //$('td', row).css("background-color", "#21CE2A");//OK vsetly riadky su svetlo zelene
-            //$(row).css("background-color", "#21CE2A");//OK vsetly riadky su svetlo zelene
-            //var rowDataLength = data.length;  //undefined
-            //alert("rowData.Length" + rowDataLength);
-
-            //var rowData7 = $(row).eq(7);  //row.eq(7)=[object Object]
-            //if (  $(row).eq(7) == "N" )
-            //  console.log("row.eq(7)=N");
-
-            //var rowData = $(row.eq(6).innerHTML);//.data();
-
-            //console.log("data[0]=" + data[0]);//data[0] undefined PRECO????, ale v Datatable02 mi to ide; tu este nie su data???
-            //console.log("data[7]=" + data[7]);//data[7] undefined
-
-            //if (data[7] == "N") {
-            //    console.log('createdRow: data[7] == "N"');
-            //    $('td', row).css("background-color", 'red');
-            //    //alert("data[6] = N");
-            //}
-        },
+        
 
         initComplete: function () {
-            // Apply the search
+            // Apply the search, podla filtra pre stlpec sa hlada po stlaceni Enter
             this.api().columns().every(function () {
                 var that = this;
-
                 $('input', this.footer()).on('keydown', function (ev) {
                     if (ev.keyCode == 13) { //only on enter keypress (code 13)
                         that
@@ -79,7 +61,7 @@ $(document).ready(function () {
 
         "processing": true, // for show progress bar
         "serverSide": true, // for process server side
-        "filter": true, // this is for disable filter (search box), ak je false nefunguju ani filtre nad stlpcami!!!!
+        "filter": true,     // this is for disable filter (search box), ak je false nefunguju ani filtre nad stlpcami!!!!
         "orderMulti": false, // for disable multiple column at once
 
         "ajax": {
@@ -139,25 +121,17 @@ $(document).ready(function () {
                 "visible": true,
                 "searchable": true,
                 "createdCell": function (td, cellData, rowData, row, col) { //createdRow sa spusta az po createdCell!!!!
-                    console.log("targets[7] cellData=" + cellData);
-                    console.log("targets[8] $(row)['ukoncena']:" + $(row)['ukoncena']);//targets[8] row['ukoncena']:undefined
+                    //console.log("createdCell  cellData=" + cellData);
+                    //console.log("targets[8] $(row)['ukoncena']:" + $(row)['ukoncena']);//targets[8] row['ukoncena']:undefined
+                    //console.log("targets[8] rowData[8]:" + rowData[8]);
                     if (cellData == "A") {
-                        console.log("targets[7] cellData='A' - zmena farieb");
+                        //console.log("targets[8] cellData='A' - zmena farieb");
                         //$('td', row).css("background-color", 'red');//NEJDE
                         //$(row).css("background-color", 'red');//NEJDE
                         //$(td).css('color', 'blue');  //OK
                         //$(td).css('background-color', 'yellow');//OK
                     }
                 }
-
-                //render: function (data, type) {  //NEJDE
-                //    if (type === 'display') {
-                //        if (data == 'A') {
-                //            let color = 'red';
-                //        }
-                //        return '<span style="color:' + color + '">' + data + '</span>';
-                //    }
-                //}
             },
             {
                 "targets": [9],/*SPZ */
@@ -199,6 +173,8 @@ $(document).ready(function () {
 
             {
                 "targets": [15],//Vymazat
+                "searchable": false,
+                "width":90,
                 "render": function (data, type, row) {
                     return '<a href="../ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>';
                 }
@@ -216,32 +192,32 @@ $(document).ready(function () {
             { "data": "cisloDielu", "name": "CisloDielu", "autoWidth": true },
 
             { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
-            { "data": "spz", "name": "SPZ", "autoWidth": true },
-            { "data": "majitel", "name": "Majitel", "autoWidth": true },
+            { "data": "spz",      "name": "SPZ", "autoWidth": true },
+            { "data": "majitel",  "name": "Majitel", "autoWidth": true },
             { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
 
             { "data": "vytvoril", "name": "Vytvoril", "autoWidth": true },
-            { "data": "zmenil", "name": "Zmenil", "autoWidth": true },
-            { "data": "zmenene", "name": "Zmenene", "autoWidth": true },
+            { "data": "zmenil",   "name": "Zmenil", "autoWidth": true },
+            { "data": "zmenene",  "name": "Zmenene", "autoWidth": true },
 
-        ]
+        ],
+        "createdRow": function (row, data, index) {
+            // row = tr node
+            // data = raw data (array or obj)
+            // index = The index of the row in DataTables' internal storage.
+            //console.log('createdRow:' + index);//tu pridem MH-02.05.2022
+            //console.log('data.ukoncena=' + data.ukoncena);//data.Ukoncena-undefined;  data.ukoncena OK!!!!!!!!!!!!!!
+
+            if (data.ukoncena == 'A') {
+                console.log('1mh-createdRow: data.ukoncena == "N"');
+                //$('td', row).css("background-color", '"#21CE2A');
+                 $(row).css("background-color", "#21CE2A");//OK!!!! po tyzdni...konecne!!!!!
+            }
+        },
 
     });
-
-
     //Filtre su v headeri tabulky
     $('#datatableZakazky tfoot tr').appendTo('#datatableZakazky thead');
-
-    // $('#datatableZakazky').DataTable({
-    //    scrollY: "600px",
-    //    scrollX: true,
-    //    scrollCollapse: true,
-    //    paging: false,
-    //    fixedColumns: {
-    //        heightMatch: 'none'
-    //    }
-    //});
-
 });
 
 

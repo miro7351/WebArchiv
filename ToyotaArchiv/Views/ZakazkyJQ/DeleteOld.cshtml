@@ -1,0 +1,102 @@
+﻿@model PA.TOYOTA.DB.Zakazka
+
+@{
+    ViewData["Title"] = "Vymazanie zákazky";
+}
+@*MH: april 2022 ZakazkayJQ: Delete/zakazkaID *@
+
+<div class="container px-4" >
+   <h3>Naozaj vymazať záznam o garančnej oprave?</h3>
+    <div class="form-inline">
+      <span class="text-primary mr-1" style="font-size: 90%; text-align:center">Garančná oprava:</span>
+      <span class="text-danger ml-1" style="font-size: 100%; text-align:center"><b> @Model.ZakazkaTg</b></span>
+      </div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ZakazkaTg)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ZakazkaTg)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ZakazkaTb)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ZakazkaTb)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CisloProtokolu)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CisloProtokolu)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cws)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cws)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vin)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vin)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Spz)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Spz)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Majitel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Majitel)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ukoncena)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ukoncena)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vytvoril)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vytvoril)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vytvorene)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vytvorene)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Zmenil)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Zmenil)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Zmenene)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Zmenene)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Poznamka)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Poznamka)
+        </dd>
+       
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ZakazkaTg" />
+        <input type="submit" value="Vymazať" class="btn btn-sm btn-danger" /> |
+        <a asp-action="Index">Návrat</a>
+    </form>
+</div>

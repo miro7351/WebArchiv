@@ -1,0 +1,34 @@
+MH: 11.05.2022
+
+tab .Account: ak ma stlpec LoginID   Identity 1,1 potom sa neda urobit update!!!
+              stlpec LoginName  som urobil primary key (LoginName napr. admin, veduci, technik, user1,...; lepsi by bol nazov AccountName)
+
+pozri: 
+https://stackoverflow.com/questions/61514242/cannot-update-identity-column-in-entity-framework-core-since-upgrading-to-net-c
+https://stackoverflow.com/questions/39176018/cannot-update-identity-column-in-entity-framework-core/42907267
+
+treba pouzit kod
+modelBuilder.Entity<Type>().Property(u => u.Property).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+
+This is needed only for identity columns which are not the primary key (PK) of the table (or Key in EF Core).
+Which should be rare - this is why you have issue only with that table.
+
+
+Nas projekt
+ToyotaContext.cs
+
+ modelBuilder.Entity<Account>(entity =>
+  {
+
+
+entity...(e=>e.LoginID).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+
+}
+
+Toto pomoze...update ide OK!!
+
+
+
+Ak sa urobi novy Scaffold-DbContext.... vsetko sa strati, a dlho sa hlada pricina preco zase nejde update na tab. Account.
+
+V tab Account stlpec LoginId nema nijaky vyznam, preto som ho zrusil a nova verzia tab. Account uz nema stlpec LoginID.
