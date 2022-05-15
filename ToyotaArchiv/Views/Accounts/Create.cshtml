@@ -7,9 +7,9 @@
 <style>
 
     /* table, th, td {
-                border: 1px solid black;
-                border-collapse: collapse;
-            }*/
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                    }*/
 
     table, table TD, table TH {
         font-family: sans-serif;
@@ -27,7 +27,7 @@
 <div class="container-fluid" style="width:95%">
     <div class="form-inline">
         <h3 class="text-left d-inline mr-4">Nový účet</h3>
-        <span class="text-danger">@ViewBag.ErrorMessage</span>
+        <span id="error" class="text-danger">@ViewBag.ErrorMessage</span>
     </div>
     <div class="d-flex p-2 justify-content-center">
         <a asp-action="Index" class="btn  btn-light" style="margin-right:50px;">Návrat</a>
@@ -35,9 +35,9 @@
 
     </div>
     @* <hr />*@
-    <div class="row" style="zoom: 100%">
+    <div class="row" style="zoom: 80%">
         @*<div class="col-md-12">*@
-        <form name="formCreate" asp-action="Create">
+        <form name="formCreate" asp-action="Create" onkeydown="document.getElementById('error').innerHTML='';">
             @*<div style="width:90%; margin:0 auto;">*@
             <div class="col-md-12">
                 @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
@@ -47,14 +47,16 @@
                         <td width="250px"> <input asp-for="LoginName" class="form-control" /></td>
                         <td width="150px"> <span asp-validation-for="LoginName" class="text-danger"></span></td>
                     </tr>
-                    <td width="100px"><label asp-for="LoginPassword" class="control-label"></label></td>
-                    <td width="250px"><input asp-for="LoginPassword" class="form-control" type="password" /></td>
-                    <td width="250px"><span asp-validation-for="LoginPassword" class="text-danger"></span></td>
+                    <tr>
+                        <td width="100px"><label asp-for="LoginPassword" class="control-label"></label></td>
+                        <td width="250px"><input asp-for="LoginPassword" class="form-control" type="password" /></td>
+                        <td width="250px"><span asp-validation-for="LoginPassword" class="text-danger"></span></td>
+                    </tr>
                     <tr>
                         <td width="100px">
                             <label asp-for="LoginRola" class="control-label"></label>
                         </td>
-                        <td width="250px">
+                        <td width="280px">
                             <select name="LoginRola" id="LoginRola" class="form-control">
                                 <option value="">--Vyber rolu--</option>
                                 <option value="VEDUCI">VEDUCI</option>
@@ -69,7 +71,7 @@
                             <label asp-for="Aktivny" class="control-label"></label>
                         </td>
                         <td>
-                            <input asp-for="Aktivny" type="checkbox" />
+                            <input asp-for="Aktivny" type="checkbox" style="width:20px; height:20px;" />
                         </td>
 
                     </tr>
@@ -149,21 +151,7 @@
 
 @section Scripts {
     @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-
-<script type="text/javascript">
-
-    /*vymaze chybovy oznam */
-    function clearError()
-    {
-
-         console.log("clearError vypis do console");
-        var html =  document.getElementById("error").innerHTML;
-        console.log("1clearError:" + html);
-        html= document.getElementById("error").innerHTML="";
-         console.log("2clearError:" + html);
-        // @ViewBag.ErrorMessage="";
+         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-</script>
 }
+

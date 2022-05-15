@@ -7,19 +7,19 @@
 
 <style>
 
-   /* table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }*/
+    /* table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }*/
 
-        table, table TD, table TH {
-            font-family: sans-serif;
-            font-size: 13pt;
-            color: black;
-            /* background-color:#BBDEFB;*/
-            /*background-color: whitesmoke;  toto je ovela lepsie*/
-            background-color: white;  /*vsetko sa vznasa vo vzduchoprazdne!!!*/
-        }
+    table, table TD, table TH {
+        font-family: sans-serif;
+        font-size: 13pt;
+        color: black;
+        /* background-color:#BBDEFB;*/
+        /*background-color: whitesmoke;  toto je ovela lepsie*/
+        background-color: white; /*vsetko sa vznasa vo vzduchoprazdne!!!*/
+    }
 
 </style>
 
@@ -33,37 +33,42 @@
         <a asp-action="Index" class="btn  btn-light" style="margin-right:50px;">Návrat</a>
         <input type="submit" value="Uložiť" class="btn  btn-light" onclick="document.forms['formCreate'].submit();" />
     </div>
-  
+
     <div class="row" style="zoom: 80%">
         <form name="formCreate" asp-action="Edit">
-          @*  @Html.HiddenFor(x => Model.LoginId)*@
+            @*  @Html.HiddenFor(x => Model.LoginId)*@
+            @Html.HiddenFor(x => Model.LoginPassword)
             <div class="col-md-12">
                 <table width="500" cellspacing="5" cellpadding="10" align="center">
                     <tr>
                         <td width="100px"> <label asp-for="LoginName" class="control-label"></label></td>
-                        <td width="250px"> <input asp-for="LoginName" class="form-control"  /></td>
+                        <td width="250px"> <input asp-for="LoginName" class="form-control" /></td>
                         <td width="150px"> <span asp-validation-for="LoginName" class="text-danger"></span></td>
                     </tr>
+                   @* <tr>
                         <td width="100px"><label asp-for="LoginPassword" class="control-label"></label></td>
                         <td width="250px"><input asp-for="LoginPassword" class="form-control" type="password" /></td>
                         <td width="150px"><span asp-validation-for="LoginPassword" class="text-danger"></span></td>
+                    </tr>*@
                     <tr>
                         <td width="100px"> <label asp-for="LoginRola" class="control-label"></label></td>
                         <td width="250px">
-                            <select name="LoginRola" id="LoginRola" class="form-control" asp-for="@Model.LoginRola" >
-                            <option value="">--Vyber rolu--</option>
-                            <option value="VEDUCI">VEDUCI</option>
-                            <option value="SERVISNY_TECHNIK">SERVISNY_TECHNIK</option>
-                            <option value="READONLY">READONLY</option>
-                        </select></td>
-                         <td width="150px"><span asp-validation-for="LoginRola" class="text-danger"></span></td>
+                            <select name="LoginRola" id="LoginRola" class="form-control" asp-for="@Model.LoginRola">
+                                <option value="">--Vyber rolu--</option>
+                                <option value="VEDUCI">VEDUCI</option>
+                                <option value="SERVISNY_TECHNIK">SERVISNY_TECHNIK</option>
+                                <option value="READONLY">READONLY</option>
+                            </select>
+                        </td>
+                        <td width="150px"><span asp-validation-for="LoginRola" class="text-danger"></span></td>
                     </tr>
                     <tr>
-                        <td>@*public bool Aktivny { get; set; }  nesmie byt bool? Aktivny*@
+                        <td>
+                            @*public bool Aktivny { get; set; }  nesmie byt bool? Aktivny*@
                             <label asp-for="Aktivny" class="control-label"></label>
                         </td>
                         <td>
-                            <input asp-for="Aktivny"  type="checkbox"  checked="@Model.Aktivny" />
+                            <input asp-for="Aktivny" type="checkbox" checked="@Model.Aktivny" style="width:20px; height:20px;" />
                         </td>
                     </tr>
                 </table>

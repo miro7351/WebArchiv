@@ -148,6 +148,7 @@ table.dataTable tr.even {
     background-color: white;
 }
 
+/* farby riadkov pre DataTable pre prvy stlpec*/
 table.dataTable tr.odd .sorting_1 {
     background-color: #baf7b0f8;
 }
@@ -159,6 +160,7 @@ table.dataTable tr.even .sorting_1 {
 /*.form-group {
     text-align: Left;
 }*/
+
 
 
  

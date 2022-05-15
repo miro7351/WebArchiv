@@ -3,7 +3,7 @@
     //po zobrazeni stranky
     $('#datatableAccounts').dataTable({
 
-
+        "dom": '<"top"if>rt<"bottom"lp><"clear">', //OK
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.18/i18n/Slovak.json"
         },

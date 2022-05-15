@@ -116,6 +116,7 @@ namespace ToyotaArchiv.Controllers
             return View();
         }
 
+        /*
         // POST: Accounts/Edit  submit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -158,7 +159,50 @@ namespace ToyotaArchiv.Controllers
             ViewBag.ErrorMessage = $"Nastala chyba pri zmene účtu '{account.LoginName}'.";
             return View(account);
         }
+        */
 
+        // POST: Accounts/Edit  submit
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit( [Bind("LoginName,LoginPassword,LoginRola,Aktivny")] Account account)
+        {
+            //if (id != account.LoginId)
+            //{
+            //    return NotFound();
+            //}
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(account);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    //string s = ex.Message;
+                    //if (!AccountExists(account.LoginId))
+                    if (!AccountExists(account.LoginName))
+                    {
+                        ViewBag.ErrorMessage = $"Chyba: účet '{account.LoginName}' neexistuje.";
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = $"Nastala chyba pri zmene účtu '{account.LoginName}'.";
+                    }
+                }
+                catch
+                {
+                    ViewBag.ErrorMessage = $"Nastala chyba pri zmene účtu '{account.LoginName}'.";
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.ErrorMessage = $"Nastala chyba pri zmene účtu '{account.LoginName}'.";
+            return View(account);
+        }
 
         /*public bool? Aktivny { get; set; }
          *  @Html.DisplayNameFor(m=>m.Aktivny)
@@ -179,6 +223,7 @@ namespace ToyotaArchiv.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Account account)  //MH 05.05.2022 zmena
         {
+            (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
             if (ModelState.IsValid)
             {
                 try
