@@ -191,42 +191,26 @@ namespace ToyotaArchiv.Controllers
                     }
                     else
                     {
-                        zakazky = zakazky.Where(m => m.ZakazkaTb.Contains(searchValue) ||
-                                                    m.ZakazkaTg.Contains(searchValue) ||
-                                                    m.Vin.Contains(searchValue) ||
-                                                    m.Cws.Contains(searchValue) ||
-                                                    m.CisloProtokolu.Contains(searchValue) ||
-                                                    m.CisloDielu.Contains(searchValue) ||
-                                                    m.Ukoncena.Contains(searchValue) ||
-                                                    m.Spz.Contains(searchValue) ||
-                                                    m.Majitel.Contains(searchValue) 
-                                                    );
-                                                   
+                        zakazky = zakazky.Where(
+                            m => m.ZakazkaTb.Contains(searchValue) ||
+                            m.ZakazkaTg.Contains(searchValue) ||
+                            m.Vin.Contains(searchValue) ||
+                            m.Cws.Contains(searchValue) ||
+                            m.CisloProtokolu.Contains(searchValue) ||
+                            m.CisloDielu.Contains(searchValue) ||
+                            m.Ukoncena.Contains(searchValue) ||
+                            m.Spz.Contains(searchValue) ||
+                            m.Majitel.Contains(searchValue) 
+                            );
                     }
                 }
-                
-              
                 //total number of rows count 
-                recordsTotal = zakazky.Count();//Debug Console: SELECT COUNT(*)  FROM[Zakazka] AS[z]
+                recordsTotal = zakazky.Count();
                 //Paging 
                 var data = zakazky.OrderByDescending(z=>z.ZakazkaId).Skip(skip).Take(pageSize).ToList(); //MH: az tu je vyber pagesize  zaznamov z databazy!!!
-                /*Debug Console:
-                 * SELECT [z].[ZakazkaTG], [z].[CisloProtokolu], [z].[CWS], [z].[Poznamka], [z].[Ukoncena], [z].[VIN], [z].[Vytvorene], [z].[Vytvoril], [z].[ZakazkaID], [z].[ZakazkaTB], [z].[Zmenene], [z].[Zmenil]
-                  FROM [Zakazka] AS [z]
-                  ORDER BY [z].[ZakazkaID]
-                  OFFSET @__p_0 ROWS FETCH NEXT @__p_0 ROWS ONLY
-
-                filter: CWS: CWS000, Ukoncena: A
-                  SELECT [z].[ZakazkaTG], [z].[CisloProtokolu], [z].[CWS], [z].[Poznamka], [z].[Ukoncena], [z].[VIN], [z].[Vytvorene], [z].[Vytvoril], [z].[ZakazkaID], [z].[ZakazkaTB], [z].[Zmenene], [z].[Zmenil]
-                      FROM [Zakazka] AS [z]
-                      WHERE ((@__colCwsSearchValue_0 LIKE N'') OR (CHARINDEX(@__colCwsSearchValue_0, [z].[CWS]) > 0)) AND ((@__colUkoncenaSearchValue_1 LIKE '') OR (CHARINDEX(@__colUkoncenaSearchValue_1, [z].[Ukoncena]) > 0))
-                      ORDER BY [z].[ZakazkaID]
-                      OFFSET @__p_2 ROWS FETCH NEXT @__p_3 ROWS ONLY
-                 * 
-                 */
+                
                 //Returning Json Data
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
-
             }
             catch (Exception)
             {
@@ -489,7 +473,7 @@ namespace ToyotaArchiv.Controllers
             return View(zakazkaZO);//zobrazi sa Delete view
         }
 
-        // POST: ZakazkyJQ/Delete/ZakTB1001
+        // POST: ZakazkyJQ/Delete/ZakTB1001, zo stranky Delete.cshtml po kliku na button 'Vymazat'
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string zakazkaTg)
@@ -643,7 +627,17 @@ namespace ToyotaArchiv.Controllers
                         _transformService.ConvertZakazkaZO_To_Zakazka(ref zakazkaZO, ref povodnaZakazkaDB);
 
                         int pocetUlozenych = await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction(nameof(Index));//toto je OK
+                      
+                        //MH: tu by sa mohlo ostat v okne: 'UpdateZakazka'???
+                        //Zakazka zakazkaDB = await _context.Zakazkas
+                        //   .Where(m => m.ZakazkaTg == zakazkaTg)
+                        //   .Include(z => z.Dokuments)
+                        //   .ThenInclude(d => d.DokumentDetails)
+                        //   .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
+                        //ZakazkaZO modifZakazkaZO = _transformService.ConvertZakazka_To_ZakazkaZO( ref zakazkaDB);
+
+                        //return View(modifZakazkaZO); //MH je to OK! 16.05.2022
                     }
                     catch //ak nastane exception pri spracovani, napr. zada sa ZakazkaTG, ktore uz existuje v DB!
                     {
@@ -658,6 +652,9 @@ namespace ToyotaArchiv.Controllers
             
             else if (skupina == 222) //priznak ze bol klik na button 'Pridaj prilohu'
             {
+                //MH: 16.05.2022 vlozit kod na ulozenie zmien do databazy???
+                //Asi nie, lebo nakoniec sa zmeny nemusia ulozit!!!!
+
                 //pridanie polozky do Priloh
                 short maxSkupina = zakazkaZO.Prilohy.Max(d => d.Skupina) ?? 0;
                 if (maxSkupina > 0)
