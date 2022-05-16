@@ -250,12 +250,13 @@ namespace ToyotaArchiv.Controllers
                 return NotFound();
             }
 
+            //.ThenInclude(d => d.DokumentDetails),  .OrderByDescending(z => z.Vytvorene) MH vynechane 16.05.2022
             //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
             Zakazka zakazkaDB = await _context.Zakazkas
                 .Where(m => m.ZakazkaTg == zakazkaTg)
                .Include(z => z.Dokuments)
-               .ThenInclude(d => d.DokumentDetails)
-               .OrderByDescending(z => z.Vytvorene)
+               
+              
                .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
 
             if (zakazkaDB == null)
@@ -287,7 +288,7 @@ namespace ToyotaArchiv.Controllers
 
 
         /*
-         * UpdateZakazka.cshtml  klik na link Vymazat
+         *  UpdateZakazka.cshtml  klik na link Vymazat
              @Html.ActionLink("Vymazať", "DeleteDokument", "ZakazkyJQ",
                                     new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina} )
          * 
@@ -319,11 +320,14 @@ namespace ToyotaArchiv.Controllers
                 int pp = await _context.SaveChangesAsync();
             }
             //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
+            /* 
+             .ThenInclude(d => d.DokumentDetails)
+               .OrderByDescending(z => z.Vytvorene)
+             */
             Zakazka zakazkaDB = await _context.Zakazkas
                 .Where(m => m.ZakazkaTg == zakazkaTG)
                .Include(z => z.Dokuments)
-               .ThenInclude(d => d.DokumentDetails)
-               .OrderByDescending(z => z.Vytvorene)
+               
                .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
 
             if (zakazkaDB == null)
@@ -469,11 +473,12 @@ namespace ToyotaArchiv.Controllers
             return View(zakazka);//zobrazi sa Delete view
             */
             //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
+            //  .OrderByDescending(z => z.ZakazkaId), .ThenInclude(d => d.DokumentDetails)  MH: vynechane 16.05.2022
             Zakazka zakazkaDB = await _context.Zakazkas
                 .Where(m => m.ZakazkaId == ID)
                .Include(z => z.Dokuments)
-               .ThenInclude(d => d.DokumentDetails)
-               .OrderByDescending(z => z.Vytvorene)
+              
+              
                .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
 
             if (zakazkaDB == null)
@@ -489,8 +494,12 @@ namespace ToyotaArchiv.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string zakazkaTg)
         {
-            var zakazka = await _context.Zakazkas.FindAsync(zakazkaTg);
-            _context.Zakazkas.Remove(zakazka);
+            (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
+            Zakazka zakazkaDB = await _context.Zakazkas.FindAsync(zakazkaTg);
+            zakazkaDB.Zmenil = ViewBag.Login;
+            zakazkaDB.Zmenene = DateTime.Now;   
+
+            _context.Zakazkas.Remove(zakazkaDB);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -512,7 +521,8 @@ namespace ToyotaArchiv.Controllers
             (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
             short pocetPriloh = 1;
             ZakazkaZO zakazkaZO = _transformService.VytvorPrazdnuZakazkuZO(pocetPriloh: pocetPriloh);
-
+            zakazkaZO.Vytvoril = ViewBag.Login;
+            zakazkaZO.Vytvorene = DateTime.Now; 
             return View(zakazkaZO);
         }
 
@@ -538,7 +548,7 @@ namespace ToyotaArchiv.Controllers
              */
            
 
-            if (skupina == 0)//nebol klik na button na mazanie suboru; zakazkaZO sa ulozi do DB
+            if (skupina == 0)//nebol klik na button na mazanie suboru; klik na submit, zakazkaZO sa ulozi do DB
             { 
                 bool mv = ModelState.IsValid;
                 if (ModelState.IsValid)//ulozim zakazkuZO do DB
@@ -547,6 +557,8 @@ namespace ToyotaArchiv.Controllers
                     try
                     {
                         //Z instancie typu ZakazkaZO vytvorime instanciu typu Zakazka a pridame ju do _contextu
+                        zakazkaZO.Vytvoril = ViewBag.Login;
+                        zakazkaZO.Vytvorene = DateTime.Now; 
                         Zakazka novaZakazkaDB = _transformService.ConvertZakazkaZO_To_NewZakazka(ref zakazkaZO);
                         _context.Add(novaZakazkaDB);
                         int pocetUlozenych = await _context.SaveChangesAsync();
@@ -605,7 +617,7 @@ namespace ToyotaArchiv.Controllers
             _ = short.TryParse(vybrataSkupina, out short skupina);
 
 
-            if (skupina == 0)//nebol klik na button pre pridanie Prilohy
+            if (skupina == 0)//bol klik na submit 'ULOZIT ZMENY'; nebol klik na button pre pridanie Prilohy, 
             {
                 bool mv = ModelState.IsValid;
 
@@ -619,11 +631,13 @@ namespace ToyotaArchiv.Controllers
                     .Where(m => m.ZakazkaTg == zakazkaTg)
                    .Include(z => z.Dokuments)
                    .ThenInclude(d => d.DokumentDetails)
-                   .OrderByDescending(z => z.Vytvorene)
+                   /*.OrderByDescending(z => z.Vytvorene)*/
                    .FirstOrDefaultAsync();    //NACITANIE vsetkych Dokumentov a DokumentDetail-ov pre vybratu zakazku
 
+
                     int pd = NastavZakazkuZO(ref zakazkaZO);
-                    
+                    zakazkaZO.Zmenil = ViewBag.Login;
+                    zakazkaZO.Zmenene = DateTime.Now;
                     try
                     {
                         _transformService.ConvertZakazkaZO_To_Zakazka(ref zakazkaZO, ref povodnaZakazkaDB);

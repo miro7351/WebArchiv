@@ -55,7 +55,7 @@
         <h3 class="text-left d-inline mr-4">Úprava zákazky pre garančnú opravu: @Model.ZakazkaTg</h3>
         <span class="text-danger">@Model?.ErrorMessage</span>
     </div>
-    <div class="d-flex p-2 justify-content-center">
+    <div class="d-flex p-0 justify-content-center">
         <a asp-action="Index" class="btn btn-light">Návrat</a>
         <input type="button" style="margin-left:30px" value="Uložiť zmeny" class="btn btn-light" onclick="document.forms['formUpdate'].submit();" />
     </div>
@@ -74,6 +74,11 @@
                         @Html.HiddenFor(x => Model.ZakazkaTGdokument.Skupina)
                         @Html.HiddenFor(x => Model.ZakazkaTGdokument.NazovSuboru)
                         @Html.HiddenFor(x => Model.ZakazkaTGdokument.NazovDokumentu)
+
+                        @Html.HiddenFor(x => Model.Vytvorene)
+                        @Html.HiddenFor(x => Model.Vytvoril)
+                        @Html.HiddenFor(x => Model.Zmenene)
+                        @Html.HiddenFor(x => Model.Zmenil)
 
                         @*ZakazkaTGdokument*@
                         <tr>

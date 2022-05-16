@@ -44,7 +44,7 @@ TOTO GENERUJE VS ak sa vytvori nejake view *.cshtml
 
 Ale ked potrebujeme EDITOVAT NA KLIENTOVI udaje, treba pouzit tento postup
 
-Correctly Binding Collection Data
+Correctly Binding Collection Data: napr. Model.Orders[i].OrderID
 
 @if (Model.Orders != null)
 {

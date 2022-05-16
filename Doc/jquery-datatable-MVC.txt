@@ -30,7 +30,7 @@ Install
 
 ----------------
 B,
-pridat napr. do xxxxController Index.cshtml a spustit stranku, mala by sa zobrazit hlavicka tabulky
+pridat <table .../> napr. do xxxxController Index.cshtml a spustit stranku, mala by sa zobrazit hlavicka tabulky
 
 @page
 @model IndexModel
@@ -56,6 +56,7 @@ pridat napr. do xxxxController Index.cshtml a spustit stranku, mala by sa zobraz
         </table>
     </div>
 </div>
+
 Toto tu musi byt, pouzije sa v _Layout.cshtml
 @section Scripts
 {

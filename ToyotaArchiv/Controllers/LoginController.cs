@@ -50,27 +50,35 @@ namespace ToyotaArchiv.Controllers
             }
             ClaimsIdentity? identity = null;
             bool isAuthenticated = false;
+            Account? account = null;
 
-
-            //var user = _context.Accounts.Where(f => f.LoginName == username && f.LoginPassword == password).FirstOrDefault();
-            //var user = _context.Accounts.FirstOrDefault(f => f.LoginName == userLogin && f.LoginPassword == password && f.Aktivny == true);
-            Account? account = _context.Accounts.FirstOrDefault(f => f.LoginName == userLogin && f.LoginPassword == password);
-            if (account == null)
+            try
             {
-                ModelState.AddModelError(string.Empty, "Invalid Email or Password");
-
-                ViewBag.ErrorMessage = $"Pre login '{userLogin}' je heslo neplatné.";
-                return View();
-            }
-            else
-            {
-                if (!account.Aktivny)
+                //var user = _context.Accounts.Where(f => f.LoginName == username && f.LoginPassword == password).FirstOrDefault();
+                //var user = _context.Accounts.FirstOrDefault(f => f.LoginName == userLogin && f.LoginPassword == password && f.Aktivny == true);
+                account = _context.Accounts.FirstOrDefault(f => f.LoginName == userLogin && f.LoginPassword == password);
+                if (account == null)
                 {
-                    ViewBag.ErrorMessage = $"Pre login '{userLogin}' účet je zablokovaný.";
+                    ModelState.AddModelError(string.Empty, "Invalid Email or Password");
+
+                    ViewBag.ErrorMessage = $"Pre login '{userLogin}' je heslo neplatné.";
                     return View();
                 }
+                else
+                {
+                    if (!account.Aktivny)
+                    {
+                        ViewBag.ErrorMessage = $"Pre login '{userLogin}' účet je zablokovaný.";
+                        return View();
+                    }
+                }
             }
-
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                ViewBag.ErrorMessage = "CHYBA pri spojení s databázou.";
+                return View();
+            }
 
             identity = new ClaimsIdentity(new[]
             {

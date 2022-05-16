@@ -183,21 +183,20 @@ So for example if your title was a date, you could define
 
 [DisplayFormat(DataFormatString = "{0:d}")]
 
------------
-toto generuje VS
+----------------------------------------------------------------------------------------------------
+!!!! Toto generuje VS    ( POUZIVA ASP.NET ATTRIBUTY )   !!!!!!!!!!
   <label asp-for="ZakazkaTg" class="control-label"></label>
   <input asp-for="ZakazkaTg" class="form-control" />
   <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
 
-  da sa to prepisat aj takto:
+!!!!!!!!  Da sa to prepisat aj takto: POUZIVA Html Tag Helpers !!!!!!!!!!
 
   @Html.DisplayNameFor(m=>m.ZakazkaTg)
   @Html.TextBoxFor(m=>m.ZakazkaTg, new { @class="form-control"})
   @Html.ValidationMessageFor(m=>m.ZakazkaTg, "Chyba:",new { @class="text-danger"})//pod TextBoxom sa objavi popis: Chyba ma cervenu farbu;
 
 
-
-
+======================================================================================================
 
 
 

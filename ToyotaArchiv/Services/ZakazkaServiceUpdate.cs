@@ -54,6 +54,11 @@ namespace ToyotaArchiv.Services
             zakazkaDB.CisloDielu = zakazkaZO?.CisloDielu?.Trim();
             zakazkaDB.Spz = zakazkaZO?.SPZ?.Trim();
             zakazkaDB.Majitel = zakazkaZO?.Majitel?.Trim();
+            zakazkaDB.Vytvoril = zakazkaZO?.Vytvoril?.Trim();
+            zakazkaDB.Vytvorene = zakazkaZO?.Vytvorene;
+
+            zakazkaDB.Zmenil = zakazkaZO?.Zmenil?.Trim();
+            zakazkaDB.Zmenene = zakazkaZO?.Zmenene;
 
             #region == Dokumenty  pre Skupina=1 a Skupina=2 ===
 
@@ -397,6 +402,8 @@ namespace ToyotaArchiv.Services
             #endregion == Prilohy ==
 
         }//ConvertZakazkaZO_To_Zakazka(ZakazkaZO myZakZO, ref Zakazka zakazkaDB)
+
+
 
     }//class
 }
