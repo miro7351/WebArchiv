@@ -115,11 +115,11 @@ namespace ToyotaArchiv.Controllers
                 colCwsSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault() ?? string.Empty;
                 colCisloProtSearchValue = Request.Form["columns[6][search][value]"].FirstOrDefault() ?? string.Empty;
                 colCisloDieluSearchValue = Request.Form["columns[7][search][value]"].FirstOrDefault() ?? string.Empty;
-                colUkoncenaSearchValue = Request.Form["columns[8][search][value]"].FirstOrDefault() ?? string.Empty;
-
-                colSPZSearchValue = Request.Form["columns[9][search][value]"].FirstOrDefault() ?? string.Empty;
-                colMajitelSearchValue = Request.Form["columns[10][search][value]"].FirstOrDefault() ?? string.Empty;
                 
+
+                colSPZSearchValue = Request.Form["columns[8][search][value]"].FirstOrDefault() ?? string.Empty;
+                colMajitelSearchValue = Request.Form["columns[9][search][value]"].FirstOrDefault() ?? string.Empty;
+                colUkoncenaSearchValue = Request.Form["columns[10][search][value]"].FirstOrDefault() ?? string.Empty;
                 // Getting all Zakazka
                 var zakazky = (from zakazka in _context.Zakazkas
                                 select zakazka);

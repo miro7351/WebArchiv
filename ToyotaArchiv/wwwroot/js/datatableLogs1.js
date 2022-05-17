@@ -3,13 +3,13 @@
 
    
     // Setup - add a text input to each footer cell
-    $('#datatableLogy tfoot th').each(function () {
+    $('#datatableLogs1 tfoot th').each(function () {
         var title = $(this).text();
         $(this).html('<input type="text" placeholder=" ' + title + '" />');
     });
 
 
-    $('#datatableLogy').dataTable({
+    $('#datatableLogs1').dataTable({
 
         "dom": '<"top"if>rt<"bottom"lp><"clear">',
         "lengthMenu": [[25, 10, 30, 50, -1], [25, 10, 30, 50, "Všetky"]],
@@ -52,19 +52,24 @@
                 "targets": [1],
                 "visible": true,
                 "searchable": true,
-                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:mm')
+                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:mm'),
             },
             ],
         "columns": [
-            { "data": "logId", "name": "LogId", "autoWidth": true },
-            { "data": "logDate", "name": "LogDate", "autoWidth": true },
-            { "data": "tableName", "name": "TableName", "autoWidth": true },
-            { "data": "logMessage", "name": "LogMessage", "autoWidth": true },
-            { "data": "userAction", "name": "UserAction", "autoWidth": true },
-            { "data": "userName", "name": "UserName", "autoWidth": true },
-        ]
+            { "data": "id", "name": "Id", "autoWidth": true },
+            { "data": "datum", "name": "Datum", "autoWidth": true },
+            { "data": "tgZakazka", "name": "TgZakazka", "autoWidth": true },
+            { "data": "operacia", "name": "Operacia", "autoWidth": true },
+            { "data": "parameter", "name": "Parameter", "autoWidth": true },
+            { "data": "povodnaHodnota", "name": "PovodnaHodnota", "autoWidth": true },
+            { "data": "novaHodnota", "name": "NovaHodnota", "autoWidth": true },
+            { "data": "uzivatel", "name": "Uzivatel", "autoWidth": true },
+        ],
+        "createdRow": function (row, data, index) {
+              console.log('logs1-createdRow: data.id=' + data.id + ' datum=' + data.datum);
+        },
 
     });
     //Filtre su v headeri tabulky
-    $('#datatableLogy tfoot tr').appendTo('#datatableLogy thead');
+    $('#datatableLogs1 tfoot tr').appendTo('#datatableLogs1 thead');
 });

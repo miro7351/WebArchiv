@@ -1,11 +1,12 @@
 ﻿#nullable disable
+
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 
 using PA.TOYOTA.DB;
 using ToyotaArchiv.Infrastructure;
-using System.Globalization;
+
 
 namespace ToyotaArchiv.Controllers
 {
@@ -18,14 +19,14 @@ namespace ToyotaArchiv.Controllers
         {
             _context = context;
             _sessionService = sessionService;
-    }
+        }
 
 
         // GET: Logs
-        public async Task<IActionResult> Index()
+        public IActionResult Index()//  public async Task<IActionResult> Index()
         {
             (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
-            return View(await _context.Logs.ToListAsync());
+            return View();  //View(await _context.Logs1.ToListAsync());
         }
 
         //MH: funkcia sa spusti z klienta po otvoreni stranky, pomocou AJAXu
@@ -47,10 +48,14 @@ namespace ToyotaArchiv.Controllers
 
                 //aby fungoval filter musi byt:     "filter": true,  pozri datatableLogy.js  !!!!
                 var colDatumSearchValue = Request.Form["columns[1][search][value]"].FirstOrDefault() ?? string.Empty;
-                var colTableNameSearchValue = Request.Form["columns[2][search][value]"].FirstOrDefault().ToString();
-                var colLogMessageSearchValue = Request.Form["columns[3][search][value]"].FirstOrDefault().ToString();
-                var colUserActionSearchValue = Request.Form["columns[4][search][value]"].FirstOrDefault().ToString();
-                var colUserNameSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault().ToString();
+                var colZakazkaTGSearchValue = Request.Form["columns[2][search][value]"].FirstOrDefault().ToString();
+                var colOperaciaSearchValue = Request.Form["columns[3][search][value]"].FirstOrDefault().ToString();
+                var colParameterSearchValue = Request.Form["columns[4][search][value]"].FirstOrDefault().ToString();
+                var colPovodnaHodnotaSearchValue = Request.Form["columns[5][search][value]"].FirstOrDefault().ToString();
+                var colNovaHodnotaSearchValue = Request.Form["columns[6][search][value]"].FirstOrDefault().ToString();
+
+
+                var colUzivatelSearchValue = Request.Form["columns[7][search][value]"].FirstOrDefault().ToString();
 
                 // Search Value from (Search box);   "filter": true, // pozri datatableLogy.js
                 var searchValue = Request.Form["search[value]"].FirstOrDefault();
@@ -61,13 +66,13 @@ namespace ToyotaArchiv.Controllers
                 int recordsTotal = 0;
 
                 // Getting all Zakazka
-                var logy = (from log in _context.Logs
+                var logs1 = (from log in _context.Logs1
                                select log);
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
                 {
-                    logy = logy.OrderBy(sortColumn + " " + sortColumnDirection);
+                    logs1 = logs1.OrderBy(sortColumn + " " + sortColumnDirection);
                 }
 
                 //MH-----------
@@ -76,39 +81,70 @@ namespace ToyotaArchiv.Controllers
                     _ = DateTime.TryParse(colDatumSearchValue, new CultureInfo("sk-SK"), DateTimeStyles.None, out DateTime dt);
 
                     if (dt != DateTime.MinValue)
-                        logy = logy.Where(m => m.LogDate.Year == dt.Year && m.LogDate.Month == dt.Month && m.LogDate.Day == dt.Day);
+                        logs1 = logs1.Where(m => m.Datum.Value.Year == dt.Year && 
+                        m.Datum.Value.Month == dt.Month &&
+                        m.Datum.Value.Day == dt.Day &&
+                         m.Datum.Value.Hour == dt.Hour &&
+                        m.Datum.Value.Minute == dt.Minute
+                        );
                 }
-                if (!string.IsNullOrEmpty(colTableNameSearchValue))
+                if (!string.IsNullOrEmpty(colZakazkaTGSearchValue))
                 {
-                    logy = logy.Where(m => m.TableName.Contains(colTableNameSearchValue));
+                    logs1 = logs1.Where(m => m.TgZakazka.Contains(colZakazkaTGSearchValue));
                 }
-                if (!string.IsNullOrEmpty(colLogMessageSearchValue))
+                if (!string.IsNullOrEmpty(colOperaciaSearchValue))
                 {
-                    logy = logy.Where(m => m.LogMessage.Contains(colLogMessageSearchValue));
+                    logs1 = logs1.Where(m => m.Operacia.Contains(colOperaciaSearchValue));
                 }
-                if (!string.IsNullOrEmpty(colUserActionSearchValue))
+                if (!string.IsNullOrEmpty(colParameterSearchValue))
                 {
-                    logy = logy.Where(m => m.UserAction.Contains(colUserActionSearchValue));
+                    logs1 = logs1.Where(m => m.Parameter.Contains(colParameterSearchValue));
                 }
-                if (!string.IsNullOrEmpty(colUserNameSearchValue))
+                if (!string.IsNullOrEmpty(colPovodnaHodnotaSearchValue))
                 {
-                    logy = logy.Where(m => m.UserName.Contains(colUserNameSearchValue));
+                    logs1 = logs1.Where(m => m.PovodnaHodnota.Contains(colPovodnaHodnotaSearchValue));
+                }
+                if (!string.IsNullOrEmpty(colNovaHodnotaSearchValue))
+                {
+                    logs1 = logs1.Where(m => m.NovaHodnota.Contains(colNovaHodnotaSearchValue));
+                }
+                if (!string.IsNullOrEmpty(colUzivatelSearchValue))
+                {
+                    logs1 = logs1.Where(m => m.Uzivatel.Contains(colUzivatelSearchValue));
                 }
 
                 //------------------------
                 //Search podla  hodnoty v search boxe celkom vpravo hore nad tabulkou
                 if (!string.IsNullOrEmpty(searchValue))
                 {
-                    logy = logy.Where(m=> m.TableName.Contains(searchValue) ||
-                                     m.LogMessage.Contains(searchValue) ||
-                                     m.UserAction.Contains(searchValue) ||
-                                     m.UserName.Contains(searchValue));
+                    bool dtReady = DateTime.TryParse(searchValue, new CultureInfo("sk-SK"), System.Globalization.DateTimeStyles.None, out DateTime dt);
+
+                    if (dtReady && dt != DateTime.MinValue)
+                    {
+                        logs1 = logs1.Where(m => m.Datum.Value.Year == dt.Year && 
+                        m.Datum.Value.Month == dt.Month &&
+                        m.Datum.Value.Day == dt.Day &&
+                        m.Datum.Value.Hour == dt.Hour &&
+                        m.Datum.Value.Minute == dt.Minute
+
+                        );
+                    }
+                    else
+                    {
+                        logs1 = logs1.Where(m => m.TgZakazka.Contains(searchValue) ||
+                                         m.Operacia.Contains(searchValue) ||
+                                         m.Parameter.Contains(searchValue) ||
+                                         m.PovodnaHodnota.Contains(searchValue) ||
+                                         m.NovaHodnota.Contains(searchValue) ||
+                                         m.Uzivatel.Contains(searchValue)
+                                         );
+                    }
                 }
 
                 //total number of rows count 
-                recordsTotal = logy.Count();
+                recordsTotal = logs1.Count();
                 //Paging 
-                var data = logy.OrderByDescending(l=>l.LogId).Skip(skip).Take(pageSize).ToList();
+                var data = logs1.OrderByDescending(l=>l.Id).Skip(skip).Take(pageSize).ToList();
                 //Returning Json Data
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
 

@@ -81,14 +81,20 @@ $(document).ready(function () {
                 },
             },
             {
-                "targets": [9],/*SPZ */
+                "targets": [8],/*SPZ */
                 "visible": true,
                 "searchable": false
             },
             {
-                "targets": [10],/*Majitel */
+                "targets": [9],/*Majitel */
                 "visible": true,
                 "searchable": false
+
+            },
+            {
+                "targets": [10],//Ukoncena
+                "visible": true,
+                "searchable": true,
 
             },
             {
@@ -109,9 +115,10 @@ $(document).ready(function () {
             { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
             { "data": "cisloDielu", "name": "CisloDielu", "autoWidth": true },
 
-            { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
+
             { "data": "spz", "name": "SPZ", "autoWidth": true },
             { "data": "majitel", "name": "Majitel", "autoWidth": true },
+            { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
             { "data": "poznamka", "name": "Poznamka", "autoWidth": true },
 
         ],

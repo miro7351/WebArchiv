@@ -107,31 +107,25 @@ $(document).ready(function () {
                 "visible": true,
                 "searchable": true
             },
+            
             {
-                "targets": [8],//Ukoncena
-                "visible": true,
-                "searchable": true,
-                //render: function (data, type) {  //NEJDE
-                //    if (type === 'display') {
-                //        if (data == 'A') {
-                //            let color = 'red';
-                //        }
-                //        return '<span style="color:' + color + '">' + data + '</span>';
-                //    }
-                //}
-            },
-            {
-                "targets": [9],/*SPZ */
+                "targets": [8],/*SPZ */
                 "visible": true,
                 "searchable": false
 
             },
             {
-                "targets": [10],/*Majitel */
+                "targets": [9],/*Majitel */
                 "visible": true,
                 "searchable": false
 
-            },
+                },
+                {
+                    "targets": [10],//Ukoncena
+                    "visible": true,
+                    "searchable": true,
+
+                },
 
             {
                 "targets": [11],/*Poznamka */
@@ -159,9 +153,10 @@ $(document).ready(function () {
                 { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
                 { "data": "cisloDielu", "name": "CisloDielu", "autoWidth": true },
 
-                { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
+              
                 { "data": "spz", "name": "SPZ", "autoWidth": true },
                 { "data": "majitel", "name": "Majitel", "autoWidth": true },
+                { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
                 { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
             ],
 

@@ -7,13 +7,14 @@ namespace PA.TOYOTA.DB
 {
     public partial class ToyotaContext : DbContext
     {
-       
+      
 
         public virtual DbSet<Account> Accounts { get; set; } = null!;
         public virtual DbSet<Dokument> Dokuments { get; set; } = null!;
         public virtual DbSet<DokumentDetail> DokumentDetails { get; set; } = null!;
         public virtual DbSet<Error> Errors { get; set; } = null!;
         public virtual DbSet<Log> Logs { get; set; } = null!;
+        public virtual DbSet<Log1> Logs1 { get; set; } = null!;
         public virtual DbSet<Zakazka> Zakazkas { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -145,6 +146,42 @@ namespace PA.TOYOTA.DB
                 entity.Property(e => e.UserName)
                     .HasMaxLength(32)
                     .HasDefaultValueSql("(user_name())");
+            });
+
+            modelBuilder.Entity<Log1>(entity =>
+            {
+                entity.ToTable("Logs");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Datum).HasPrecision(0);
+
+                entity.Property(e => e.NovaHodnota)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Nova_hodnota");
+
+                entity.Property(e => e.Operacia)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Parameter)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PovodnaHodnota)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Povodna_hodnota");
+
+                entity.Property(e => e.TgZakazka)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("TG_Zakazka");
+
+                entity.Property(e => e.Uzivatel)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Zakazka>(entity =>

@@ -36,14 +36,14 @@ $(document).ready(function () {
 
         //"dom": '<"top"i>rt<"bottom"flp><"clear">', //OK
         "dom": '<"top"if>rt<"bottom"lp><"clear">', //OK
-        "lengthMenu": [[25, 10, 30, 50, -1], [25, 10, 30, 50, "Všetky"]], 
+        "lengthMenu": [[25, 10, 30, 50, -1], [25, 10, 30, 50, "Všetky"]],
         //"lengthMenu": [25],  //OK je tam len jedna moznost na vyber
         "search": { return: true }, //Search box nad tabulkou  hlada az po stlaceni Enter
         //"fixedColumns": true,  //Freezes the left most column to the side of the table
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.18/i18n/Slovak.json"
         },
-        
+
 
         initComplete: function () {
             // Apply the search, podla filtra pre stlpec sa hlada po stlaceni Enter
@@ -116,36 +116,26 @@ $(document).ready(function () {
                 "visible": true,
                 "searchable": true
             },
+
             {
-                "targets": [8],//Ukoncena
-                "visible": true,
-                "searchable": true,
-                "createdCell": function (td, cellData, rowData, row, col) { //createdRow sa spusta az po createdCell!!!!
-                    //console.log("createdCell  cellData=" + cellData);
-                    //console.log("targets[8] $(row)['ukoncena']:" + $(row)['ukoncena']);//targets[8] row['ukoncena']:undefined
-                    //console.log("targets[8] rowData[8]:" + rowData[8]);
-                    if (cellData == "A") {
-                        //console.log("targets[8] cellData='A' - zmena farieb");
-                        //$('td', row).css("background-color", 'red');//NEJDE
-                        //$(row).css("background-color", 'red');//NEJDE
-                        //$(td).css('color', 'blue');  //OK
-                        //$(td).css('background-color', 'yellow');//OK
-                    }
-                }
-            },
-            {
-                "targets": [9],/*SPZ */
+                "targets": [8],/*SPZ */
                 "visible": true,
                 "searchable": false
 
             },
             {
-                "targets": [10],/*Majitel */
+                "targets": [9],/*Majitel */
                 "visible": true,
                 "searchable": false
 
             },
 
+            {
+                "targets": [10],//Ukoncena
+                "visible": true,
+                "searchable": true
+
+            },
             {
                 "targets": [11],/*Poznamka */
                 "visible": false,
@@ -174,7 +164,7 @@ $(document).ready(function () {
             {
                 "targets": [15],//Vymazat
                 "searchable": false,
-                "width":90,
+                "width": 90,
                 "render": function (data, type, row) {
                     return '<a href="../ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>';
                 }
@@ -191,14 +181,15 @@ $(document).ready(function () {
             { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
             { "data": "cisloDielu", "name": "CisloDielu", "autoWidth": true },
 
+
+            { "data": "spz", "name": "SPZ", "autoWidth": true },
+            { "data": "majitel", "name": "Majitel", "autoWidth": true },
             { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
-            { "data": "spz",      "name": "SPZ", "autoWidth": true },
-            { "data": "majitel",  "name": "Majitel", "autoWidth": true },
             { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
 
             { "data": "vytvoril", "name": "Vytvoril", "autoWidth": true },
-            { "data": "zmenil",   "name": "Zmenil", "autoWidth": true },
-            { "data": "zmenene",  "name": "Zmenene", "autoWidth": true },
+            { "data": "zmenil", "name": "Zmenil", "autoWidth": true },
+            { "data": "zmenene", "name": "Zmenene", "autoWidth": true },
 
         ],
         "createdRow": function (row, data, index) {

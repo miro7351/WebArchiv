@@ -26,13 +26,13 @@ $('#datatableDocuments').dataTable({
             "targets": [8],
             "visible": true,
             "searchable": false,
-            render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:MM')
+            render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:mm')
             },
         {
                 "targets": [10],
                 "visible": true,
                 "searchable": false,
-                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:MM')
+                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:mm')
             },
         ],
     "columns": [
