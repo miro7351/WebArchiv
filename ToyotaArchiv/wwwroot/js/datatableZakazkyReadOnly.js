@@ -119,7 +119,7 @@ $(document).ready(function () {
             if (data.ukoncena == 'A') {
                 console.log('1mh-createdRow: data.ukoncena == "N"');
                 //$('td', row).css("background-color", '"#21CE2A');
-                $(row).css("background-color", "#21CE2A");
+                $(row).css("background-color", "#C4FACF");
             }
         },
     });

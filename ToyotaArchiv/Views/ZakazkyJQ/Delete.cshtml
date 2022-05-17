@@ -22,10 +22,12 @@
     }
 </style>
 
-<div class="container">
-    <div class="d-flex p-2 justify-content-center">
+<div class="container-fluid" style="width:95%">
+    <div class="form-inline">
         <h3>Naozaj vymazať záznam o garančnej oprave: @Model.ZakazkaTg?</h3>
-        
+    </div> 
+
+     <div class="d-flex p-2 justify-content-center">
          <form asp-action="Delete">
             <input type="hidden" asp-for="ZakazkaTg" />
             <input   type="submit" value="Vymazať" class="btn btn-danger mx-4" />
