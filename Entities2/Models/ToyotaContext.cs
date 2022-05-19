@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PA.TOYOTA.DB
 {
     public partial class ToyotaContext : DbContext
     {
-      
+       
 
         public virtual DbSet<Account> Accounts { get; set; } = null!;
         public virtual DbSet<Dokument> Dokuments { get; set; } = null!;
         public virtual DbSet<DokumentDetail> DokumentDetails { get; set; } = null!;
         public virtual DbSet<Error> Errors { get; set; } = null!;
         public virtual DbSet<Log> Logs { get; set; } = null!;
-        public virtual DbSet<Log1> Logs1 { get; set; } = null!;
         public virtual DbSet<Zakazka> Zakazkas { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -124,34 +120,6 @@ namespace PA.TOYOTA.DB
 
             modelBuilder.Entity<Log>(entity =>
             {
-                entity.ToTable("Log");
-
-                entity.Property(e => e.LogId).HasColumnName("LogID");
-
-                entity.Property(e => e.LogDate)
-                    .HasPrecision(0)
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.LogMessage).HasMaxLength(128);
-
-                entity.Property(e => e.TableName)
-                    .HasMaxLength(64)
-                    .IsFixedLength();
-
-                entity.Property(e => e.UserAction)
-                    .HasMaxLength(20)
-                    .HasDefaultValueSql("(' ')")
-                    .IsFixedLength();
-
-                entity.Property(e => e.UserName)
-                    .HasMaxLength(32)
-                    .HasDefaultValueSql("(user_name())");
-            });
-
-            modelBuilder.Entity<Log1>(entity =>
-            {
-                entity.ToTable("Logs");
-
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Datum).HasPrecision(0);
@@ -196,6 +164,10 @@ namespace PA.TOYOTA.DB
                     .IsFixedLength();
 
                 entity.Property(e => e.CisloDielu).HasMaxLength(16);
+
+                entity.Property(e => e.CisloFaktury)
+                    .HasMaxLength(16)
+                    .IsFixedLength();
 
                 entity.Property(e => e.CisloProtokolu)
                     .HasMaxLength(16)

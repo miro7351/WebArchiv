@@ -8,7 +8,7 @@ using PA.TOYOTA.DB;
 using ToyotaArchiv.Infrastructure;
 using ToyotaArchiv.Domain;
 using System.Globalization;
-using System.Text;
+
 
 namespace ToyotaArchiv.Controllers
 {
@@ -83,6 +83,7 @@ namespace ToyotaArchiv.Controllers
             string colUkoncenaSearchValue=default(string);
             string colSPZSearchValue = default(string);
             string colMajitelSearchValue = default(string);
+            string colCisloFakturySearchValue = default(string);
 
             int skip;    //kolko zaznamov sa ma v db preskocit
             int pageSize;//pocet zaznamov na stranke
@@ -119,7 +120,9 @@ namespace ToyotaArchiv.Controllers
 
                 colSPZSearchValue = Request.Form["columns[8][search][value]"].FirstOrDefault() ?? string.Empty;
                 colMajitelSearchValue = Request.Form["columns[9][search][value]"].FirstOrDefault() ?? string.Empty;
-                colUkoncenaSearchValue = Request.Form["columns[10][search][value]"].FirstOrDefault() ?? string.Empty;
+
+                colCisloFakturySearchValue= Request.Form["columns[10][search][value]"].FirstOrDefault() ?? string.Empty;
+                colUkoncenaSearchValue = Request.Form["columns[11][search][value]"].FirstOrDefault() ?? string.Empty;
                 // Getting all Zakazka
                 var zakazky = (from zakazka in _context.Zakazkas
                                 select zakazka);
@@ -176,6 +179,10 @@ namespace ToyotaArchiv.Controllers
                 if (!string.IsNullOrEmpty(colMajitelSearchValue))
                 {
                     zakazky = zakazky.Where(m => m.Majitel.Contains(colMajitelSearchValue));
+                }
+                if (!string.IsNullOrEmpty(colCisloFakturySearchValue))
+                {
+                    zakazky = zakazky.Where(m => m.CisloFaktury.Contains(colCisloFakturySearchValue));
                 }
                 //EF Core: kazda vyber. podmienka  WHERE prida AND ... do vysledneho select stringu  :) :) SUPER!!!!
                 //--------------------

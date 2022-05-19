@@ -31,6 +31,10 @@ namespace PA.TOYOTA.DB
         [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.16 znakov")]
         public string? CisloProtokolu { get; set; }  //nchar(16), null
 
+        [Display(Name = "Faktúra číslo")]
+        [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.16 znakov")]
+        public string? CisloFaktury { get; set; }
+
         [Display(Name = "CWS")]
         [StringLength(16, MinimumLength = 0, ErrorMessage = "Zadajte údaj na max.16 znakov")]
         public string? Cws { get; set; }  //nchar(32), null

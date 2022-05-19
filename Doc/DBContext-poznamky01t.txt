@@ -249,6 +249,12 @@ PM> Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=Tr
 Build started...
 Build succeeded.
 
+19.05.2022  pridanie stlpca CisloFaktury do tab. Zakazka
+Aktivny projekt: Entities2
+PM> Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force 
+Build started...
+Build succeeded.
+
 =============================
 Poznamka
 Apply Add-Migration command to the xxxDBContext and it generates the code that we can use to update the database with

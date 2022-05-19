@@ -32,6 +32,7 @@ namespace ToyotaArchiv.Services
             newZakazkaDB.Spz = zakazkaZO?.SPZ?.Trim();
             newZakazkaDB.Majitel = zakazkaZO?.Majitel?.Trim();
             newZakazkaDB.CisloProtokolu = zakazkaZO?.CisloProtokolu?.Trim();
+            newZakazkaDB.CisloFaktury = zakazkaZO?.CisloFaktury?.Trim();
             newZakazkaDB.CisloDielu = zakazkaZO?.CisloDielu?.Trim();
 
             newZakazkaDB.Vytvoril = zakazkaZO?.Vytvoril?.Trim();

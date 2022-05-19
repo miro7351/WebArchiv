@@ -34,7 +34,7 @@ $(document).ready(function () {
         "dom": '<"top"if>rt<"bottom"lp><"clear">', //OK
         //https://datatables.net/examples/basic_init/dom.html
 
-        "lengthMenu": [[25,10, 30, 50, -1], [25, 10, 30, 50, "All"]],
+        "lengthMenu": [[25, 10, 30, 50, -1], [25, 10, 30, 50, "All"]],
         "search": { return: true }, //Search box nad tabulkou hlada az po stlaceni Enter
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.18/i18n/Slovak.json"
@@ -62,7 +62,7 @@ $(document).ready(function () {
             "type": "POST",
             "datatype": "json"
         },
-        
+
         "columnDefs":
             [{
                 "targets": [0],//ZakazkaId
@@ -107,7 +107,7 @@ $(document).ready(function () {
                 "visible": true,
                 "searchable": true
             },
-            
+
             {
                 "targets": [8],/*SPZ */
                 "visible": true,
@@ -119,48 +119,55 @@ $(document).ready(function () {
                 "visible": true,
                 "searchable": false
 
-                },
-                {
-                    "targets": [10],//Ukoncena
-                    "visible": true,
-                    "searchable": true,
+            },
+            {
+                "targets": [10],/*Faktura cislo */
+                "visible": true,
+                "searchable": false
 
-                },
+            },
+            {
+                "targets": [11],//Ukoncena
+                "visible": true,
+                "searchable": true,
+
+            },
 
             {
-                "targets": [11],/*Poznamka */
+                "targets": [12],/*Poznamka */
                 "visible": false,
                 "searchable": false
 
             },
 
             {
-                "targets": [12],//Vymazat
+                "targets": [13],//Vymazat
                 "width": 90,
                 "render": function (data, type, row) {
                     return '<a href="../ZakazkyJQ/Delete/' + $.trim(row['zakazkaId']) + '">' + 'Vymazať</a>';
                 }
             },
             ],
-            "columns": [
-                { "data": "zakazkaId", "name": "ZakazkaId", "autoWidth": true },
-                { "data": "vytvorene", "name": "Vytvorene", "autoWidth": true },
-                { "data": "zakazkaTg", "name": "ZakazkaTg", "autoWidth": true },
-                { "data": "zakazkaTb", "name": "ZakazkaTb", "autoWidth": true },
+        "columns": [
+            { "data": "zakazkaId", "name": "ZakazkaId", "autoWidth": true },
+            { "data": "vytvorene", "name": "Vytvorene", "autoWidth": true },
+            { "data": "zakazkaTg", "name": "ZakazkaTg", "autoWidth": true },
+            { "data": "zakazkaTb", "name": "ZakazkaTb", "autoWidth": true },
 
-                { "data": "vin", "name": "Vin", "autoWidth": true },
-                { "data": "cws", "name": "Cws", "autoWidth": true },
-                { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
-                { "data": "cisloDielu", "name": "CisloDielu", "autoWidth": true },
+            { "data": "vin", "name": "Vin", "autoWidth": true },
+            { "data": "cws", "name": "Cws", "autoWidth": true },
+            { "data": "cisloProtokolu", "name": "CisloProtokolu", "autoWidth": true },
+            { "data": "cisloDielu", "name": "CisloDielu", "autoWidth": true },
 
-              
-                { "data": "spz", "name": "SPZ", "autoWidth": true },
-                { "data": "majitel", "name": "Majitel", "autoWidth": true },
-                { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
-                { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
-            ],
 
-        "createdRow": function (row, data, index) {  
+            { "data": "spz", "name": "SPZ", "autoWidth": true },
+            { "data": "majitel", "name": "Majitel", "autoWidth": true },
+            { "data": "cisloFaktury", "name": "CisloFaktury", "autoWidth": true },
+            { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
+            { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
+        ],
+
+        "createdRow": function (row, data, index) {
             if (data.ukoncena == 'A') {
                 //console.log('1mh-createdRow: data.ukoncena == "N"');
                 //$('td', row).css("background-color", '"#21CE2A');

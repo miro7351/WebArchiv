@@ -129,40 +129,46 @@ $(document).ready(function () {
                 "searchable": false
 
             },
+            {
+                "targets": [10],/*Faktura cislo */
+                "visible": true,
+                "searchable": false
+
+            },
 
             {
-                "targets": [10],//Ukoncena
+                "targets": [11],//Ukoncena
                 "visible": true,
                 "searchable": true
 
             },
             {
-                "targets": [11],/*Poznamka */
+                "targets": [12],/*Poznamka */
                 "visible": false,
                 "searchable": false
 
             },
             {
-                "targets": [12],/*Vytvoril */
+                "targets": [13],/*Vytvoril */
                 "visible": true,
                 "searchable": false
 
             },
             {
-                "targets": [13],/*Zmenil */
+                "targets": [14],/*Zmenil */
                 "visible": true,
                 "searchable": false
 
             },
             {
-                "targets": [14],//Zmenene
+                "targets": [15],//Zmenene
                 "visible": true,
                 "searchable": false,
                 render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD.MM.YYYY HH:mm'),
             },
 
             {
-                "targets": [15],//Vymazat
+                "targets": [16],//Vymazat
                 "searchable": false,
                 "width": 90,
                 "render": function (data, type, row) {
@@ -184,6 +190,7 @@ $(document).ready(function () {
 
             { "data": "spz", "name": "SPZ", "autoWidth": true },
             { "data": "majitel", "name": "Majitel", "autoWidth": true },
+            { "data": "cisloFaktury", "name": "CisloFaktury", "autoWidth": true },
             { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
             { "data": "poznamka", "name": "Poznamka", "autoWidth": false },
 

@@ -54,6 +54,7 @@ namespace ToyotaArchiv.Services
             zakazkaDB.CisloDielu = zakazkaZO?.CisloDielu?.Trim();
             zakazkaDB.Spz = zakazkaZO?.SPZ?.Trim();
             zakazkaDB.Majitel = zakazkaZO?.Majitel?.Trim();
+            zakazkaDB.CisloFaktury = zakazkaZO?.CisloFaktury?.Trim();
             zakazkaDB.Vytvoril = zakazkaZO?.Vytvoril?.Trim();
             zakazkaDB.Vytvorene = zakazkaZO?.Vytvorene;
 

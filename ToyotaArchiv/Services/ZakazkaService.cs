@@ -60,6 +60,7 @@ namespace ToyotaArchiv.Services
             zakazkaZO.Cws = zakazkaDB?.Cws?.Trim();
             zakazkaZO.CisloProtokolu = zakazkaDB?.CisloProtokolu?.Trim();
             zakazkaZO.CisloDielu = zakazkaDB?.CisloDielu?.Trim();
+            zakazkaZO.CisloFaktury = zakazkaDB?.CisloFaktury?.Trim();
             zakazkaZO.SPZ = zakazkaDB?.Spz?.Trim();
             zakazkaZO.Majitel = zakazkaDB?.Majitel?.Trim();
 

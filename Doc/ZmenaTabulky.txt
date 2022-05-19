@@ -1,0 +1,37 @@
+MH: 19.05.2022
+
+Postup pri zmene tabulky (Pridanie noveho stlpca)
+
+Otvorit databazu toyoyta_db v SSMS
+
+Ak nemame vygenerovany  script napr. Tab-Create-Toyota_db.sql pre vytvorenie vsetkych tabuliek, potom vygenerovat csript pre vytvorenie vsetkych tabuliek, constraintov,...
+
+Nad tabulkou Dokument vymazat foreign keys!!
+
+Dropnut vsetky tabulky.
+
+Do suboru Tab-Create-Toyota_db.sql do kodu pre prislusnu tabulku nakodovat novy stlpec.
+
+Spustit script.
+
+Skontrolovat vygenerovane tabulky.
+
+
+-----------------------------------------------------------------
+Otvorit 'Package Manager Console' 
+
+nastavit aktivny projekt Entities2!!!
+nastavit parametre pre prikaz  
+ak sa pouziva lokalna db
+Scaffold-DbContext  "Server=HRABCAK;Database=TOYOTA_T1;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force 
+
+ak sa pouziva databaza na serveri v PA
+Scaffold-DbContext  "Server=INTRA-MSSQL;Database=TOYOTA_DB;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Namespace PA.TOYOTA.DB  -ContextNamespace PA.TOYOTA.DB -Context ToyotaContext -Force 
+
+------------------------------------------------------------------
+V adresari Entities2\Models skontrolujeme zmenenu entitu...podla toho len upravime tu istu entitu v adresari ModelExtensions.
+
+Vymazeme vsetky entity z adresara Entities2\Models. Nechame len ToyotaContext.cs.
+V kode pre  ToyotaContext.cs  vymazeme constructory.
+
+Urobit rebuild solution.

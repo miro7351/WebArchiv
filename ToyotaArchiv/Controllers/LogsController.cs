@@ -66,13 +66,13 @@ namespace ToyotaArchiv.Controllers
                 int recordsTotal = 0;
 
                 // Getting all Zakazka
-                var logs1 = (from log in _context.Logs1
+                var logs = (from log in _context.Logs
                                select log);
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
                 {
-                    logs1 = logs1.OrderBy(sortColumn + " " + sortColumnDirection);
+                    logs = logs.OrderBy(sortColumn + " " + sortColumnDirection);
                 }
 
                 //MH-----------
@@ -81,7 +81,7 @@ namespace ToyotaArchiv.Controllers
                     _ = DateTime.TryParse(colDatumSearchValue, new CultureInfo("sk-SK"), DateTimeStyles.None, out DateTime dt);
 
                     if (dt != DateTime.MinValue)
-                        logs1 = logs1.Where(m => m.Datum.Value.Year == dt.Year && 
+                        logs = logs.Where(m => m.Datum.Value.Year == dt.Year && 
                         m.Datum.Value.Month == dt.Month &&
                         m.Datum.Value.Day == dt.Day &&
                          m.Datum.Value.Hour == dt.Hour &&
@@ -90,27 +90,27 @@ namespace ToyotaArchiv.Controllers
                 }
                 if (!string.IsNullOrEmpty(colZakazkaTGSearchValue))
                 {
-                    logs1 = logs1.Where(m => m.TgZakazka.Contains(colZakazkaTGSearchValue));
+                    logs = logs.Where(m => m.TgZakazka.Contains(colZakazkaTGSearchValue));
                 }
                 if (!string.IsNullOrEmpty(colOperaciaSearchValue))
                 {
-                    logs1 = logs1.Where(m => m.Operacia.Contains(colOperaciaSearchValue));
+                    logs = logs.Where(m => m.Operacia.Contains(colOperaciaSearchValue));
                 }
                 if (!string.IsNullOrEmpty(colParameterSearchValue))
                 {
-                    logs1 = logs1.Where(m => m.Parameter.Contains(colParameterSearchValue));
+                    logs = logs.Where(m => m.Parameter.Contains(colParameterSearchValue));
                 }
                 if (!string.IsNullOrEmpty(colPovodnaHodnotaSearchValue))
                 {
-                    logs1 = logs1.Where(m => m.PovodnaHodnota.Contains(colPovodnaHodnotaSearchValue));
+                    logs = logs.Where(m => m.PovodnaHodnota.Contains(colPovodnaHodnotaSearchValue));
                 }
                 if (!string.IsNullOrEmpty(colNovaHodnotaSearchValue))
                 {
-                    logs1 = logs1.Where(m => m.NovaHodnota.Contains(colNovaHodnotaSearchValue));
+                    logs = logs.Where(m => m.NovaHodnota.Contains(colNovaHodnotaSearchValue));
                 }
                 if (!string.IsNullOrEmpty(colUzivatelSearchValue))
                 {
-                    logs1 = logs1.Where(m => m.Uzivatel.Contains(colUzivatelSearchValue));
+                    logs = logs.Where(m => m.Uzivatel.Contains(colUzivatelSearchValue));
                 }
 
                 //------------------------
@@ -121,7 +121,7 @@ namespace ToyotaArchiv.Controllers
 
                     if (dtReady && dt != DateTime.MinValue)
                     {
-                        logs1 = logs1.Where(m => m.Datum.Value.Year == dt.Year && 
+                        logs = logs.Where(m => m.Datum.Value.Year == dt.Year && 
                         m.Datum.Value.Month == dt.Month &&
                         m.Datum.Value.Day == dt.Day &&
                         m.Datum.Value.Hour == dt.Hour &&
@@ -131,7 +131,7 @@ namespace ToyotaArchiv.Controllers
                     }
                     else
                     {
-                        logs1 = logs1.Where(m => m.TgZakazka.Contains(searchValue) ||
+                        logs = logs.Where(m => m.TgZakazka.Contains(searchValue) ||
                                          m.Operacia.Contains(searchValue) ||
                                          m.Parameter.Contains(searchValue) ||
                                          m.PovodnaHodnota.Contains(searchValue) ||
@@ -142,9 +142,9 @@ namespace ToyotaArchiv.Controllers
                 }
 
                 //total number of rows count 
-                recordsTotal = logs1.Count();
+                recordsTotal = logs.Count();
                 //Paging 
-                var data = logs1.OrderByDescending(l=>l.Id).Skip(skip).Take(pageSize).ToList();
+                var data = logs.OrderByDescending(l=>l.Id).Skip(skip).Take(pageSize).ToList();
                 //Returning Json Data
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
 

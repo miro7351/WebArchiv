@@ -207,8 +207,16 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td></td>
-                            <td></td>
+                            <span asp-validation-for="CisloDielu" class="text-danger"></span>
+                        <td colspan="2">@*CisloFaktury*@
+                            <table>
+                                <tr>
+                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.CisloFaktury)</td>
+                                    <td >@Html.TextBoxFor(m=>m.CisloFaktury, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                </tr>
+                            </table>
+                        </td>
+                         <span asp-validation-for="CisloFaktury" class="text-danger"></span>
                         </tr>
                         <tr>
                             @*Ukoncena*@

@@ -92,13 +92,19 @@ $(document).ready(function () {
 
             },
             {
-                "targets": [10],//Ukoncena
+                "targets": [10],/*Faktura cislo */
+                "visible": true,
+                "searchable": false
+
+            },
+            {
+                "targets": [11],//Ukoncena
                 "visible": true,
                 "searchable": true,
 
             },
             {
-                "targets": [11],/*Poznamka */
+                "targets": [12],/*Poznamka */
                 "visible": false,
                 "searchable": false
             },
@@ -118,6 +124,7 @@ $(document).ready(function () {
 
             { "data": "spz", "name": "SPZ", "autoWidth": true },
             { "data": "majitel", "name": "Majitel", "autoWidth": true },
+            { "data": "cisloFaktury", "name": "CisloFaktury", "autoWidth": true },
             { "data": "ukoncena", "name": "Ukoncena", "autoWidth": true },
             { "data": "poznamka", "name": "Poznamka", "autoWidth": true },
 
