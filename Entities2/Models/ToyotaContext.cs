@@ -166,7 +166,7 @@ namespace PA.TOYOTA.DB
                 entity.Property(e => e.CisloDielu).HasMaxLength(16);
 
                 entity.Property(e => e.CisloFaktury)
-                    .HasMaxLength(16)
+                    .HasMaxLength(9)
                     .IsFixedLength();
 
                 entity.Property(e => e.CisloProtokolu)

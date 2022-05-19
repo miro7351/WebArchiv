@@ -1,16 +1,16 @@
 MH: 19.05.2022
 
-Postup pri zmene tabulky (Pridanie noveho stlpca)
+Postup pri zmene tabulky (napr.Pridanie noveho stlpca)
 
 Otvorit databazu toyoyta_db v SSMS
 
-Ak nemame vygenerovany  script napr. Tab-Create-Toyota_db.sql pre vytvorenie vsetkych tabuliek, potom vygenerovat csript pre vytvorenie vsetkych tabuliek, constraintov,...
+Ak nemame vygenerovany  script napr. Tab-Create.sql pre vytvorenie vsetkych tabuliek, potom vygenerovat script pre vytvorenie vsetkych tabuliek, constraintov,...
 
 Nad tabulkou Dokument vymazat foreign keys!!
 
-Dropnut vsetky tabulky.
+Dropnut vsetky tabulky, alebo pravy klik na tabulku a vybrat Delete...
 
-Do suboru Tab-Create-Toyota_db.sql do kodu pre prislusnu tabulku nakodovat novy stlpec.
+Do suboru Tab-Create.sql do kodu pre prislusnu tabulku nakodovat novy stlpec.
 
 Spustit script.
 

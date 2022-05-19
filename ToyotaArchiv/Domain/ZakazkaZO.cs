@@ -156,7 +156,7 @@ namespace ToyotaArchiv.Domain
         /// Udaj znamy po schvaleni garancnej opravy od importera;
         /// </summary>
         [Display(Name = "Faktúra číslo")]
-        [StringLength(16, MinimumLength = 0, ErrorMessage = "Pre údaj CisloFaktury zadajte max. 16 znakov.")]//nemusi sa zadat, ale ak sa zada, potom to musi byt max. 16 znakov;
+        [StringLength(9, MinimumLength = 0, ErrorMessage = "Pre údaj CisloFaktury zadajte max. 16 znakov.")]//nemusi sa zadat, ale ak sa zada, potom to musi byt max. 16 znakov;
         public string? CisloFaktury
         {
             get;
