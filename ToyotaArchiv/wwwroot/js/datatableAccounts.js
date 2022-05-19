@@ -21,6 +21,7 @@
             [{
                 "targets": [0],//LoginName
                 "visible": true,
+                "width" : 60,
                 "searchable": true
             },
             {
@@ -31,6 +32,7 @@
             {
                 "targets": [2],//LoginRola
                 "visible": true,
+                "width" : 20,
                 "searchable": true
             },
 
@@ -66,11 +68,11 @@
 
             ],
         "columns": [ //poradie stlpcov musi byt take, ako su zoradene stlpce v Index.cshtml
-           
-            { "data": "loginName", "name": "LoginName", "autoWidth": true },
+
+            { "data": "loginName", "name": "LoginName", "autoWidth": false },
             { "data": "loginPassword", "name": "LoginPassword", "autoWidth": true },
-            { "data": "loginRola", "name": "LoginRola", "autoWidth": true },
-            { "data": "aktivny", "name": "Aktivny", "autoWidth": true },
+            { "data": "loginRola", "name": "LoginRola", "autoWidth": false },
+            { "data": "aktivny", "name": "Aktivny", "autoWidth": false },
             { "data": "dbLogin", "name": "DbLogin", "autoWidth": true },
             { "data": "dbPassword", "name": "DbPassword", "autoWidth": true },
 

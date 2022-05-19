@@ -5,9 +5,40 @@
     // Setup - add a text input to each footer cell
     $('#datatableLogs1 tfoot th').each(function () {
         var title = $(this).text();
-        $(this).html('<input type="text" placeholder=" ' + title + '" />');
+
+        if (title == "Dátum") {
+            $(this).html('<input type="text"   placeholder=" ' + title + '" style="width:160px" />');
+        }
+        else if (title == "ZálkazkaTG") {
+            $(this).html('<input type="text"   placeholder=" ' + title + '" style="width:120px" />');
+        }
+        else if (title == "Operácia") {
+            $(this).html('<input type="text"   placeholder=" ' + title + '" style="width:140px" />');
+        }
+        else if (title == "Parameter") {
+            $(this).html('<input type="text"   placeholder=" ' + title + '" style="width:120px" />');
+        }
+        else if (title == "Pôvodná hodnota") {
+            $(this).html('<input type="text"   placeholder=" ' + title + '" style="width:120px" />');
+        }
+        else if (title == "Nová hodnota") {
+            $(this).html('<input type="text"   placeholder=" ' + title + '" style="width:120px" />');
+        }
+        else if (title == "Užívateľ") {
+            $(this).html('<input type="text"   placeholder=" ' + title + '" style="width:120px" />');
+        }
+        else {
+            $(this).html('<input type="text" placeholder=" ' + title + '" style="width:140px" />');
+        }
     });
 
+
+    //if (title == "VIN") {
+    //    $(this).html('<input type="text"  class="filter1" placeholder=" ' + title + '" style="width:180px" />');
+    //}
+    //else if (title == "Ukončená") {
+    //    $(this).html('<input type="text" class="filter1" placeholder=" ' + "A/N" + '" style="width:70px" />');
+    //}
 
     $('#datatableLogs1').dataTable({
 
@@ -57,7 +88,7 @@
             ],
         "columns": [
             { "data": "id", "name": "Id", "autoWidth": true },
-            { "data": "datum", "name": "Datum", "autoWidth": true },
+            { "data": "datum", "name": "Datum", "autoWidth": false },
             { "data": "tgZakazka", "name": "TgZakazka", "autoWidth": true },
             { "data": "operacia", "name": "Operacia", "autoWidth": true },
             { "data": "parameter", "name": "Parameter", "autoWidth": true },
