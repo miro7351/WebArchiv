@@ -488,8 +488,12 @@ namespace ToyotaArchiv.Controllers
             (ViewBag.Login, ViewBag.Role) = _sessionService.ReadUserLoginAndRoleFromSession(HttpContext.Session);
             Zakazka zakazkaDB = await _context.Zakazkas.FindAsync(zakazkaTg);
             zakazkaDB.Zmenil = ViewBag.Login;
-            zakazkaDB.Zmenene = DateTime.Now;   
+            zakazkaDB.Zmenene = DateTime.Now;
 
+            //update tabulka pre zmenil   ---        
+            await _context.SaveChangesAsync();
+            //-------------------------------
+            
             _context.Zakazkas.Remove(zakazkaDB);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
