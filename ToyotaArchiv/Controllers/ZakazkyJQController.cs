@@ -490,7 +490,7 @@ namespace ToyotaArchiv.Controllers
             zakazkaDB.Zmenil = ViewBag.Login;
             zakazkaDB.Zmenene = DateTime.Now;
 
-            //update tabulka pre zmenil   ---        
+            //update tabulka pre zmenil   ---   VLCEK 23.5.2022      
             await _context.SaveChangesAsync();
             //-------------------------------
             
