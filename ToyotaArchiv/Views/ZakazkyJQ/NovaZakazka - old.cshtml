@@ -91,20 +91,15 @@
                         <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
 
                         @*Vyber suboru pre zakazkaTG*@
-                        <td width="150px" align="right">Súbor TG </td>
                         <td width="400px">
                             @*Subor pre zakazkaTG*@
                             <input asp-for="@Model.ZakazkaTGdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
                         </td>
-                        <td></td>
-                      
                         @*Subor link pre zakazkaTG*@
-                        <td colspan="2" width="300px">
+                        <td width="300px" colspan="2">
                             @Html.ActionLink(@Model?.ZakazkaTGdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
                             new{ zakazkaTG=@Model?.ZakazkaTg?.Trim(), subor=@Model?.ZakazkaTGdokument?.NazovSuboru?.Trim(), skupina=@Model?.ZakazkaTGdokument?.Skupina})
                         </td>
-
-                      
                         @*Button delete subor*@
                         <td  align="right">
                             <div class="fixed-action-btn ">
@@ -125,20 +120,14 @@
                         <span asp-validation-for="ZakazkaTb" class="text-danger"></span>
 
                         @*Subor pre zakazkaTB*@
-                        
-                        <td width="150px" align="right">Súbor TB </td>
-                        <td width="400px">
+                        <td>
                             <input asp-for="@Model.ZakazkaTBdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
                         </td>
-                        <td></td>
-                      
                         @* Subor link*@
                         <td colspan="2">
                             @Html.ActionLink(@Model?.ZakazkaTBdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
                             new{ zakazkaTB=@Model?.ZakazkaTb?.Trim() ?? "", subor=@Model?.ZakazkaTBdokument?.NazovSuboru?.Trim() ?? "", skupina=@Model?.ZakazkaTBdokument?.Skupina ?? (short)0} )
                         </td>
-
-                      
                         @* Vymazat-button s ikonou; class="text-center"*@
                         <td align="right">
                             <div class="fixed-action-btn ">
@@ -147,50 +136,78 @@
                         </td>
                     </tr>
 
-                @* Udaje o zakazke*@
-           
-
                     <tr>
                         @*VIN 17 znakov*@
                         <td align="right">@Html.DisplayNameFor(m=>m.Vin)</td>
                         <td>@Html.TextBoxFor(m=>m.Vin, new {@class="form-control"})</td>
                         <span asp-validation-for="Vin" class="text-danger"></span>
 
-                        <td align="right" >@Html.DisplayNameFor(m=>m.Cws)</td>
-                        <td >@Html.TextBoxFor(m=>m.Cws, new {@class="form-control"})</td>
-                        <span asp-validation-for="Cws" class="text-danger"></span>
+                        @*<td align="right">@Html.DisplayNameFor(m=>m.Cws)</td>
+                            <td>@Html.TextBoxFor(m=>m.Cws, new {@class="form-control"})</td>
+                            <span asp-validation-for="Cws" class="text-danger"></span>*@
 
+                        @*CWS*@
+                        <td colspan="2">
+                            <table>
+                                <tr>
+                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.Cws)</td>
+                                    <td >@Html.TextBoxFor(m=>m.Cws, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <span asp-validation-for="Cws" class="text-danger"></span>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                      <tr>
+                        @*SPZ*@
                         <td align="right">@Html.DisplayNameFor(m=>m.SPZ)</td>
                         <td>@Html.TextBoxFor(m=>m.SPZ, new {@class="form-control"})</td>
                         <span asp-validation-for="SPZ" class="text-danger"></span>
-                                      
-                        <td align="right" >@Html.DisplayNameFor(m=>m.Majitel)</td>
-                        <td >@Html.TextBoxFor(m=>m.Majitel, new {@class="form-control"})</td>
-                         <span asp-validation-for="Majitel" class="text-danger"></span>
- 
-                    </tr>
 
+                        @*Majitel*@
+                        <td colspan="2">
+                            <table width="90%">
+                                <tr>
+                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.Majitel)</td>
+                                    <td >@Html.TextBoxFor(m=>m.Majitel, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <span asp-validation-for="Majitel" class="text-danger"></span>
+                        <td></td>
+                        <td></td>
+                    </tr>
                     <tr>@*CisloProtokolu*@
                         <td align="right">@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
                         <td>@Html.TextBoxFor(m=>m.CisloProtokolu, new {@class="form-control"})</td>
                         <span asp-validation-for="CisloProtokolu" class="text-danger"></span>
- 
-                       <td align="right" >@Html.DisplayNameFor(m=>m.CisloDielu)</td>
-                       <td >@Html.TextBoxFor(m=>m.CisloDielu, new {@class="form-control"})</td>
-                       <span asp-validation-for="CisloDielu" class="text-danger"></span>
-                       
-                       <td align="right" >@Html.DisplayNameFor(m=>m.CisloFaktury)</td>
-                       <td >@Html.TextBoxFor(m=>m.CisloFaktury, new {@class="form-control"})</td>
-                       <span asp-validation-for="CisloFaktury" class="text-danger"></span>
-                      
-                       <td align="right">@Html.DisplayNameFor(m=>m.Poznamka)</td>
-                       <td >@Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control"})</td>
-                       <span asp-validation-for="Poznamka" class="text-danger"></span>
-     
+                        <td colspan="2">@*CisloDielu*@
+                            <table>
+                                <tr>
+                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.CisloDielu)</td>
+                                    <td >@Html.TextBoxFor(m=>m.CisloDielu, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <span asp-validation-for="CisloDielu" class="text-danger"></span>
+                        <td colspan="2">@*CisloFaktury*@
+                            <table>
+                                <tr>
+                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.CisloFaktury)</td>
+                                    <td >@Html.TextBoxFor(m=>m.CisloFaktury, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                </tr>
+                            </table>
+                        </td>
+                         <span asp-validation-for="CisloFaktury" class="text-danger"></span>
                     </tr>
+                    <tr>@*Poznamka*@
+                        <td align="right">@Html.DisplayNameFor(m=>m.Poznamka)</td>
+                        <td colspan="5">@Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control"})</td>
+                        <span asp-validation-for="Poznamka" class="text-danger"></span>
+                    </tr>
+
                 </table>
-              
-                
                 <hr />
                 @* <span>Povinné dokumenty</span>  style="border-collapse: collapse; border: none;"*@
 

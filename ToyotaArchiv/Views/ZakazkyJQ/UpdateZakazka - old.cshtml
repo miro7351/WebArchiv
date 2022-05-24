@@ -93,11 +93,11 @@
                             <span asp-validation-for="ZakazkaTg" class="text-danger"></span>
 
                             @*Vyber suboru pre zakazkaTG*@
-                            <td width="150px" align="right">Súbor TG </td>
+                             <td width="150px" align="right">Súbor TG </td>
                             <td width="450px">
                                 <input asp-for="@Model.ZakazkaTGdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
                             </td>
-                            <td></td>
+                             <td></td>
 
                             @* Subor link*@
                             <td width="450px" colspan="2">
@@ -106,7 +106,7 @@
                             </td>
 
                             @* Vymazat - button s ikonou *@
-                            <td align="right" >
+                            <td align="right" width="60px">
                                 @if (!string.IsNullOrEmpty(@Model?.ZakazkaTGdokument?.NazovSuboru))
                                 {
                                     @* @Html.ActionLink("Vymazať", "DeleteDokument", "ZakazkyJQ",
@@ -128,12 +128,11 @@
                             </td>
                             <span asp-validation-for="ZakazkaTb" class="text-danger"></span>
                             @*Vyber suboru pre zakazkaTG*@
+
                             <td width="150px" align="right">Súbor TB </td>
-                            <td width="400px">
+                            <td>
                                 <input asp-for="@Model.ZakazkaTBdokument.DokFormFile" class="form-control" lang="sk" /> @*vygeneruje sa <input  type="file"...   *@
                             </td>
-                            <td></td>
-
                             @* Subor link*@
                             <td colspan="2">
                                 @Html.ActionLink(@Model?.ZakazkaTBdokument?.NazovSuboru ?? "", "ShowImage", "ZakazkyJQ",
@@ -150,44 +149,79 @@
 
                         </tr>
 
-                   <tr>
-                        @*VIN 17 znakov*@
-                        <td align="right">@Html.DisplayNameFor(m=>m.Vin)</td>
-                        <td>@Html.TextBoxFor(m=>m.Vin, new {@class="form-control"})</td>
-                        <span asp-validation-for="Vin" class="text-danger"></span>
+                        <tr>
+                            @*VIN*@
+                            <td align="right">@Html.DisplayNameFor(m=>m.Vin)</td>
+                            <td>
+                                @Html.TextBoxFor(m=>m.Vin, new {@class="form-control"})
+                            </td>
+                            <span asp-validation-for="Vin" class="text-danger"></span>
 
-                        <td align="right" >@Html.DisplayNameFor(m=>m.Cws)</td>
-                        <td >@Html.TextBoxFor(m=>m.Cws, new {@class="form-control"})</td>
-                        <span asp-validation-for="Cws" class="text-danger"></span>
+                            @*CWS*@
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td align="left" width="70px">@Html.DisplayNameFor(m=>m.Cws)</td>
+                                        <td>@Html.TextBoxFor(m=>m.Cws, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <span asp-validation-for="Cws" class="text-danger"></span>
+                            <td></td>
+                            <td></td>
 
-                        <td align="right">@Html.DisplayNameFor(m=>m.SPZ)</td>
-                        <td>@Html.TextBoxFor(m=>m.SPZ, new {@class="form-control"})</td>
-                        <span asp-validation-for="SPZ" class="text-danger"></span>
-                                      
-                        <td align="right" >@Html.DisplayNameFor(m=>m.Majitel)</td>
-                        <td >@Html.TextBoxFor(m=>m.Majitel, new {@class="form-control"})</td>
-                         <span asp-validation-for="Majitel" class="text-danger"></span>
- 
-                    </tr>
+                        </tr>
+                        <tr>
+                            @*SPZ*@
+                            <td align="right">@Html.DisplayNameFor(m=>m.SPZ)</td>
+                            <td>@Html.TextBoxFor(m=>m.SPZ, new {@class="form-control"})</td>
+                            <span asp-validation-for="SPZ" class="text-danger"></span>
 
-                    <tr>@*CisloProtokolu*@
-                        <td align="right">@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
-                        <td>@Html.TextBoxFor(m=>m.CisloProtokolu, new {@class="form-control"})</td>
-                        <span asp-validation-for="CisloProtokolu" class="text-danger"></span>
- 
-                       <td align="right" >@Html.DisplayNameFor(m=>m.CisloDielu)</td>
-                       <td >@Html.TextBoxFor(m=>m.CisloDielu, new {@class="form-control"})</td>
-                       <span asp-validation-for="CisloDielu" class="text-danger"></span>
-                       
-                       <td align="right" >@Html.DisplayNameFor(m=>m.CisloFaktury)</td>
-                       <td >@Html.TextBoxFor(m=>m.CisloFaktury, new {@class="form-control"})</td>
-                       <span asp-validation-for="CisloFaktury" class="text-danger"></span>
-                      
-                       <td align="right">@Html.DisplayNameFor(m=>m.Poznamka)</td>
-                       <td >@Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control"})</td>
-                       <span asp-validation-for="Poznamka" class="text-danger"></span>
-     
-                    </tr>
+
+                            @*Majitel*@
+                            <td colspan="2">
+                                <table width="100%">
+                                    <tr>
+                                        <td align="left" width="70px">@Html.DisplayNameFor(m=>m.Majitel)</td>
+                                        <td>@Html.TextBoxFor(m=>m.Majitel, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <span asp-validation-for="Majitel" class="text-danger"></span>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+
+
+                        <tr>
+                            @*CisloProtokolu*@
+                            <td align="right">@Html.DisplayNameFor(m=>m.CisloProtokolu)</td>
+                            <td>
+                                @Html.TextBoxFor(m=>m.CisloProtokolu, new {@class="form-control"})
+                            </td>
+                            <span asp-validation-for="CisloProtokolu" class="text-danger"></span>
+
+                            <td colspan="2">
+                                @*CisloDielu*@
+                                <table>
+                                    <tr>
+                                        <td align="left">@Html.DisplayNameFor(m=>m.CisloDielu)</td>
+                                        <td>@Html.TextBoxFor(m=>m.CisloDielu, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <span asp-validation-for="CisloDielu" class="text-danger"></span>
+                        <td colspan="2">@*CisloFaktury*@
+                            <table>
+                                <tr>
+                                    <td align="left" width="70px">@Html.DisplayNameFor(m=>m.CisloFaktury)</td>
+                                    <td >@Html.TextBoxFor(m=>m.CisloFaktury, new {@class="form-control", @style="margin-left:10px;"})</td>
+                                </tr>
+                            </table>
+                        </td>
+                         <span asp-validation-for="CisloFaktury" class="text-danger"></span>
+                        </tr>
                         <tr>
                             @*Ukoncena*@
                             <td align="right">@Html.DisplayNameFor(m=>m.Ukoncena)</td>
@@ -199,6 +233,20 @@
                             {
                                  <td align="left" >@Html.TextBoxFor(m=>m.Ukoncena, new {@class="form-control", @readonly="readonly", @style="margin-left:3px; width:50px;"})</td>
                             }
+                            <td colspan="4">
+                                @*Poznamka*@
+                                <table width="100%">
+                                    <tr>
+                                        <td align="left" width="8%">
+                                            @Html.DisplayNameFor(m=>m.Poznamka)
+                                        </td>
+                                        <td >
+                                            @Html.TextBoxFor(m=>m.Poznamka, new {@class="form-control"})
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <span asp-validation-for="Poznamka" class="text-danger"></span>
                         </tr>
                     </table>
 
@@ -270,8 +318,8 @@
 
                     }
                     <hr />
-                    <div class="d-flex p-0 justify-content-center">
-                        <span>Prílohy<input type="button" onclick="pridajPrilohu('222');" class="btn btn-light" value="Pridaj prílohu" /></span>
+                    <div class="d-flex py-1 justify-content-center">
+                        <span>Prílohy<input type="button" onclick="pridajPrilohu('222');" class="btn btn-light ml-4" value="Pridaj prílohu" /></span>
                     </div>
                     @if (Model?.Prilohy != null)
                     {
