@@ -107,7 +107,7 @@ namespace ToyotaArchiv.Domain
         /// 
 
         [Required(ErrorMessage = "Údaj ZakazkaTg je povinný.")] //OK ak sa nezada nic a spusti sa Submit
-        [Display(Name = "ZákazkaTG")]             //OK
+        [Display(Name = "Zákazka TG/TR")]             //OK
         [StringLength(8, MinimumLength=8, ErrorMessage = "Pre údaj ZakazkaTg zadajte 8 znakov.")]//Ak sa nezada MinimumLength=8; nejdeto
         public string ZakazkaTg
         {
@@ -121,7 +121,7 @@ namespace ToyotaArchiv.Domain
         /// Vznika v momente prijmu vozidla do servisu kedy este nie je jasne ci ide o zarucnu opravu
         /// Identifikator v ramci predajne pre garancnu opravu; Nemusi za zadat pri vytvoreni zakazkyô
         /// </summary>
-        [Display(Name = "ZákazkaTB")]
+        [Display(Name = "Zákazka TB")]
         [StringLength(8, MinimumLength = 8, ErrorMessage = "Pre údaj ZakazkaTb zadajte 8 znakov.")]//nemusi sa zadat, ale ak sa zada, potom to musi byt 8 znakov;
         public string? ZakazkaTb
         {

@@ -25,7 +25,8 @@ namespace ToyotaArchiv.Services
 
         */
 
-        static List<string> NazvyPovinnychDokumentov = new List<string>() { "Pred kalkulacia TG", "Rekapitulacia TG", "Garancna TG", "Registracia TG", "Suhrna faktura" };
+        //static List<string> NazvyPovinnychDokumentov = new List<string>() { "Pred kalkulacia TG", "Rekapitulacia TG", "Garancna TG", "Registracia TG", "Suhrna faktura" };
+        static List<string> NazvyPovinnychDokumentov = new List<string>() { "Garančný protokol", "Predkalkulácia zákazky", "Rekapitulácia zákazky", "Elektronická registrácia práce", "Súhrná faktúra" };
 
         static short SkupinaZakazkaTGDokument => 1;
         static short SkupinaZakazkaTBDokument => 2;
